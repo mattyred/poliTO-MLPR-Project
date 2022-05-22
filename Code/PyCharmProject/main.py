@@ -48,22 +48,21 @@ if __name__ == '__main__':
 
     # MVG
     mvg_clf = GauClf.MVG(DTR, LTR)
-    mvg_clf.train()
-    labels = mvg_clf.fit(DTE, labels=True)
+    labels = mvg_clf.train().predict(DTE, labels=True)
     M = model_evaluator.confusion_matrix(labels, LTE)
     print('MVG error rate: %.2f%%' % (model_evaluator.error_rate(labels, LTE) * 100))
 
     # Tied Covariance
     tied_clf = GauClf.TiedG(DTR, LTR)
     tied_clf.train()
-    labels = tied_clf.fit(DTE, labels=True)
+    labels = tied_clf.train().predict(DTE, labels=True)
     M = model_evaluator.confusion_matrix(labels, LTE)
     print('Tied Covariance error rate: %.2f%%' % (model_evaluator.error_rate(labels, LTE) * 100))
 
     # Naive Bayes
     naiveBayes_clf = GauClf.NaiveBayes(DTR, LTR)
     naiveBayes_clf.train()
-    labels = naiveBayes_clf.fit(DTE, labels=True)
+    labels = naiveBayes_clf.train().predict(DTE, labels=True)
     M = model_evaluator.confusion_matrix(labels, LTE)
     print('Naive Bayes error rate: %.2f%%' % (model_evaluator.error_rate(labels, LTE) * 100))
 

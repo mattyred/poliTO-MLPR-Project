@@ -32,6 +32,7 @@ class MVG:
             cov_i = 1 / N_i * np.dot(Dtrain_i - mu_i, (Dtrain_i - mu_i).T)
             self.mu_classes.append(mu_i)
             self.cov_classes.append(cov_i)
+        return self
 
     def __logpdf_GAU_ND_1sample(self, x, mu, C):
         M = x.shape[0]
@@ -41,7 +42,7 @@ class MVG:
         _, log_abs_detC = np.linalg.slogdet(C)
         return -M / 2 * np.log(2 * np.pi) - 1 / 2 * log_abs_detC - 1 / 2 * np.dot(np.dot(xc.T, invC), xc)
 
-    def fit(self, Dtest, labels=True):
+    def predict(self, Dtest, labels=True):
         Ntest = Dtest.shape[1] # number of test samples
         S = np.zeros(shape=(self.K, Ntest))
         for i in range(Ntest):
@@ -101,6 +102,7 @@ class TiedG:
         for i in range(self.K):
             self.tied_cov += (num_samples_per_class[i] * cov_classes[i])
         self.tied_cov *= 1 / sum(num_samples_per_class)
+        return self
 
     def __logpdf_GAU_ND_1sample(self, x, mu, C):
         M = x.shape[0]
@@ -110,7 +112,7 @@ class TiedG:
         _, log_abs_detC = np.linalg.slogdet(C)
         return -M / 2 * np.log(2 * np.pi) - 1 / 2 * log_abs_detC - 1 / 2 * np.dot(np.dot(xc.T, invC), xc)
 
-    def fit(self, Dtest, labels=True):
+    def predict(self, Dtest, labels=True):
         Ntest = Dtest.shape[1]
         S = np.zeros(shape=(self.K, Ntest))
         for i in range(Ntest):
@@ -166,6 +168,7 @@ class NaiveBayes:
 
         for i in range(self.K):
             self.diag_cov_classes.append(cov_classes[i] * np.identity(self.F))
+        return self
 
     def __logpdf_GAU_ND_1sample(self, x, mu, C):
         M = x.shape[0]
@@ -175,7 +178,7 @@ class NaiveBayes:
         _, log_abs_detC = np.linalg.slogdet(C)
         return -M / 2 * np.log(2 * np.pi) - 1 / 2 * log_abs_detC - 1 / 2 * np.dot(np.dot(xc.T, invC), xc)
 
-    def fit(self, Dtest, labels=True):
+    def predict(self, Dtest, labels=True):
         Ntest = Dtest.shape[1]
         S = np.zeros(shape=(self.K, Ntest))
         for i in range(Ntest):
