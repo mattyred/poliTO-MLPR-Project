@@ -2,6 +2,7 @@ import numpy as np
 import scipy.linalg
 import matplotlib.pyplot as plt
 
+
 class PCA:
     def __init__(self, D):
         self.D = D
