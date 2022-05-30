@@ -10,13 +10,7 @@ class MVG:
         Ltrain: shape [N,]
     """
 
-    def __init__(self, Dtrain, Ltrain):
-        self.Dtrain = Dtrain
-        self.Ltrain = Ltrain
-        self.labels = set(self.Ltrain)
-        self.N = Dtrain.shape[1]
-        self.F = Dtrain.shape[0]
-        self.K = len(set(Ltrain))
+    def __init__(self):
         self.mu_classes = []  # list of empiracal means for each class
         self.cov_classes = []  # list of covariance matrices for each class
 
@@ -24,7 +18,13 @@ class MVG:
     The training phase consists in computing empirical mean and covariance matrix for rach class
     These are the only model parameters we need to fit the model to a new (test) dataset
     """
-    def train(self):
+    def train(self, Dtrain, Ltrain):
+        self.Dtrain = Dtrain
+        self.Ltrain = Ltrain
+        self.N = Dtrain.shape[1]
+        self.F = Dtrain.shape[0]
+        self.K = len(set(Ltrain))
+        self.labels = set(self.Ltrain)
         for i in self.labels:
             Dtrain_i = self.Dtrain[:, self.Ltrain == i]
             N_i = Dtrain_i.shape[1]

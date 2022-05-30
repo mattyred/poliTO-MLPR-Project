@@ -47,8 +47,8 @@ if __name__ == '__main__':
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
 
     # MVG
-    mvg_clf = GauClf.MVG(DTR, LTR)
-    labels = mvg_clf.train().predict(DTE, labels=True)
+    mvg_clf = GauClf.MVG()
+    labels = mvg_clf.train(DTR, LTR).predict(DTE, labels=True)
     M = model_evaluator.confusion_matrix(labels, LTE)
     print('MVG error rate: %.2f%%' % (model_evaluator.error_rate(labels, LTE) * 100))
 
@@ -66,5 +66,8 @@ if __name__ == '__main__':
     M = model_evaluator.confusion_matrix(labels, LTE)
     print('Naive Bayes error rate: %.2f%%' % (model_evaluator.error_rate(labels, LTE) * 100))
 
+    # cross validation of MVG
+    mvg_clf_kfold = GauClf.MVG()
+    model_evaluator.kfold_cross_validation(model=mvg_clf_kfold, D=DT, L=LT, k=10)
 
 
