@@ -16,10 +16,14 @@ class PCA:
         P = U[:, ::-1][:, 0:ndim]  # take the m eigenvectos of C associated to the m highest eigenvalues
         return P
 
-    def fitPCA(self, ndim):
-        P = self.__computeProjectionMatrix(ndim)
-        Dprojected = np.dot(P.T, self.D)
+    def fitPCA_train(self, ndim):
+        self.P = self.__computeProjectionMatrix(ndim)
+        Dprojected = np.dot(self.P.T, self.D)
         return Dprojected
+
+    def fitPCA_test(self, Dtest):
+        Dtestprojected = np.dot(self.P.T, Dtest)
+        return Dtestprojected
 
     def scatter_2D_plot(self, DT_pca, LT):
         plt.figure()

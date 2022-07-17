@@ -1,5 +1,5 @@
 import numpy as np
-
+import scipy
 
 class MVG:
     """
@@ -25,6 +25,8 @@ class MVG:
         self.F = Dtrain.shape[0]
         self.K = len(set(Ltrain))
         self.labels = set(self.Ltrain)
+        self.mu_classes = []
+        self.cov_classes = []
         for i in self.labels:
             Dtrain_i = self.Dtrain[:, self.Ltrain == i]
             N_i = Dtrain_i.shape[1]
@@ -53,18 +55,17 @@ class MVG:
                 C = self.cov_classes[j]
                 score[j, :] = np.exp(self.__logpdf_GAU_ND_1sample(xt, mu, C))
             S[:, i:i + 1] = score
-        SJoint = 1 / 3 * S
-        SMarginal = SJoint.sum(0).reshape(-1, 1)
-        SPost = np.zeros((self.K, Ntest))
-        for c in range(self.K):
-            SJoint_c = SJoint[c, :].reshape(-1, 1)
-            SPost_c = (SJoint_c / SMarginal).reshape(1, -1)
-            SPost[c, :] = SPost_c
-        predicted_labels = np.argmax(SPost, axis=0)
         if labels:
+            SJoint = 1 / 2 * S
+            logSJoint = np.log(SJoint) + np.log(1 / 2)
+            logSMarginal = scipy.special.logsumexp(logSJoint, axis=0).reshape(1, -1)
+            log_SPost = logSJoint - logSMarginal
+            SPost = np.exp(log_SPost)
+            predicted_labels = np.argmax(SPost, axis=0)
             return predicted_labels
         else:
-            return SPost
+            return np.log(S[1, :]) - np.log(S[0, :])
+        ## np.exp(self.Spost[:, 1]) / (np.exp(self.Spost[:, 0]) + 0.00000001) => What we have to return
 
 
 class TiedG:
