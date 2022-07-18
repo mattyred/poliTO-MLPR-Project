@@ -6,6 +6,7 @@ import DimensionalityReduction as DimRed
 import GaussianClassifiers as GauClf
 import ModelEvaluation
 import PreProcessing
+import LogisticRegressionClassifier as LogRegClf
 if __name__ == '__main__':
     DT, LT = DataImport.read_data_training('./Dataset/Train.txt')
     DE, LE = DataImport.read_data_evaluation('./Dataset/Test.txt')
@@ -47,20 +48,20 @@ if __name__ == '__main__':
     plt.show()
     """
 
+    """
     # Test k-fold cross validation (on MVG classifier)
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
-    pi = 0.3
+    pi = 0.9
     Cfn = 1
     Cfp = 1
     selected_app = {'pi': pi, 'Cfn': Cfn, 'Cfp': Cfp}
-    dim_red = None#{'type': 'pca', 'm': 9}
+    dim_red = {'type': 'pca', 'm': 8}
 
     print('R: MVG Classifier\nPreprocessing: -\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: k-fold' % (dim_red, pi, Cfn, Cfp))
     model_evaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='raw', dimred=dim_red,  app=selected_app)
     print('R: MVG Classifier\nPreprocessing: -\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: single split' % (pi, Cfn, Cfp))
     #model_evaluator.singlefold_validation(GauClf.MVG(), DT, LT, preproc='raw', app=selected_app)
     print('-----------------------------------------')
-    
     # Test k-fold cross validation (on MVG classifier)
     print('R: MVG Classifier\nPreprocessing: gaussianization\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)' % (dim_red, pi, Cfn, Cfp))
     model_evaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=5, preproc='gau', dimred=dim_red, app=selected_app)
@@ -74,45 +75,80 @@ if __name__ == '__main__':
     print('R: MVG Classifier\nPreprocessing: znorm\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: single split' % (pi, Cfn, Cfp))
     #model_evaluator.singlefold_validation(GauClf.MVG(), DT, LT, preproc='znorm', app=selected_app)
     print('-----------------------------------------')
-
-    """
-    # --- Dimensionality Reduction ---
-    pca = DimRed.PCA(DT)
-    DTR_pca = pca.fitPCA(2)
-    pca.scatter_2D_plot(DTR_pca, LT)
-
-    lda = DimRed.LDA(DT, LT)
-    DTR_lda = lda.fitLDA(2, True)
-    lda.scatter_2D_plot(DTR_lda, LT)
-
-    # plt.show()
-
-    # --- Gaussian Models ---
+    
+    # Test k-fold cross validation (on MVG Tied Classifier)
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
+    pi = 0.9
+    Cfn = 1
+    Cfp = 1
+    selected_app = {'pi': pi, 'Cfn': Cfn, 'Cfp': Cfp}
+    dim_red = {'type': 'pca', 'm': 4}
 
-    # MVG
-    mvg_clf = GauClf.MVG()
-    labels = mvg_clf.train(DTR, LTR).predict(DTE, labels=True)
-    M = model_evaluator.confusion_matrix(labels, LTE)
-    print('MVG error rate: %.2f%%' % (model_evaluator.error_rate(labels, LTE) * 100))
+    print('R: MVG-Tied Classifier\nPreprocessing: -\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: k-fold' % (dim_red, pi, Cfn, Cfp))
+    model_evaluator.kfold_cross_validation(GauClf.TiedG(), DT, LT, k=3, preproc='raw', dimred=dim_red,  app=selected_app)
+    print('R: MVG-Tied Classifier\nPreprocessing: -\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: single split' % (pi, Cfn, Cfp))
+    #model_evaluator.singlefold_validation(GauClf.MVG(), DT, LT, preproc='raw', app=selected_app)
+    print('-----------------------------------------')
 
-    # Tied Covariance
-    tied_clf = GauClf.TiedG(DTR, LTR)
-    tied_clf.train()
-    labels = tied_clf.train().predict(DTE, labels=True)
-    M = model_evaluator.confusion_matrix(labels, LTE)
-    print('Tied Covariance error rate: %.2f%%' % (model_evaluator.error_rate(labels, LTE) * 100))
+    print('R: MVG-Tied Classifier\nPreprocessing: gaussianization\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)' % (dim_red, pi, Cfn, Cfp))
+    model_evaluator.kfold_cross_validation(GauClf.TiedG(), DT, LT, k=5, preproc='gau', dimred=dim_red, app=selected_app)
+    print('R: MVG-Tied Classifier\nPreprocessing: gaussianization\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: single split' % (pi, Cfn, Cfp))
+    #model_evaluator.singlefold_validation(GauClf.MVG(), DT, LT, preproc='gau', app=selected_app)
+    print('-----------------------------------------')
 
-    # Naive Bayes
-    naiveBayes_clf = GauClf.NaiveBayes(DTR, LTR)
-    naiveBayes_clf.train()
-    labels = naiveBayes_clf.train().predict(DTE, labels=True)
-    M = model_evaluator.confusion_matrix(labels, LTE)
-    print('Naive Bayes error rate: %.2f%%' % (model_evaluator.error_rate(labels, LTE) * 100))
+    print('R: MVG-Tied Classifier\nPreprocessing: znorm\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)' % (dim_red, pi, Cfn, Cfp))
+    model_evaluator.kfold_cross_validation(GauClf.TiedG(), DT, LT, k=5, preproc='znorm', dimred=dim_red, app=selected_app)
+    print('R: MVG-Tied Classifier\nPreprocessing: znorm\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: single split' % (pi, Cfn, Cfp))
+    #model_evaluator.singlefold_validation(GauClf.MVG(), DT, LT, preproc='znorm', app=selected_app)
+    print('-----------------------------------------')
+    # Test k-fold cross validation (on MVG Naive Bayes Classifier)
+    model_evaluator = ModelEvaluation.BinaryModelEvaluator()
+    pi = 0.9
+    Cfn = 1
+    Cfp = 1
+    selected_app = {'pi': pi, 'Cfn': Cfn, 'Cfp': Cfp}
+    dim_red = {'type': 'pca', 'm': 2}
 
-    # cross validation of MVG
-    mvg_clf_kfold = GauClf.MVG()
-    model_evaluator.kfold_cross_validation(model=mvg_clf_kfold, D=DT, L=LT, k=10)
+    print('R: MVG-Naive Classifier\nPreprocessing: -\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: k-fold' % (dim_red, pi, Cfn, Cfp))
+    model_evaluator.kfold_cross_validation(GauClf.NaiveBayes(), DT, LT, k=3, preproc='raw', dimred=dim_red,  app=selected_app)
+    print('R: MVG-Naive Classifier\nPreprocessing: -\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: single split' % (pi, Cfn, Cfp))
+    #model_evaluator.singlefold_validation(GauClf.MVG(), DT, LT, preproc='raw', app=selected_app)
+    print('-----------------------------------------')
+
+    print('R: MVG-Naive Classifier\nPreprocessing: gaussianization\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)' % (dim_red, pi, Cfn, Cfp))
+    model_evaluator.kfold_cross_validation(GauClf.NaiveBayes(), DT, LT, k=5, preproc='gau', dimred=dim_red, app=selected_app)
+    print('R: MVG-Naive Classifier\nPreprocessing: gaussianization\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: single split' % (pi, Cfn, Cfp))
+    #model_evaluator.singlefold_validation(GauClf.MVG(), DT, LT, preproc='gau', app=selected_app)
+    print('-----------------------------------------')
+
+    print('R: MVG-Naive Classifier\nPreprocessing: znorm\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)' % (dim_red, pi, Cfn, Cfp))
+    model_evaluator.kfold_cross_validation(GauClf.NaiveBayes(), DT, LT, k=5, preproc='znorm', dimred=dim_red, app=selected_app)
+    print('R: MVG-Naive Classifier\nPreprocessing: znorm\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: single split' % (pi, Cfn, Cfp))
+    #model_evaluator.singlefold_validation(GauClf.MVG(), DT, LT, preproc='znorm', app=selected_app)
+    print('-----------------------------------------')
     """
 
+    """
+    pca = DimRed.PCA(DT)
+    DTpca = pca.fitPCA_train(2)
+    DTpca_m = DTpca[:, LT == 0]
+    DTpca_f = DTpca[:, LT == 1]
+    plt.figure()
+    plt.scatter(DTpca_m[0, :], DTpca_m[1, :], alpha=.3, marker='o', edgecolors='blue', color='none')  # male
+    plt.scatter(DTpca_f[0, :], DTpca_f[1, :], alpha=.3, marker='o', edgecolors='red', color='none')   # female
+    plt.show()
+    """
+
+    # LOGISTIC REGRESSION
+    model_evaluator = ModelEvaluation.BinaryModelEvaluator()
+    pi = 0.5
+    Cfn = 1
+    Cfp = 1
+    selected_app = {'pi': pi, 'Cfn': Cfn, 'Cfp': Cfp}
+    dim_red = {'type': 'pca', 'm': 4}
+
+    lbd = 10**-5
+    factr = 10
+    print('R: MVG-Naive Classifier\nPreprocessing: -\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)' % (dim_red, pi, Cfn, Cfp))
+    model_evaluator.kfold_cross_validation(LogRegClf.QuadraticLogisticRegression(lbd, factr), DT, LT, k=3, preproc='raw', dimred=dim_red, app=selected_app)
 

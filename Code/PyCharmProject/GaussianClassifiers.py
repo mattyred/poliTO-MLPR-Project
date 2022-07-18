@@ -77,21 +77,24 @@ class TiedG:
             Ltrain: shape [N,]
         """
 
-    def __init__(self, Dtrain, Ltrain):
+    def __init__(self):
+        pass
+        #self.mu_classes = []  # list of empiracal means for each class
+        #self.tied_cov = 0 # tied covariance matrix
+
+    """
+    The training phase consists in computing empirical mean for each class and only one covarince matrix for all classes
+    """
+    def train(self, Dtrain, Ltrain):
         self.Dtrain = Dtrain
         self.Ltrain = Ltrain
         self.labels = set(self.Ltrain)
         self.N = Dtrain.shape[1]
         self.F = Dtrain.shape[0]
         self.K = len(set(Ltrain))
+        cov_classes = []
         self.mu_classes = []  # list of empiracal means for each class
         self.tied_cov = 0 # tied covariance matrix
-
-    """
-    The training phase consists in computing empirical mean for each class and only one covarince matrix for all classes
-    """
-    def train(self):
-        cov_classes = []
         for i in self.labels:
             Dtrain_i = self.Dtrain[:, self.Ltrain == i]
             N_i = Dtrain_i.shape[1]
@@ -124,18 +127,18 @@ class TiedG:
                 C = self.tied_cov
                 score[j, :] = np.exp(self.__logpdf_GAU_ND_1sample(xt, mu, C))
             S[:, i:i + 1] = score
-        SJoint = 1 / 3 * S
-        SMarginal = SJoint.sum(0).reshape(-1, 1)
-        SPost = np.zeros(shape=(self.K, Ntest))
-        for c in range(self.K):
-            SJoint_c = SJoint[c, :].reshape(-1, 1)
-            SPost_c = (SJoint_c / SMarginal).reshape(1, -1)
-            SPost[c, :] = SPost_c
-        predicted_labels = np.argmax(SPost, axis=0)
         if labels:
+            SJoint = 1 / 3 * S
+            SMarginal = SJoint.sum(0).reshape(-1, 1)
+            SPost = np.zeros(shape=(self.K, Ntest))
+            for c in range(self.K):
+                SJoint_c = SJoint[c, :].reshape(-1, 1)
+                SPost_c = (SJoint_c / SMarginal).reshape(1, -1)
+                SPost[c, :] = SPost_c
+            predicted_labels = np.argmax(SPost, axis=0)
             return predicted_labels
         else:
-            return SPost
+            return np.log(S[1, :]) - np.log(S[0, :])
 
 
 class NaiveBayes:
@@ -147,7 +150,10 @@ class NaiveBayes:
                 Ltrain: shape [N,]
             """
 
-    def __init__(self, Dtrain, Ltrain):
+    def __init__(self):
+        pass
+
+    def train(self,  Dtrain, Ltrain):
         self.Dtrain = Dtrain
         self.Ltrain = Ltrain
         self.labels = set(self.Ltrain)
@@ -156,8 +162,6 @@ class NaiveBayes:
         self.K = len(set(Ltrain))
         self.mu_classes = []  # list of empiracal means for each class
         self.diag_cov_classes = []  # diagonal covariance matrices for each class
-
-    def train(self):
         cov_classes = []
         for i in self.labels:
             Dtrain_i = self.Dtrain[:, self.Ltrain == i]
@@ -190,15 +194,14 @@ class NaiveBayes:
                 C = self.diag_cov_classes[j]
                 score[j, :] = np.exp(self.__logpdf_GAU_ND_1sample(xt, mu, C))
             S[:, i:i + 1] = score
-        SJoint = 1 / 3 * S
-        SMarginal = SJoint.sum(0).reshape(-1, 1)
-        SPost = np.zeros(shape=(self.K, Ntest))
-        for c in range(self.K):
-            SJoint_c = SJoint[c, :].reshape(-1, 1)
-            SPost_c = (SJoint_c / SMarginal).reshape(1, -1)
-            SPost[c, :] = SPost_c
-        predicted_labels = np.argmax(SPost, axis=0)
         if labels:
-            return predicted_labels
+            SJoint = 1 / 3 * S
+            SMarginal = SJoint.sum(0).reshape(-1, 1)
+            SPost = np.zeros(shape=(self.K, Ntest))
+            for c in range(self.K):
+                SJoint_c = SJoint[c, :].reshape(-1, 1)
+                SPost_c = (SJoint_c / SMarginal).reshape(1, -1)
+                SPost[c, :] = SPost_c
+            predicted_labels = np.argmax(SPost, axis=0)
         else:
-            return SPost
+            return np.log(S[1, :]) - np.log(S[0, :])
