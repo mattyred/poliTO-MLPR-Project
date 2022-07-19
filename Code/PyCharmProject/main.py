@@ -7,6 +7,7 @@ import GaussianClassifiers as GauClf
 import ModelEvaluation
 import PreProcessing
 import LogisticRegressionClassifier as LogRegClf
+import LDAClassifier
 if __name__ == '__main__':
     DT, LT = DataImport.read_data_training('./Dataset/Train.txt')
     DE, LE = DataImport.read_data_evaluation('./Dataset/Test.txt')
@@ -139,6 +140,7 @@ if __name__ == '__main__':
     plt.show()
     """
 
+    """
     # LOGISTIC REGRESSION
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
     pi = 0.5
@@ -151,4 +153,38 @@ if __name__ == '__main__':
     factr = 10
     print('R: MVG-Naive Classifier\nPreprocessing: -\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)' % (dim_red, pi, Cfn, Cfp))
     model_evaluator.kfold_cross_validation(LogRegClf.QuadraticLogisticRegression(lbd, factr), DT, LT, k=3, preproc='raw', dimred=dim_red, app=selected_app)
+    """
 
+    # LDA CLASSIFIER
+    model_evaluator = ModelEvaluation.BinaryModelEvaluator()
+    pi = 0.5
+    Cfn = 1
+    Cfp = 1
+    selected_app = {'pi': pi, 'Cfn': Cfn, 'Cfp': Cfp}
+    dim_red = None#{'type': 'pca', 'm': 4}
+
+    print(
+        'R: LDA Classifier\nPreprocessing: -\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)' % (
+        dim_red, pi, Cfn, Cfp))
+    model_evaluator.kfold_cross_validation(LDAClassifier.LDA(),
+                                           DT,
+                                           LT,
+                                           k=3,
+                                           preproc='raw',
+                                           dimred=dim_red,
+                                           app=selected_app)
+    """
+    print('R: MVG Classifier\nPreprocessing: -\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: k-fold' % (dim_red, pi, Cfn, Cfp))
+    model_evaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='raw', dimred=dim_red,  app=selected_app)
+    print('R: MVG Classifier\nPreprocessing: -\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: single split' % (pi, Cfn, Cfp))
+    #model_evaluator.singlefold_validation(GauClf.MVG(), DT, LT, preproc='raw', app=selected_app)
+    """
+
+    model = GauClf.NaiveBayes()
+    scores = model.train(DT, LT).predict(DE, labels=False)
+    M = model_evaluator.optimalBayes_confusion_matrix(scores,
+                                                      LE,
+                                                      selected_app['pi'],
+                                                      selected_app['Cfn'],
+                                                      selected_app['Cfp'])
+    print('Accuracy: ', model_evaluator.accuracy(M))

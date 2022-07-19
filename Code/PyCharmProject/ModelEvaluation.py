@@ -19,8 +19,8 @@ class BinaryModelEvaluator:
         return conf_matrix
     """
     @staticmethod
-    def accuracy(predicted_labels, actual_labels):
-        return np.sum([predicted_labels == actual_labels]) / len(predicted_labels)
+    def accuracy(conf_matrix):
+        return (conf_matrix[0, 0] + conf_matrix[1, 1]) / (conf_matrix[0, 0] + conf_matrix[1, 1] + conf_matrix[1, 0] + conf_matrix[0, 1])
 
     @staticmethod
     def error_rate(predicted_labels, actual_labels):
@@ -221,3 +221,7 @@ class BinaryModelEvaluator:
         dcf_app1 = BinaryModelEvaluator.DCF(scores, LTE, pi, Cfn, Cfp)
         mindcf_app1 = BinaryModelEvaluator.minDCF(scores, LTE, pi, Cfn, Cfp)
         print('DCF = %.3f - minDCF = %.3f\n\n' % (dcf_app1, mindcf_app1))
+
+    @staticmethod
+    def validate_final_model(model=None):
+        pass
