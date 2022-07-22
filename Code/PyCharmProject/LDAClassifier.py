@@ -53,6 +53,12 @@ class LDA:
             return scores > 0
         return scores.reshape(Dtest.shape[1],)
 
+    def get_decision_function_parameters(self):
+        precision_matrix = np.linalg.inv(self.__computeSW())
+        mu_classes = self.__computeMC()
+        b = np.dot(precision_matrix, (mu_classes[:, 1] - mu_classes[:, 0]))
+        return b
+
     """
         def scatter_2D_plot(self, DT_lda, LT):
         plt.figure()

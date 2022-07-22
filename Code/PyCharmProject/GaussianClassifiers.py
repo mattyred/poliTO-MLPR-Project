@@ -1,5 +1,7 @@
 import numpy as np
 import scipy
+import matplotlib.pyplot as plt
+
 
 class MVG:
     """
@@ -75,12 +77,10 @@ class TiedG:
             K: # classes
             Dtrain: shape [F, N]
             Ltrain: shape [N,]
-        """
+    """
 
     def __init__(self):
         pass
-        #self.mu_classes = []  # list of empiracal means for each class
-        #self.tied_cov = 0 # tied covariance matrix
 
     """
     The training phase consists in computing empirical mean for each class and only one covarince matrix for all classes
@@ -139,6 +139,13 @@ class TiedG:
             return predicted_labels
         else:
             return np.log(S[1, :]) - np.log(S[0, :])
+
+    def get_decision_function_parameters(self):
+        precision_matrix = np.linalg.inv(self.tied_cov)
+        b = np.dot(precision_matrix, (self.mu_classes[1] - self.mu_classes[0]))
+        c = -1/2 * (np.dot(np.dot(self.mu_classes[1].T, precision_matrix), self.mu_classes[1])-
+                    np.dot(np.dot(self.mu_classes[0].T, precision_matrix), self.mu_classes[0]))
+        return b, c
 
 
 class NaiveBayes:

@@ -3,6 +3,9 @@ import PreProcessing
 import matplotlib.pyplot as plt
 import DimensionalityReduction as DimRed
 import GaussianClassifiers as GauClf
+import LogisticRegressionClassifier as LogRegClf
+
+
 class BinaryModelEvaluator:
     """
     @staticmethod
@@ -122,18 +125,14 @@ class BinaryModelEvaluator:
         plt.show()
 
     @staticmethod
-    def kfold_cross_validation(model=None, D=None, L=None, k=10, preproc='raw', dimred=None, app=None):
+    def kfold_cross_validation(model=None, D=None, L=None, k=10, preproc='raw', dimred=None, iprint=True):
         PreProcesser = PreProcessing.DataPreProcesser()
         Nsamples = D.shape[1]
         np.random.seed(0)
         idx = np.random.permutation(Nsamples)
         folds = np.array_split(idx, k)
-        avg_error_rate = 0
         k_scores = []
         k_labels = []
-        pi = app['pi']
-        Cfn = app['Cfn']
-        Cfp = app['Cfp']
         if dimred is not None:
             dimred_type = dimred['type']
             dimred_m = dimred['m']
@@ -184,13 +183,19 @@ class BinaryModelEvaluator:
             k_scores.append(model.train(Dtrain_normalized_reduced, Ltrain).predict(Dtest_normalized_reduced, labels=False))
             k_labels.append(Ltest)
 
-        # --- Model Evaluation --- #
+        # --- Model Evaluation (for different applications)--- #
         k_scores = np.hstack(k_scores)
         k_labels = np.hstack(k_labels)
-        # Evaluate model for different applications
-        dcf_app1 = BinaryModelEvaluator.DCF(k_scores, k_labels, pi, Cfn, Cfp)
-        mindcf_app1 = BinaryModelEvaluator.minDCF(k_scores, k_labels, pi, Cfn, Cfp)
-        print('DCF = %.3f - minDCF = %.3f\n\n' % (dcf_app1, mindcf_app1))
+        dcf = []
+        min_dcf = []
+        priors = [0.1, 0.5, 0.9]
+        for prior in priors:
+            dcf.append(BinaryModelEvaluator.DCF(k_scores, k_labels, prior, 1, 1))
+            min_dcf.append(BinaryModelEvaluator.minDCF(k_scores, k_labels, prior, 1, 1))
+        if iprint:
+            for i in range(len(priors)): # for each application (prior)
+                print('pi=[%.1f] DCF = %.3f - minDCF = %.3f' % (priors[i], dcf[i], min_dcf[i]))
+        return dcf, min_dcf
 
     @staticmethod
     def singlefold_validation(model=None, D=None, L=None, preproc='raw', app=None):
@@ -225,3 +230,36 @@ class BinaryModelEvaluator:
     @staticmethod
     def validate_final_model(model=None):
         pass
+
+    @staticmethod
+    def plot_lambda_minDCF_LinearLogisticRegression(model, DT, LT, k, selected_app, dim_red):
+        l = [1.E-6, 1.E-5, 1.E-4, 1.E-3, 1.E-2, 1.E-1, 1, 10, 100, 1000, 10000, 100000]
+        plt.figure(figsize=(10, 8))
+        plt.xscale('log')
+        plt.xticks(l)
+        plt.xlabel("λ")
+        plt.ylabel("minDCF")
+        plt.ylim([0, 1])
+        colors = ["red", "blue", "green"]
+        minDCF_values_01 = []
+        minDCF_values_05 = []
+        minDCF_values_09 = []
+        for lbd in l:
+            model = LogRegClf.LinearLogisticRegression(lbd, prior_weighted=True, prior=0.5)
+            DCF, minDCF = BinaryModelEvaluator.kfold_cross_validation(
+                    model,
+                    DT,
+                    LT,
+                    k=k,
+                    preproc='raw',
+                    dimred=dim_red,
+                    app=selected_app,
+                    iprint=False)
+            minDCF_values_01.append(minDCF[0])
+            minDCF_values_05.append(minDCF[1])
+            minDCF_values_09.append(minDCF[2])
+
+        plt.plot(l, minDCF_values_01, label="π = 0.1", color=colors[0])
+        plt.plot(l, minDCF_values_05, label="π = 0.5", color=colors[1])
+        plt.plot(l, minDCF_values_09, label="π = 0.9", color=colors[2])
+        plt.show()

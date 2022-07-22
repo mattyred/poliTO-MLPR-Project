@@ -4,9 +4,12 @@ import matplotlib.pyplot as plt
 
 
 class PCA:
-    def __init__(self, D):
-        self.D = D
-        self.N = D.shape[1]
+    def __init__(self, D=None):
+        if D is not None:
+            self.D = D
+            self.N = D.shape[1]
+        else:
+            pass
 
     def __computeProjectionMatrix(self, ndim):
         mu = self.D.mean(axis=1).reshape(-1, 1)
@@ -30,57 +33,46 @@ class PCA:
         plt.scatter(DT_pca[0, LT == 0], DT_pca[1, LT == 0])
         plt.scatter(DT_pca[0, LT == 1], DT_pca[1, LT == 1])
 
-class LDA:
-    def __init__(self, D, L):
-        self.D = D
-        self.L = L
-        self.N = D.shape[1]
-        self.F = D.shape[0]
-        self.K = len(set(L))
-        self.mu = np.mean(D, axis=1).reshape(-1, 1)
-        self.nc = np.array([np.sum(L == i) for i in set(L)])
+    @staticmethod
+    def computeSigmaMatrix(Dtrain):
+        mu = Dtrain.mean(axis=1).reshape(-1, 1)
+        Dc = Dtrain - mu
+        C = 1 / Dtrain.shape[1] * np.dot(Dc, Dc.T)  # covariance matrix
+        sigma, _ = np.linalg.eigh(C)
+        return sigma
 
-    def __computeSB(self):
-        Sb = 0
-        mean_classes = self.__computeMC() - self.mu
-        for i in range(self.K):
-            Sb += self.nc[i] * np.dot(mean_classes[:, i:i + 1], mean_classes[:, i:i + 1].T)
-        Sb /= sum(self.nc)
-        return Sb
+    @staticmethod
+    def kfold_PCA(D=None, k=3, threshold=0.95, show=False):
+        Nsamples = D.shape[1]
+        np.random.seed(0)
+        idx = np.random.permutation(Nsamples)
+        folds = np.array_split(idx, k)
+        m_values = np.arange(1, D.shape[0])[::-1]
+        avg_perc_values = []
+        for m in m_values:
+            # For each value of m in 1..11 use k-fold cross validation to know if, using that m, PCA
+            # is able to extract features with variance > threshold
+            avg_perc = 0
+            for i in range(k):
+                fold_test = folds[i]
+                folds_train = []
+                for j in range(k):
+                    if j != i:
+                        folds_train.append(folds[j])
 
-    def __computeSW(self):
-        Swc = 0
-        Sw = 0
-        for c in range(self.K):
-            Dc = self.D[:, self.L == c]
-            Dc -= np.mean(Dc, axis=1).reshape(-1, 1)
-            Swc = 1 / self.nc[c] * np.dot(Dc, Dc.T)
-            Sw += self.nc[c] * Swc
-        Sw /= sum(self.nc)
-        return Sw
+                Dtrain = D[:, np.array(folds_train).flat]
+                sigma = PCA.computeSigmaMatrix(Dtrain)
+                largest_eigh = np.flip(sigma)[0:m]
+                t = sum(largest_eigh) / sum(sigma)
+                avg_perc += t
+            avg_perc /= k
+            avg_perc_values.append(avg_perc)
+        if show:
+            plt.figure()
+            plt.plot(m_values, np.array(avg_perc_values) * 100, '--o')
+            plt.xticks(m_values)
+            plt.xlabel('m')
+            plt.ylabel('% of retained variance of data')
+            plt.show()
+        return m_values, np.array(avg_perc_values)
 
-    def __computeMC(self):
-        mean_classes = np.zeros(shape=(self.F, self.K))
-        for c in range(self.K):
-            Dc = self.D[:, self.L == c]
-            Mc = np.mean(Dc, axis=1).reshape(-1, 1)
-            mean_classes[:, c:c + 1] = Mc
-        return mean_classes
-
-    def fitLDA(self, ndim, ortho=False):
-        Sb = self.__computeSB()
-        Sw = self.__computeSW()
-        s, U = scipy.linalg.eigh(Sb, Sw)
-        W = U[:, ::-1][:, 0:ndim]
-        if ortho:
-            UW, _, _ = np.linalg.svd(W)
-            U = UW[:, 0:ndim]
-            Dprojected = np.dot(U.T, self.D)
-        else:
-            Dprojected = np.dot(W.T, self.D)
-        return Dprojected
-
-    def scatter_2D_plot(self, DT_lda, LT):
-        plt.figure()
-        plt.scatter(DT_lda[0, LT == 0], DT_lda[1, LT == 0])
-        plt.scatter(DT_lda[0, LT == 1], DT_lda[1, LT == 1])
