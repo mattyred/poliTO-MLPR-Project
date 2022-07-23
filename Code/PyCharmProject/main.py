@@ -10,52 +10,10 @@ import LogisticRegressionClassifier as LogRegClf
 import LDAClassifier
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 import scipy.optimize
+from sklearn import svm
+import SVMTryClassifier
 
 import SVMClassifier as SVMClf
-
-def mcol(v):
-    return v.reshape((v.size, 1))
-
-def mrow(v):
-    return v.reshape((1, v.size))
-
-def trainLinearSVM(DTR, LTR, K, C, DTE, p=0):
-    Z = LTR * 2.0 - 1.0
-    X_hat = np.vstack([DTR, K * np.ones((1, DTR.shape[1]))])
-    G = np.dot(X_hat.T, X_hat)
-    H_hat = mcol(Z) * mrow(Z) * G
-    empP = (LTR == 1).sum() / len(LTR)
-    alphaBounds = np.array([(0, C)] * LTR.shape[0])
-
-    if p != 0:
-        alphaBounds[LTR == 1] = (0, C * p / empP)
-        alphaBounds[LTR == 0] = (0, C * (1 - p) / (1 - empP))
-
-    def computeDualLoss(alpha):
-        return 0.5 * np.dot(np.dot(mrow(alpha), H_hat), alpha) - alpha.sum(), np.dot(H_hat, alpha) - 1
-
-    def computePrimalFromDual(alpha):
-        w_hat = np.dot(alpha, (Z * X_hat).T)
-        w = w_hat[:-1]
-        b = w_hat[-1::]
-        return w_hat, w, b
-
-    def computeSVMScore(w, b):
-        return np.dot(w.T, DTE) + b * K
-
-    alphaStar, x, y = scipy.optimize.fmin_l_bfgs_b(
-        computeDualLoss,
-        np.zeros(DTR.shape[1]),
-        bounds=alphaBounds,
-        factr=1.0,
-        maxfun=5000,
-        maxiter=500)
-
-    w_hat, w, b = computePrimalFromDual(alphaStar)
-    score = computeSVMScore(w, b)
-    # print(f'Elapsed {time.time() - t} seconds')
-
-    return score
 
 if __name__ == '__main__':
     DT, LT = DataImport.read_data_training('./Dataset/Train.txt')
@@ -104,14 +62,14 @@ if __name__ == '__main__':
     pi = 0.9
     Cfn = 1
     Cfp = 1
-    selected_app = {'pi': pi, 'Cfn': Cfn, 'Cfp': Cfp}
-    dim_red = {'type': 'pca', 'm': 8}
+    dim_red = None#{'type': 'pca', 'm': 8}
 
     print('R: MVG Classifier\nPreprocessing: -\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: k-fold' % (dim_red, pi, Cfn, Cfp))
-    model_evaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='raw', dimred=dim_red,  app=selected_app)
-    print('R: MVG Classifier\nPreprocessing: -\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: single split' % (pi, Cfn, Cfp))
+    model_evaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='raw', dimred=dim_red,  iprint=True)
+    #print('R: MVG Classifier\nPreprocessing: -\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)\nValidation: single split' % (pi, Cfn, Cfp))
     #model_evaluator.singlefold_validation(GauClf.MVG(), DT, LT, preproc='raw', app=selected_app)
     print('-----------------------------------------')
+    
     # Test k-fold cross validation (on MVG classifier)
     print('R: MVG Classifier\nPreprocessing: gaussianization\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)' % (dim_red, pi, Cfn, Cfp))
     model_evaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=5, preproc='gau', dimred=dim_red, app=selected_app)
@@ -214,7 +172,8 @@ if __name__ == '__main__':
                                        dim_red)
     """
 
-    # SVM
+    """
+    # SVM LINEAR
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
     hparams = {'K': 10, 'eps': 1, 'gamma': 1, 'C': 10}
     dim_red = None#{'type': 'pca', 'm': 9}
@@ -227,11 +186,32 @@ if __name__ == '__main__':
                                            preproc='raw',
                                            dimred=dim_red,
                                            iprint=True)
+    """
+    # SVM KERNEL
+    model_evaluator = ModelEvaluation.BinaryModelEvaluator()
+    #hparams = {'K': 0, 'eps': 0, 'gamma': 1, 'C': 1, 'c': 0, 'd': 1}
+    hparams = {'K': 0, 'eps': 0, 'gamma': 1, 'C': 1, 'c': 0, 'd': 1}
+    dim_red = {'type': 'pca', 'm': 8}
+    model_evaluator.kfold_cross_validation(SVMClf.SVM(hparams, kernel='RBF'),
+                                           DT,
+                                           LT,
+                                           k=3,
+                                           preproc='raw',
+                                           dimred=dim_red,
+                                           iprint=True)
 
-    # TESTTT
-    #score = trainLinearSVM(DT, LT, 1, 0.1, DE, 1)
-    print()
-    #print((1-acc) * 100)
+
+
+    #clf = svm.SVC(kernel='poly', degree=2, coef0=1, C=1)
+    #clf.fit(DT.T, LT)
+    #print(sum(clf.predict(DE.T) == LE) / len(LE))
+    """
+    # SVM PLOTS
+    model_evaluator = ModelEvaluation.BinaryModelEvaluator()
+    dim_red = None  # {'type': 'pca', 'm': 9}
+    model_evaluator.plot_lambda_minDCF_LinearSVM(DT, LT, 3, dim_red)
+    """
+
     """
     # QUADRATIC LOGISTIC REGRESSION
     pi = 0.5

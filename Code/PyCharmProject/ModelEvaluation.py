@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import DimensionalityReduction as DimRed
 import GaussianClassifiers as GauClf
 import LogisticRegressionClassifier as LogRegClf
-
+import SVMClassifier as SVMClf
 
 class BinaryModelEvaluator:
     """
@@ -253,7 +253,6 @@ class BinaryModelEvaluator:
                     k=k,
                     preproc='raw',
                     dimred=dim_red,
-                    app=selected_app,
                     iprint=False)
             minDCF_values_01.append(minDCF[0])
             minDCF_values_05.append(minDCF[1])
@@ -262,4 +261,37 @@ class BinaryModelEvaluator:
         plt.plot(l, minDCF_values_01, label="π = 0.1", color=colors[0])
         plt.plot(l, minDCF_values_05, label="π = 0.5", color=colors[1])
         plt.plot(l, minDCF_values_09, label="π = 0.9", color=colors[2])
+        plt.show()
+
+    @staticmethod
+    def plot_lambda_minDCF_LinearSVM(DT, LT, k, dim_red):
+        C = [1.E-4, 1.E-3, 1.E-2, 1.E-1, 1, 10]
+        plt.figure(figsize=(10, 8))
+        plt.xscale('log')
+        plt.xticks(C)
+        plt.xlabel("λ")
+        plt.ylabel("minDCF")
+        plt.ylim([0, 1])
+        colors = ["red", "blue", "green"]
+        minDCF_values_01 = []
+        minDCF_values_05 = []
+        minDCF_values_09 = []
+        for c in C:
+            hparams = {'K': 10, 'eps': 1, 'gamma': 1, 'C': c}
+            model = SVMClf.SVM(hparams, None)
+            DCF, minDCF = BinaryModelEvaluator.kfold_cross_validation(
+                model,
+                DT,
+                LT,
+                k=k,
+                preproc='raw',
+                dimred=dim_red,
+                iprint=False)
+            minDCF_values_01.append(minDCF[0])
+            minDCF_values_05.append(minDCF[1])
+            minDCF_values_09.append(minDCF[2])
+
+        plt.plot(C, minDCF_values_01, label="π = 0.1", color=colors[0])
+        plt.plot(C, minDCF_values_05, label="π = 0.5", color=colors[1])
+        plt.plot(C, minDCF_values_09, label="π = 0.9", color=colors[2])
         plt.show()
