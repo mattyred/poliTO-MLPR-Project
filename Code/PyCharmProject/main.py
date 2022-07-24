@@ -11,42 +11,84 @@ import LDAClassifier
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 import scipy.optimize
 from sklearn import svm
-import SVMTryClassifier
 
 import SVMClassifier as SVMClf
 
 if __name__ == '__main__':
     DT, LT = DataImport.read_data_training('./Dataset/Train.txt')
     DE, LE = DataImport.read_data_evaluation('./Dataset/Test.txt')
+
     """
     # Features analysis - overall statistics
     m = np.mean(DT, axis=1).reshape(-1, 1)
     std = np.std(DT, axis=1).reshape(-1, 1)
+    fig1, axs1 = plt.subplots(3, 4)
+    k = 0
+    for i in range(3):
+        for j in range(4):
+            data = [DT[k, LT == 0], DT[k, LT == 1]]
+            axs1[i, j].boxplot(data, showfliers=False)
+            axs1[i, j].set_xticklabels(['M', 'F'])
+            axs1[i, j].set_title('Feature %d' % k)
+            k += 1
+    fig1.tight_layout()
+    plt.show()
 
+    for i in range(CONST.NFEATURES):
+        DT_male = DT[:, LT == 0]
+        DT_female = DT[:, LT == 1]
+        mean_male = np.mean(DT_male[i, :])
+        mean_female = np.mean(DT_female[i, :])
+        min_male = np.min(DT_male[i, :])
+        min_female = np.min(DT_female[i, :])
+        max_male = np.max(DT_male[i, :])
+        max_female = np.max(DT_male[i, :])
+        stddev_male = np.std(DT_male[i, :])
+        stddev_female = np.std(DT_female[i, :])
+        print('MALE - Feature: %d, Min: %.2f, Max: %.2f, Mean: %.2f, StdDev: %.2f' % (i, min_male, max_male, mean_male, stddev_male))
+        print('FEMALE - Feature: %d, Min: %.2f, Max: %.2f, Mean: %.2f, StdDev: %.2f' % (i, min_female, max_male, mean_female, stddev_female))
+        print()
+    """
     # Features analysis - no pre processing
     fig1, axs1 = plt.subplots(3, 4)
     fig1.suptitle('No preprocessing')
-    for i in range(CONST.NFEATURES):
-        axs1[i % 3, i % 4].hist(DT[i, LT == 0], bins=10, alpha=0.6, ec='black', density=True)  # male
-        axs1[i % 3, i % 4].hist(DT[i, LT == 1], bins=10, alpha=0.6, ec='black', density=True)   # female
+    k = 0
+    for i in range(3):
+        for j in range(4):
+            axs1[i, j].hist(DT[k, LT == 0], bins=10, alpha=0.6, ec='black', density=True)  # male
+            axs1[i, j].hist(DT[k, LT == 1], bins=10, alpha=0.6, ec='black', density=True)   # female
+            axs1[i, j].set_title('Feature %d' % k)
+            k += 1
+    fig1.tight_layout()
 
     # Features analysis - gaussianization pre processing
     PreProcesser = PreProcessing.DataPreProcesser()
     DTgaussianized = PreProcesser.gaussianized_features_training(DT)
     fig2, axs2 = plt.subplots(3, 4)
     fig2.suptitle('Gaussianization preprocessing')
-    for i in range(CONST.NFEATURES):
-        axs2[i % 3, i % 4].hist(DTgaussianized[i, LT == 0], bins=10, alpha=0.6, ec='black', density=True)  # male
-        axs2[i % 3, i % 4].hist(DTgaussianized[i, LT == 1], bins=10, alpha=0.6, ec='black', density=True)   # female
+    k = 0
+    for i in range(3):
+        for j in range(4):
+            axs2[i, j].hist(DTgaussianized[k, LT == 0], bins=10, alpha=0.6, ec='black', density=True)  # male
+            axs2[i, j].hist(DTgaussianized[k, LT == 1], bins=10, alpha=0.6, ec='black', density=True)   # female
+            axs2[i, j].set_title('Feature %d' % k)
+            k += 1
+    fig2.tight_layout()
 
     # Features analysis - znormalization pre processing
     DTznorm = PreProcesser.znormalized_features_training(DT)
     fig3, axs3 = plt.subplots(3, 4)
     fig3.suptitle('Z-normaliazation preprocessing')
-    for i in range(CONST.NFEATURES):
-        axs3[i % 3, i % 4].hist(DTznorm[i, LT == 0], bins=10, alpha=0.6, ec='black', density=True)  # male
-        axs3[i % 3, i % 4].hist(DTznorm[i, LT == 1], bins=10, alpha=0.6, ec='black', density=True)   # female
-
+    k = 0
+    for i in range(3):
+        for j in range(4):
+            axs3[i, j].hist(DTznorm[k, LT == 0], bins=10, alpha=0.6, ec='black', density=True)  # male
+            axs3[i, j].hist(DTznorm[k, LT == 1], bins=10, alpha=0.6, ec='black', density=True)   # female
+            axs3[i, j].set_title('Feature %d' % k)
+            k += 1
+    fig3.tight_layout()
+    plt.show()
+    """
     # Features analysis - correlation of non-preprocessed features
     PreProcesser.heatmap(DT, LT, plt, 'Features correlation (no preprocessing)')
     # Features analyssis - correlation of gaussianized features
@@ -187,12 +229,16 @@ if __name__ == '__main__':
                                            dimred=dim_red,
                                            iprint=True)
     """
-    # SVM KERNEL
+    # SVM KERNEL POLY
+
+    # SVM KERNEL RBF
+    """
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
     #hparams = {'K': 0, 'eps': 0, 'gamma': 1, 'C': 1, 'c': 0, 'd': 1}
-    hparams = {'K': 0, 'eps': 0, 'gamma': 1, 'C': 1, 'c': 0, 'd': 1}
-    dim_red = {'type': 'pca', 'm': 8}
-    model_evaluator.kfold_cross_validation(SVMClf.SVM(hparams, kernel='RBF'),
+    #hparams = {'K': 0, 'eps': 0, 'gamma': 10**-3, 'C': 10**-1, 'c': 0, 'd': 1} 0.158 / 0.059 / 0.144
+    hparams = {'K': 0, 'eps': 0, 'gamma': 10 ** -3, 'C': 10 ** -1, 'c': 0, 'd': 1} # 0.168 / 0.061 / 0.148
+    dim_red = None#{'type': 'pca', 'm': 8}
+    model_evaluator.kfold_cross_validation(SVMClf.SVM(hparams, kernel='RBF', prior=0.5),
                                            DT,
                                            LT,
                                            k=3,
@@ -201,15 +247,18 @@ if __name__ == '__main__':
                                            iprint=True)
 
 
-
+    """
     #clf = svm.SVC(kernel='poly', degree=2, coef0=1, C=1)
     #clf.fit(DT.T, LT)
     #print(sum(clf.predict(DE.T) == LE) / len(LE))
     """
     # SVM PLOTS
-    model_evaluator = ModelEvaluation.BinaryModelEvaluator()
-    dim_red = None  # {'type': 'pca', 'm': 9}
-    model_evaluator.plot_lambda_minDCF_LinearSVM(DT, LT, 3, dim_red)
+    """
+    #model_evaluator = ModelEvaluation.BinaryModelEvaluator()
+    #dim_red = None  # {'type': 'pca', 'm': 9}
+    #model_evaluator.plot_lambda_minDCF_LinearSVM(DT, LT, 3, dim_red)
+    """
+    
     """
 
     """
