@@ -22,6 +22,7 @@
 \documentclass[10pt, a4paper, twocolumn]{article} % 10pt font size (11 and 12 also possible), A4 paper (letterpaper for US letter) and two column layout (remove for one column)
 \usepackage{placeins}
 \usepackage{multirow}
+\usepackage{amsmath}
 \newcommand{\comment}[1]{}
 \input{structure.tex} % Specifies the document structure and loads requires packages
 
@@ -78,7 +79,19 @@ The training set contains:
 \subsection{Training set features analysis}
 \subsection{Features Statistics}
 All the features are contiguous and their main statics can be
-showed through a boxplot in figure \ref{boxplot}.
+showed through a boxplot in figure \ref{boxplot}. 
+
+\subsection{Z-normalization}
+A useful operation that can be applied in order to avoid to deal with numerical 
+issues and to make data more uniform is to apply Z-normalization as a preprocessing step:\\
+\begin{center}
+	\begin{math}
+		z_{i,j} = \frac{x_{i,j} - \mu_{j}}{\sigma_{j}} \forall x_{i} \in D 
+	\end{math}
+\end{center}
+Where $z_{i,j}$ is the Z-normalized value correspongin to the feature $j$
+of sample $i$ while $\mu_{j}$ and $\sigma_{j}$ are, respectively,
+the mean and the variance computed over all values for feature $j$.
 \comment{
 \FloatBarrier
 	\begin{table}
@@ -108,7 +121,166 @@ showed through a boxplot in figure \ref{boxplot}.
 	\label{boxplot} 
 \end{figure}
 
-\subsection{Features Distribution}
+\subsection{Features distribution}
+By plotting historams for each feature, separated for male and female, it is possible to show
+how much each feature follows a gaussian distribution in order to understend whether a pre processing
+like gaussianization can be useful to go on with our classification task
+\begin{figure}[ht!]
+	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/hist_znorm.png}
+	\caption{Z-normalized features distribution}
+	\label{hist_znorm} 
+\end{figure}
+
+We can notice from figure \ref{hist_znorm} that almost all the features are already 
+well-distributed except for features 3, 7, 9. We can apply an additional pre-processing step in
+order to make all the features following a gaussian distribution.
+
+\subsubsection{Gaussianization}
+Gaussianization is a pre processing step that maps each fature to values whose empirical cumulative
+distribution is well approximated by a Gaussian cumulative distribution function. For each
+feature $x$ that we want to gaussianize we firstly compute the rank over the dataset:\\
+\begin{center}
+	\begin{math}
+		r(x) = \frac{\sum_{i=1}^{N}\mathbb{I}[x_{i} < x] + 1}{N + 2}
+	\end{math}
+\end{center}
+where $\mathbb{I}$ is the indicator function ($1$ when the condition inside $[ ]$ is true, $0$ 
+otherwise). Actually, we are counting how many samples in the dataset $D$ have a greater value
+with respect to the feature we are computing the rank on. \\
+The next step is to compute the transformed feature as $y = \Phi^{-1}(r(x))$ where $\Phi$ is
+the inverse of the cumulative distribution function. 
+
+\begin{figure}[ht!]
+	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/hist_gau.png}
+	\caption{Gaussianized features distribution}
+	\label{hist_gau} 
+\end{figure}
+
+\subsection{Features correlation}
+We can show how much features are correlated by using a heatmap plot showing a darker
+color inside cells $[i, j]$ for which it exists an high correlation among feaure $i$ and 
+feature $j$. We are going to use the Pearson correlation coefficient to compute the
+correlation among feature $X$ and feature $Y$:
+\begin{center}
+	\begin{math}
+		|\frac{Cov(X, Y)}{\sqrt{Var(X)}\sqrt{Var(Y)}}|
+	\end{math}
+\end{center}
+\begin{figure}[ht!]
+	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/heatmap_znormgau.png}
+	\caption{Z-normalized+Gaussianized features correlation: grey the whole dataset, orange F class, 
+	blue M class}
+	\label{heatmap} 
+\end{figure}
+
+Correlation is quite high among most of the features, we can understand that applying PCA
+would be meaningful for values of $m$ not below $10$ or $9$ at most. For smaller values of $m$
+we would lose important information coming from high-correlated features. 
+
+\section{Dimensionality reduction}
+Before proceeding with the classification task i would spend some words on the possible 
+dimensioanlity reduction rechniques that can be applied: PCA, LDA.
+\subsection{PCA}
+As already anticipated, given the heatmap in figure \ref{heatmap} we can observe that PCA
+with reasonable values of $m$ can be applied. PCA is a dimensionality reduction technique
+that, given a centered dataset $X = {x_{1}, ..., x_{k}}$, it aims to find the subspace of 
+$\mathbb{R}^{n}$ that allows to preserve most of the information (the directions with the
+highest variance).\\Starting from the sample covariance matrix
+\begin{center}
+	\begin{math}
+		C = \frac{1}{K} \sum_{i}^{}(x_{i} - \bar{x})(x_{i}-\bar{x})^T
+	\end{math}
+\end{center}
+we compute the eigen-decomposition of $C = U\Sigma U^T$ and project the data in the subspace
+spanned by the $m$ columns of $U$ corresponding to the $m$ highest eigenvalues:
+\begin{center}
+	\begin{math}
+		y_{i} = P^T(x_{i}-\bar{x})
+	\end{math}
+\end{center}
+In order to select the optimal $m$ we can use a cross-validation approach by inspecting how much
+of the total variance of data we are able to retain by using that value of $m$. We exploit the fact
+that each eigenvalue correspond to the variance along the corresponding axis and the
+eigenvalues are the elements of the diagonal of the matrix $\Sigma$. We selecte $m$ as:
+\begin{center}
+	\begin{math}
+		\min_m\;s.t \frac{\sum_{i}^{m}\sigma_{i}}{\sum_{i}^{n}\sigma_{i}} >= t,\;t \ge 95\%
+	\end{math}
+\end{center}
+\begin{figure}[ht!]
+	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/pca.png}
+	\caption{3-fold cross validation for PCA impact evaluation}
+	\label{pca} 
+\end{figure}
+We can clearly understand from figure \ref{pca} that values of $m < 9$ would rapidly
+decrease the amout of retained variance. We will see better later on how this would 
+badly impact the performance of the classifiers
+
+\subsection{LDA}
+PCA technique is unsupervised so we have no guarantee of obtainig discriminant directions.
+Despite the fact that LDA allows to find at most $C - 1$, where $C$ is the number of classes,
+directions, so it makes no sense to apply it as a dimensionality reduction technique, it can
+be used as a linear classifier and we can understand it by its definition; LDA mazimizes the
+between-class variability over the within-class variability ratio for the transformed samples:
+\begin{center}
+	\begin{math}
+		\mathcal{L}(w) = \frac{s_{B}}{s_{W}} = \max_w \frac{w^TS_{B}w}{w^TS_{W}w}
+	\end{math}
+\end{center}
+It can be proved that optimal solution correspond to the eigenvector of $S_{W}^-1S_{B}$ 
+corresponding to the largest eigenvalue. Once that we have estimated $w$ we can project
+the test samples over $w$ and assign the class label looking at the score obtained:\\
+\begin{center}
+	\begin{math}
+		f(x)=\left\{
+		\begin{array}{ll}
+			1, & \mbox{if $x<0$}.\\
+			0, & \mbox{otherwise}.
+		\end{array}
+		\right.
+	\end{math}
+\end{center}
+It will be showed later the result of the classifier
+\section{Classification models analysis}
+\susection{Premises}
+In the next paragraphs we are going to compare different classification models. 
+We will employ a k-fold cross validation technique (with $k=3$) for model evaluation and the
+best models will be chosen to train the entire training set for performing a final comparison.
+We will consider three types of applications:
+\begin{center}
+	$(\tilde{\pi}, C_{fp}, C_{fn}) = (0.1, 1, 1)$\\
+	$(\tilde{\pi}, C_{fp}, C_{fn}) = (0.5, 1, 1)$\\
+	$(\tilde{\pi}, C_{fp}, C_{fn}) = (0.9, 1, 1)$\\
+\end{center}
+and the target application will be 
+\begin{center}
+	$(\tilde{\pi}, C_{fp}, C_{fn}) = (0.5, 1, 1)$
+\end{center}
+We are interested
+in selecting the most promising approach and we will infact perform measures in term of minimum
+detection cost:
+\begin{center}
+	\begin{math}
+		DCF = \frac{DCF_{u}(\pi_{T}, C_{fn}, C_{fp})}{min(\pi_{T},C_{fn}, (1-\pi_{T}C_{fp}))} = 
+			\frac{\pi_{T}C_{fn}P_{fn} + (1-\pi_{T})C_{fp}P_{fp}}{min(\pi_{T},C_{fn}, (1-\pi_{T}C_{fp}))}
+	\end{math}
+\end{center}
+and for $minDCF$ computation we will look for:
+\begin{center}
+	\begin{math}
+		t' = -log(\frac{\tilde{\pi}}{1-\tilde{\pi}})
+	\end{math}
+\end{center}
+that allows us to obtain the lowest possible $DCF$ (as if knew in advance this optimal threshold)
+\subsection{Gaussian models}
+The first class of models we are going to analyze are the generative gaussian models. Model assumption are that,
+given the dataset $X$ we assume that the sample $x_{t}$ is a realization of the R.V. $X_{t}$. A simple
+model consists in assuming that our data, given the class, can be described by a Gaussian distribution:
+\begin{center}
+	\begin{math}
+		(X_{t}|C_{t}=c) \sim (X|C=c) \sim \mathcal{N} (x_{t}|\mu_{c},\Sigma_{c})
+	\end{math}
+\end{center}
 %------------------------------------------------
 
 \subsection{Subsection}

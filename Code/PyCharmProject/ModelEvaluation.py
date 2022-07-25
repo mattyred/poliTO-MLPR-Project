@@ -162,6 +162,11 @@ class BinaryModelEvaluator:
                 Dtrain_normalized = PreProcesser.znormalized_features_training(Dtrain)
                 # Z-Normalize features of Dtest
                 Dtest_normalized = PreProcesser.znormalized_features_evaluation(Dtest, Dtrain)
+            elif preproc == 'zg':
+                Dtrain_z = PreProcesser.znormalized_features_training(Dtrain)
+                Dtrain_normalized = PreProcesser.gaussianized_features_training(Dtrain_z)
+                Dtest_z = PreProcesser.znormalized_features_evaluation(Dtest, Dtrain)
+                Dtest_normalized = PreProcesser.gaussianized_features_evaluation(Dtest_z, Dtrain)
             else:
                 Dtrain_normalized = Dtrain
                 Dtest_normalized = Dtest

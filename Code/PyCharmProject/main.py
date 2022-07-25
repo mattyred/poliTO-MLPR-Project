@@ -22,80 +22,28 @@ if __name__ == '__main__':
     # Features analysis - overall statistics
     m = np.mean(DT, axis=1).reshape(-1, 1)
     std = np.std(DT, axis=1).reshape(-1, 1)
-    fig1, axs1 = plt.subplots(3, 4)
-    k = 0
-    for i in range(3):
-        for j in range(4):
-            data = [DT[k, LT == 0], DT[k, LT == 1]]
-            axs1[i, j].boxplot(data, showfliers=False)
-            axs1[i, j].set_xticklabels(['M', 'F'])
-            axs1[i, j].set_title('Feature %d' % k)
-            k += 1
-    fig1.tight_layout()
-    plt.show()
-
-    for i in range(CONST.NFEATURES):
-        DT_male = DT[:, LT == 0]
-        DT_female = DT[:, LT == 1]
-        mean_male = np.mean(DT_male[i, :])
-        mean_female = np.mean(DT_female[i, :])
-        min_male = np.min(DT_male[i, :])
-        min_female = np.min(DT_female[i, :])
-        max_male = np.max(DT_male[i, :])
-        max_female = np.max(DT_male[i, :])
-        stddev_male = np.std(DT_male[i, :])
-        stddev_female = np.std(DT_female[i, :])
-        print('MALE - Feature: %d, Min: %.2f, Max: %.2f, Mean: %.2f, StdDev: %.2f' % (i, min_male, max_male, mean_male, stddev_male))
-        print('FEMALE - Feature: %d, Min: %.2f, Max: %.2f, Mean: %.2f, StdDev: %.2f' % (i, min_female, max_male, mean_female, stddev_female))
-        print()
     """
-    # Features analysis - no pre processing
-    fig1, axs1 = plt.subplots(3, 4)
-    fig1.suptitle('No preprocessing')
-    k = 0
-    for i in range(3):
-        for j in range(4):
-            axs1[i, j].hist(DT[k, LT == 0], bins=10, alpha=0.6, ec='black', density=True)  # male
-            axs1[i, j].hist(DT[k, LT == 1], bins=10, alpha=0.6, ec='black', density=True)   # female
-            axs1[i, j].set_title('Feature %d' % k)
-            k += 1
-    fig1.tight_layout()
-
-    # Features analysis - gaussianization pre processing
+    """
+    # Features analysis - histograms
     PreProcesser = PreProcessing.DataPreProcesser()
-    DTgaussianized = PreProcesser.gaussianized_features_training(DT)
-    fig2, axs2 = plt.subplots(3, 4)
-    fig2.suptitle('Gaussianization preprocessing')
-    k = 0
-    for i in range(3):
-        for j in range(4):
-            axs2[i, j].hist(DTgaussianized[k, LT == 0], bins=10, alpha=0.6, ec='black', density=True)  # male
-            axs2[i, j].hist(DTgaussianized[k, LT == 1], bins=10, alpha=0.6, ec='black', density=True)   # female
-            axs2[i, j].set_title('Feature %d' % k)
-            k += 1
-    fig2.tight_layout()
-
-    # Features analysis - znormalization pre processing
-    DTznorm = PreProcesser.znormalized_features_training(DT)
-    fig3, axs3 = plt.subplots(3, 4)
-    fig3.suptitle('Z-normaliazation preprocessing')
-    k = 0
-    for i in range(3):
-        for j in range(4):
-            axs3[i, j].hist(DTznorm[k, LT == 0], bins=10, alpha=0.6, ec='black', density=True)  # male
-            axs3[i, j].hist(DTznorm[k, LT == 1], bins=10, alpha=0.6, ec='black', density=True)   # female
-            axs3[i, j].set_title('Feature %d' % k)
-            k += 1
-    fig3.tight_layout()
-    plt.show()
+    PreProcesser.plot_features_hist(DT, LT, preproc='gau', title=False)
+    """
     """
     # Features analysis - correlation of non-preprocessed features
-    PreProcesser.heatmap(DT, LT, plt, 'Features correlation (no preprocessing)')
+    PreProcesser = PreProcessing.DataPreProcesser()
+    DTz = PreProcesser.znormalized_features_training(DT)
+    DTzgau = PreProcesser.gaussianized_features_training(DTz)
+    PreProcesser.heatmap(DTzgau, LT, plt, 'Features correlation (no preprocessing)')
     # Features analyssis - correlation of gaussianized features
-    PreProcesser.heatmap(DTgaussianized, LT, plt, 'Features correlation (gaussianized features)')
+    #PreProcesser.heatmap(DTzgau, LT, plt, 'Features correlation (z-norm + gaussianization)')
     # Features analyssis - correlation of gaussianized features
-    PreProcesser.heatmap(DTznorm, LT, plt, 'Features correlation (z-normalized features)')
+    #PreProcesser.heatmap(DTz, LT, plt, 'Features correlation (z-normalized features)')
     plt.show()
+    """
+
+    """
+    # PCA K-FOLD
+    m, t = DimRed.PCA().kfold_PCA(D=DT, k=3, threshold=0.95, show=True)
     """
 
     """
@@ -281,27 +229,19 @@ if __name__ == '__main__':
                                            app=selected_app)
     """
 
-    """
+
     # LDA CLASSIFIER VS MVG TIED CLASSIFIER
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
-    pi = 0.5
-    Cfn = 1
-    Cfp = 1
-    selected_app = {'pi': pi, 'Cfn': Cfn, 'Cfp': Cfp}
     dim_red = None#{'type': 'pca', 'm': 4}
 
-    print(
-        'R: LDA Classifier\nPreprocessing: -\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)' % (
-        dim_red, pi, Cfn, Cfp))
+    print('R: LDA Classifier\nPreprocessing: -\nDim. Reduction: %s\n'%dim_red)
     model_evaluator.kfold_cross_validation(LDAClassifier.LDA(),
                                            DT,
                                            LT,
                                            k=3,
                                            preproc='raw',
-                                           dimred=dim_red,
-                                           app=selected_app)
-
-
+                                           dimred=dim_red)
+    """
     model = GauClf.TiedG()
     scores_tied = model.train(DT, LT).predict(DE, labels=False)
     M_tied = model_evaluator.optimalBayes_confusion_matrix(scores_tied,
