@@ -242,7 +242,7 @@ the test samples over $w$ and assign the class label looking at the score obtain
 \end{center}
 It will be showed later the result of the classifier
 \section{Classification models analysis}
-\susection{Premises}
+\subsection{Premises}
 In the next paragraphs we are going to compare different classification models. 
 We will employ a k-fold cross validation technique (with $k=3$) for model evaluation and the
 best models will be chosen to train the entire training set for performing a final comparison.
@@ -281,6 +281,138 @@ model consists in assuming that our data, given the class, can be described by a
 		(X_{t}|C_{t}=c) \sim (X|C=c) \sim \mathcal{N} (x_{t}|\mu_{c},\Sigma_{c})
 	\end{math}
 \end{center}
+We will assign a probabilistic score to each sample in term of the class-posterior 
+log-likelihood ratio:
+\begin{center}
+	\begin{math}
+		log\;r(x_{t}) = log\;\frac{P(C = h_{1}|x_{t})}{P(C = h_{0}|x_{t})}
+	\end{math}
+\end{center}
+We can expand this expression by writing:
+\begin{center}
+	\begin{math}
+		log\;r(x_{t}) = log\;\frac{f_{X|C}(x_{t}|h_{1})}{f_{X|C}(x_{t}|h_{0})} + log\;\frac{\pi}{1-\pi}
+	\end{math}
+\end{center}
+While the training phase consists in estimating the model parameters the scoring phase
+consists in computing the log-likelihood ratio (first term of the equation) for each sample. 
+It will be then compared with  a threshold specific for each application for computing 
+the $minDCF$. What differentiate the different Gaussian models is the way how we estimate the
+model parameters.
+\subsection{MVG Gaussian Classifier}
+The ML solution to the previous desribed problem is given by the empirical mean and covariance
+matrix for each class:
+\begin{center}
+	$\mu_{c}^* = \frac{1}{N_c}\sum_{i=1}^{N}x_{c,i}$ \\
+	$\Sigma_c^* = \frac{1}{N_c}\sum_{i=1}^{N}(x_{c,i}-\mu_c^*)(x_{c,i}-\mu_c^*)$
+\end{center}
+We will then compute the log densities for each sample by using the estimated model parameters
+\subsection{Naive Bayes Classifier}
+The Naive Bayes assumption simplifies the MVG full covariance model stating that if we knew
+that for each class the componenets are approximately independent we can assume that the 
+distribution $X|C$ can be factorized over its components. The ML solution to this problem is:
+\begin{center}
+	$\mu_{c,[j]}^* = \frac{1}{N_c}\sum_{i|c_i=c}^{}x_{i,[j]}$ \\
+	$\sigma_{c,[j]}^2 = \frac{1}{N_c}\sum_{i|c_i=c}^{}(x_{i,[j]}-\mu_{c,[j]})^2$
+\end{center}
+The density of a sample $x$ can be expressed as $\mathcal{N}(x|\mu_c,\Sigma_c)$ where
+$\mu_c$ is an array where each element $\mu_{c,[j]}$ is the the mean for each class
+for each component while $\Sigma_c$ is a diagonal covariance matrix. The Naive Bayes classifier
+corresponds to the MVG full covariance classifier with a diagonal covariance matrix
+\subsection{Tied Gaussian Classifier}
+This model assumes that the covariance matrices of the different class are tied (we consider
+only one covariance matrix common to all classes). We are assuming that:
+\begin{center}
+	$f_{X|C}(x|c) = \mathcal{N} (x|\mu_c, \Sigma)$
+\end{center}
+so each class has its own mean but the covariance matrix is the same for all the classes. The ML
+solution to this problem is:
+\begin{center}
+	$\mu_{c}^* = \frac{1}{N_c}\sum_{i=1}^{N}x_{c,i}$ \\
+	$\Sigma^* = \frac{1}{N}\sum_c{}^{}\sum_{i|c_i=c}^{}(x_{i}-\mu_c^*)(x_{i}-\mu_c^*)$
+\end{center}
+This model is strongly related to LDA (used as a linear classfication model). By considering 
+the binary log-likelihood ratio of the tied model we obtain a linear decision function:
+\begin{center}
+	$llr(x) = log\;\frac{f_{X|C}(x|h_1)}{f_{X|C}(x|h_0)} = x^Tb + c$ 
+\end{center}
+where $b$ and $c$ are functions of class means and (tied) covariance matrix. On the other hand,
+projecting over the LDA subspace is, up to a scaling factor $k$, given by:
+\begin{center}
+	$w^Tx = k \cdot x^T\varLambda (\mu_1-\mu_0)$ 
+\end{center}
+where $\varLambda (\mu_1-\mu_0) = b$. The LDA assumption that all the classes have the same
+within class covariance is related to the assumption done for the tied model.\
+\subsection{Gaussian Models Comparison}
+\FloatBarrier
+	\begin{table}
+		\caption{MVG}
+		\centering
+		\begin{tabular}{ |l|l|l|l|l| }
+			\hline
+			& $\tilde{\pi}=0.1$ & $\tilde{\pi}=0.5$ & $\tilde{\pi}=0.9$ &\\ \hline
+			\multicolumn{4}{ |c| }{\bf{Z-normalized features - no PCA}} &\\
+			\hline
+			\multirow{3}{*}{}
+			 Full Cov & 0.128 & 0.048 & 0.125&\\
+			 Tied Cov & 0.122 & \textcolor{red}{0.046} & 0.127&\\
+			 Naive Bayes & 0.822 & \textcolor{blue}{0.567} & 0.856&\\
+			\hline
+			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} &\\
+			\hline
+			\multirow{3}{*}{}
+			 Full Cov & 0.303 & 0.115 & 0.267&\\
+			 Tied Cov & 0.293 & 0.112 & 0.264&\\
+			 Naive Bayes & \textcolor{red}{0.306} & 0.121 & 0.283&\\
+			\hline
+			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=9)}} &\\
+			\hline
+			\multirow{3}{*}{}
+			 Full Cov & 0.398 & 0.153 & 0.369&\\
+			 Tied Cov & 0.392 & 0.151 & 0.367&\\
+			 Naive Bayes & 0.416 & 0.159 & 0.362&\\
+			\hline
+			\multicolumn{4}{ |c| }{\bf{Gaussianized features - no PCA}} &\\
+			\hline
+			\multirow{3}{*}{}
+			 Full Cov & 0.218 & 0.078 & 0.191&\\
+			 Tied Cov & 0.208 & 0.078 & 0.189&\\
+			 Naive Bayes & 0.813 & 0.586 & 0.847 &\\
+			\hline
+			\multicolumn{4}{ |c| }{\bf{Gaussianized features - PCA(m=10)}} &\\
+			\hline
+			\multirow{3}{*}{}
+			 Full Cov & 0.223 & 0.084 & 0.211&\\
+			 Tied Cov & 0.212 & 0.082 & 0.207&\\
+			 Naive Bayes & 0.279 & 0.103 & 0.254&\\
+			\hline
+			\multicolumn{4}{ |c| }{\bf{Gaussianized features - PCA(m=9)}} &\\
+			\hline
+			\multirow{3}{*}{}
+			 Full Cov & 0.270 & 0.105 & 0.247&\\
+			 Tied Cov & 0.265 & 0.103 & 0.244&\\
+			 Naive Bayes & 0.305 & 0.119 & 0.282&\\
+			\hline
+		\end{tabular}
+	\end{table}
+\FloatBarrier
+
+A graphical version of the table can be helpful in analyzing results:
+\begin{figure}[ht!]
+	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/gaumodels.png}
+	\caption{Top: Z-Normalized feautres, Bottom: Gaussianized features}
+	\label{gauplots} 
+\end{figure}
+
+Some observations:
+\begin{itemize}
+	\item We can notice that Full-Cov model and Tied-Cov model achieve very good and similar results with
+		  slighlty better performances for the tied model.
+	\item 
+	\item The models trained with gaussianization
+		  pre processing perform overall better when PCA is applied (both for m=10 and m=9) while, in case of no PCA, the 
+		  gaussianization step achieves slightly worse results
+\end{itemize}
 %------------------------------------------------
 
 \subsection{Subsection}

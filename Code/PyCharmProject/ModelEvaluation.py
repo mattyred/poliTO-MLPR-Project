@@ -166,7 +166,7 @@ class BinaryModelEvaluator:
                 Dtrain_z = PreProcesser.znormalized_features_training(Dtrain)
                 Dtrain_normalized = PreProcesser.gaussianized_features_training(Dtrain_z)
                 Dtest_z = PreProcesser.znormalized_features_evaluation(Dtest, Dtrain)
-                Dtest_normalized = PreProcesser.gaussianized_features_evaluation(Dtest_z, Dtrain)
+                Dtest_normalized = PreProcesser.gaussianized_features_evaluation(Dtest_z, Dtrain_normalized)
             else:
                 Dtrain_normalized = Dtrain
                 Dtest_normalized = Dtest
@@ -299,4 +299,61 @@ class BinaryModelEvaluator:
         plt.plot(C, minDCF_values_01, label="π = 0.1", color=colors[0])
         plt.plot(C, minDCF_values_05, label="π = 0.5", color=colors[1])
         plt.plot(C, minDCF_values_09, label="π = 0.9", color=colors[2])
+        plt.show()
+
+    @staticmethod
+    def plot_gaussian_models(DT, LT):
+        # Z-Normalized
+        fig1, axs1 = plt.subplots(2, 3)
+        x = [0.1, 0.5, 0.9]
+        _, mindcf_mvg = BinaryModelEvaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='znorm', dimred=None, iprint=False)
+        _, mindcf_tied = BinaryModelEvaluator.kfold_cross_validation(GauClf.TiedG(), DT, LT, k=3, preproc='znorm', dimred=None, iprint=False)
+        _, mindcf_naive = BinaryModelEvaluator.kfold_cross_validation(GauClf.NaiveBayes(), DT, LT, k=3, preproc='znorm', dimred=None, iprint=False)
+        axs1[0, 0].plot(x, mindcf_mvg, '--o', label='Full')
+        axs1[0, 0].plot(x, mindcf_tied, '--o', label='Tied')
+        axs1[0, 0].plot(x, mindcf_naive, '--o', label='Naive')
+        axs1[0, 0].set_ylim(0, 1)
+        axs1[0, 0].set_title('no PCA')
+        dim_red = {'type': 'pca', 'm': 10}
+        _, mindcf_mvg = BinaryModelEvaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='znorm', dimred=dim_red, iprint=False)
+        _, mindcf_tied = BinaryModelEvaluator.kfold_cross_validation(GauClf.TiedG(), DT, LT, k=3, preproc='znorm', dimred=dim_red, iprint=False)
+        _, mindcf_naive = BinaryModelEvaluator.kfold_cross_validation(GauClf.NaiveBayes(), DT, LT, k=3, preproc='znorm', dimred=dim_red, iprint=False)
+        axs1[0, 1].plot(x, mindcf_mvg, '--o', label='Full')
+        axs1[0, 1].plot(x, mindcf_tied, '--o', label='Tied')
+        axs1[0, 1].plot(x, mindcf_naive, '--o', label='Naive')
+        axs1[0, 1].set_ylim(0, 1)
+        axs1[0, 1].set_title('PCA(m=10)')
+        dim_red = {'type': 'pca', 'm': 9}
+        _, mindcf_mvg = BinaryModelEvaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='znorm', dimred=dim_red, iprint=False)
+        _, mindcf_tied = BinaryModelEvaluator.kfold_cross_validation(GauClf.TiedG(), DT, LT, k=3, preproc='znorm', dimred=dim_red, iprint=False)
+        _, mindcf_naive = BinaryModelEvaluator.kfold_cross_validation(GauClf.NaiveBayes(), DT, LT, k=3, preproc='znorm', dimred=dim_red, iprint=False)
+        axs1[0, 2].plot(x, mindcf_mvg, '--o', label='Full')
+        axs1[0, 2].plot(x, mindcf_tied, '--o', label='Tied')
+        axs1[0, 2].plot(x, mindcf_naive, '--o', label='Naive')
+        axs1[0, 2].set_ylim(0, 1)
+        axs1[0, 2].set_title('PCA(m=9)')
+        # Gaussianized
+        _, mindcf_mvg = BinaryModelEvaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='zg', dimred=None, iprint=False)
+        _, mindcf_tied = BinaryModelEvaluator.kfold_cross_validation(GauClf.TiedG(), DT, LT, k=3, preproc='zg', dimred=None, iprint=False)
+        _, mindcf_naive = BinaryModelEvaluator.kfold_cross_validation(GauClf.NaiveBayes(), DT, LT, k=3, preproc='zg', dimred=None, iprint=False)
+        axs1[1, 0].plot(x, mindcf_mvg, '--o', label='Full')
+        axs1[1, 0].plot(x, mindcf_tied, '--o', label='Tied')
+        axs1[1, 0].plot(x, mindcf_naive, '--o', label='Naive')
+        dim_red = {'type': 'pca', 'm': 10}
+        _, mindcf_mvg = BinaryModelEvaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='zg', dimred=dim_red, iprint=False)
+        _, mindcf_tied = BinaryModelEvaluator.kfold_cross_validation(GauClf.TiedG(), DT, LT, k=3, preproc='zg', dimred=dim_red, iprint=False)
+        _, mindcf_naive = BinaryModelEvaluator.kfold_cross_validation(GauClf.NaiveBayes(), DT, LT, k=3, preproc='zg', dimred=dim_red, iprint=False)
+        axs1[1, 1].plot(x, mindcf_mvg, '--o', label='Full')
+        axs1[1, 1].plot(x, mindcf_tied, '--o', label='Tied')
+        axs1[1, 1].plot(x, mindcf_naive, '--o', label='Naive')
+        axs1[1, 1].set_ylim(0, 1)
+        dim_red = {'type': 'pca', 'm': 9}
+        _, mindcf_mvg = BinaryModelEvaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='zg', dimred=dim_red, iprint=False)
+        _, mindcf_tied = BinaryModelEvaluator.kfold_cross_validation(GauClf.TiedG(), DT, LT, k=3, preproc='zg', dimred=dim_red, iprint=False)
+        _, mindcf_naive = BinaryModelEvaluator.kfold_cross_validation(GauClf.NaiveBayes(), DT, LT, k=3, preproc='zg', dimred=dim_red, iprint=False)
+        axs1[1, 2].plot(x, mindcf_mvg, '--o', label='Full')
+        axs1[1, 2].plot(x, mindcf_tied, '--o', label='Tied')
+        axs1[1, 2].plot(x, mindcf_naive, '--o', label='Naive')
+        axs1[1, 2].set_ylim(0, 1)
+        fig1.legend(['Full', 'Tied', 'Naive'], loc='lower right')
         plt.show()
