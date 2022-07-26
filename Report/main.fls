@@ -286,6 +286,24 @@ INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/xcharter/XCharter-Roma
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/gaumodels.png
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/gaumodels.png
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/gaumodels.png
+INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/dcfplotLLR.png
+INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/dcfplotLLR.png
+INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/dcfplotLLR.png
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmr9.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmr6.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmmi9.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmsy9.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex9.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
+INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/dcfplotQLR.png
+INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/dcfplotQLR.png
+INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/dcfplotQLR.png
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/bear.jpg
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/bear.jpg
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/bear.jpg
@@ -303,6 +321,7 @@ INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cmextra/cme
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb

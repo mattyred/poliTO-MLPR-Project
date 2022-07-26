@@ -237,39 +237,91 @@ class BinaryModelEvaluator:
         pass
 
     @staticmethod
-    def plot_lambda_minDCF_LinearLogisticRegression(model, DT, LT, k, selected_app, dim_red):
-        l = [1.E-6, 1.E-5, 1.E-4, 1.E-3, 1.E-2, 1.E-1, 1, 10, 100, 1000, 10000, 100000]
-        plt.figure(figsize=(10, 8))
-        plt.xscale('log')
-        plt.xticks(l)
-        plt.xlabel("λ")
-        plt.ylabel("minDCF")
-        plt.ylim([0, 1])
+    def plot_lambda_minDCF_LinearLogisticRegression(DT=None, LT=None, k=3):
+        lambdas = [1.E-6, 1.E-5, 1.E-4, 1.E-3, 1.E-2, 1.E-1, 1, 10, 100, 1000, 10000, 100000]
+        fig1, axs1 = plt.subplots(1, 3)
+        fig1.set_figheight(5)
+        fig1.set_figwidth(13)
         colors = ["red", "blue", "green"]
-        minDCF_values_01 = []
-        minDCF_values_05 = []
-        minDCF_values_09 = []
-        for lbd in l:
-            model = LogRegClf.LinearLogisticRegression(lbd, prior_weighted=True, prior=0.5)
-            DCF, minDCF = BinaryModelEvaluator.kfold_cross_validation(
+        i = 0
+        for dim_red in [None, {'type': 'pca', 'm': 10}, {'type': 'pca', 'm': 9}]:
+            minDCF_values_01 = []
+            minDCF_values_05 = []
+            minDCF_values_09 = []
+            for lbd in lambdas:
+                model = LogRegClf.LinearLogisticRegression(lbd, prior_weighted=False, prior=0.5)
+                DCF, minDCF = BinaryModelEvaluator.kfold_cross_validation(
+                        model,
+                        DT,
+                        LT,
+                        k=k,
+                        preproc='znorm',
+                        dimred=dim_red,
+                        iprint=False)
+                minDCF_values_01.append(minDCF[0])
+                minDCF_values_05.append(minDCF[1])
+                minDCF_values_09.append(minDCF[2])
+
+            axs1[i].plot(lambdas, minDCF_values_01, label="π = 0.1", color=colors[0])
+            axs1[i].plot(lambdas, minDCF_values_05, label="π = 0.5", color=colors[1])
+            axs1[i].plot(lambdas, minDCF_values_09, label="π = 0.9", color=colors[2])
+            if dim_red is None:
+                axs1[i].set_title('no PCA')
+            else:
+                axs1[i].set_title('PCA(m=%d)' % (dim_red['m']))
+            axs1[i].set_xscale('log')
+            axs1[i].set_xticks([1.E-6, 1.E-4, 1.E-2, 1, 100, 10000, 100000])
+            axs1[i].set_xlabel("λ")
+            axs1[i].set_ylim([0, 1])
+            i += 1
+        axs1[0].set_ylabel("minDCF")
+        fig1.legend(['π = 0.1', 'π = 0.5', 'π = 0.9'], loc='lower right')
+        plt.show()
+
+    @staticmethod
+    def plot_lambda_minDCF_QuadraticLogisticRegression(DT=None, LT=None, k=3):
+        lambdas = [1.E-6, 1.E-5, 1.E-4, 1.E-3, 1.E-2, 1.E-1, 1, 10, 100, 1000, 10000, 100000]
+        fig1, axs1 = plt.subplots(1, 3)
+        fig1.set_figheight(5)
+        fig1.set_figwidth(13)
+        colors = ["red", "blue", "green"]
+        i = 0
+        for dim_red in [None, {'type': 'pca', 'm': 10}, {'type': 'pca', 'm': 9}]:
+            minDCF_values_01 = []
+            minDCF_values_05 = []
+            minDCF_values_09 = []
+            for lbd in lambdas:
+                model = LogRegClf.QuadraticLogisticRegression(lbd, prior_weighted=False)
+                DCF, minDCF = BinaryModelEvaluator.kfold_cross_validation(
                     model,
                     DT,
                     LT,
                     k=k,
-                    preproc='raw',
+                    preproc='znorm',
                     dimred=dim_red,
                     iprint=False)
-            minDCF_values_01.append(minDCF[0])
-            minDCF_values_05.append(minDCF[1])
-            minDCF_values_09.append(minDCF[2])
+                minDCF_values_01.append(minDCF[0])
+                minDCF_values_05.append(minDCF[1])
+                minDCF_values_09.append(minDCF[2])
 
-        plt.plot(l, minDCF_values_01, label="π = 0.1", color=colors[0])
-        plt.plot(l, minDCF_values_05, label="π = 0.5", color=colors[1])
-        plt.plot(l, minDCF_values_09, label="π = 0.9", color=colors[2])
+            axs1[i].plot(lambdas, minDCF_values_01, label="π = 0.1", color=colors[0])
+            axs1[i].plot(lambdas, minDCF_values_05, label="π = 0.5", color=colors[1])
+            axs1[i].plot(lambdas, minDCF_values_09, label="π = 0.9", color=colors[2])
+            if dim_red is None:
+                axs1[i].set_title('no PCA')
+            else:
+                axs1[i].set_title('PCA(m=%d)' % (dim_red['m']))
+            axs1[i].set_xscale('log')
+            axs1[i].set_xticks([1.E-6, 1.E-4, 1.E-2, 1, 100, 10000, 100000])
+            axs1[i].set_xlabel("λ")
+            axs1[i].set_ylim([0, 1])
+            i += 1
+        axs1[0].set_ylabel("minDCF")
+        fig1.legend(['π = 0.1', 'π = 0.5', 'π = 0.9'], loc='lower right')
         plt.show()
 
     @staticmethod
-    def plot_lambda_minDCF_LinearSVM(DT, LT, k, dim_red):
+    def plot_lambda_minDCF_LinearSVM(DT=None, LT=None, k=3, dim_red=None):
         C = [1.E-4, 1.E-3, 1.E-2, 1.E-1, 1, 10]
         plt.figure(figsize=(10, 8))
         plt.xscale('log')

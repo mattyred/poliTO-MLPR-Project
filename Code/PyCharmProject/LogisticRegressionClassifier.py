@@ -40,9 +40,7 @@ class LinearLogisticRegression:
         self.x, f, d = scipy.optimize.fmin_l_bfgs_b(func=obj_function,
                                                     x0=np.zeros(self.Dtrain.shape[0] + 1),
                                                     approx_grad=True,
-                                                    iprint=0,
-                                                    factr=5000,
-                                                    maxfun=20000)
+                                                    iprint=0)
 
         """                                            
         print('Point of minimum: %s' % (self.x))

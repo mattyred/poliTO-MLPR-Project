@@ -46,6 +46,7 @@ if __name__ == '__main__':
     m, t = DimRed.PCA().kfold_PCA(D=DT, k=3, threshold=0.95, show=True)
     """
 
+    """
     # Test k-fold cross validation (on MVG classifier)
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
     dim_red = None#{'type': 'pca', 'm': 9}
@@ -78,7 +79,7 @@ if __name__ == '__main__':
     print('R: Naive Bayes Classifier\nPreprocessing: znorm+gau\nDim. Reduction: %s\n' % dim_red)
     model_evaluator.kfold_cross_validation(GauClf.NaiveBayes(), DT, LT, k=3, preproc='zg', dimred=dim_red)
     print('-----------------------------------------')
-
+    """
     """
     pca = DimRed.PCA(DT)
     DTpca = pca.fitPCA_train(2)
@@ -90,31 +91,35 @@ if __name__ == '__main__':
     plt.show()
     """
 
-    """
     # LOGISTIC REGRESSION
+    """
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
-    pi = 0.5
-    Cfn = 1
-    Cfp = 1
-    selected_app = {'pi': pi, 'Cfn': Cfn, 'Cfp': Cfp}
-    dim_red = {'type': 'pca', 'm': 9}
+    dim_red = {'type': 'pca', 'm': 10}
 
-    lbd = 10**-5
-    print('R: Logistic Regression\nPreprocessing: -\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)' % (dim_red, pi, Cfn, Cfp))
-    model_evaluator.kfold_cross_validation(LogRegClf.LinearLogisticRegression(lbd, prior_weighted=False, prior=pi),
+    lbd = 10**-3
+    print('R: Linear Logistic Regression\nPreprocessing: znorm\nDim. Reduction: %s\n' % dim_red)
+    model_evaluator.kfold_cross_validation(LogRegClf.LinearLogisticRegression(lbd, prior_weighted=False, prior=0.5),
                                            DT,
                                            LT,
-                                           k=5,
-                                           preproc='raw',
-                                           dimred=dim_red,
-                                           app=selected_app)
-    model_evaluator.plot_lambda_minDCF_LinearLogisticRegression(None,DT,
-                                       LT,
-                                       3,
-                                       selected_app,
-                                       dim_red)
+                                           k=3,
+                                           preproc='znorm',
+                                           dimred=dim_red)
     """
-
+    #model_evaluator.plot_lambda_minDCF_LinearLogisticRegression(DT=DT, LT=LT, k=3)
+    """
+    # QUADRATIC LOGISTIC REGRESSION
+    model_evaluator = ModelEvaluation.BinaryModelEvaluator()
+    dim_red = {'type': 'pca', 'm': 9}
+    lbd = 10**-6
+    print('R: Quadric Logistic Regression\nPreprocessing: znorm\nDim. Reduction: %s\n' % dim_red)
+    model_evaluator.kfold_cross_validation(LogRegClf.QuadraticLogisticRegression(lbd, prior_weighted=False),
+                                           DT,
+                                           LT,
+                                           k=3,
+                                           preproc='znorm',
+                                           dimred=dim_red)
+    """
+    ModelEvaluation.BinaryModelEvaluator().plot_lambda_minDCF_QuadraticLogisticRegression(DT=DT, LT=LT, k=3)
     """
     # SVM LINEAR
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
@@ -160,26 +165,6 @@ if __name__ == '__main__':
     #model_evaluator.plot_lambda_minDCF_LinearSVM(DT, LT, 3, dim_red)
     """
     
-    """
-
-    """
-    # QUADRATIC LOGISTIC REGRESSION
-    pi = 0.5
-    Cfn = 1
-    Cfp = 1
-    selected_app = {'pi': pi, 'Cfn': Cfn, 'Cfp': Cfp}
-    dim_red = None#{'type': 'pca', 'm': 4}
-    lbd = 10**-5
-    print(
-        'R: Quadric Logistic Regression\nPreprocessing: -\nDim. Reduction: %s\nApplication: (pi=%.2f, Cfn=%.2f, Cfp=%.2f)' % (
-        dim_red, pi, Cfn, Cfp))
-    model_evaluator.kfold_cross_validation(LogRegClf.QuadraticLogisticRegression(lbd, prior_weighted=False, prior=pi),
-                                           DT,
-                                           LT,
-                                           k=5,
-                                           preproc='raw',
-                                           dimred=dim_red,
-                                           app=selected_app)
     """
 
     """

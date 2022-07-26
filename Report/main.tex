@@ -299,7 +299,7 @@ consists in computing the log-likelihood ratio (first term of the equation) for 
 It will be then compared with  a threshold specific for each application for computing 
 the $minDCF$. What differentiate the different Gaussian models is the way how we estimate the
 model parameters.
-\subsection{MVG Gaussian Classifier}
+\subsubsection{MVG Gaussian Classifier}
 The ML solution to the previous desribed problem is given by the empirical mean and covariance
 matrix for each class:
 \begin{center}
@@ -307,7 +307,7 @@ matrix for each class:
 	$\Sigma_c^* = \frac{1}{N_c}\sum_{i=1}^{N}(x_{c,i}-\mu_c^*)(x_{c,i}-\mu_c^*)$
 \end{center}
 We will then compute the log densities for each sample by using the estimated model parameters
-\subsection{Naive Bayes Classifier}
+\subsubsection{Naive Bayes Classifier}
 The Naive Bayes assumption simplifies the MVG full covariance model stating that if we knew
 that for each class the componenets are approximately independent we can assume that the 
 distribution $X|C$ can be factorized over its components. The ML solution to this problem is:
@@ -319,7 +319,7 @@ The density of a sample $x$ can be expressed as $\mathcal{N}(x|\mu_c,\Sigma_c)$ 
 $\mu_c$ is an array where each element $\mu_{c,[j]}$ is the the mean for each class
 for each component while $\Sigma_c$ is a diagonal covariance matrix. The Naive Bayes classifier
 corresponds to the MVG full covariance classifier with a diagonal covariance matrix
-\subsection{Tied Gaussian Classifier}
+\subsubsection{Tied Gaussian Classifier}
 This model assumes that the covariance matrices of the different class are tied (we consider
 only one covariance matrix common to all classes). We are assuming that:
 \begin{center}
@@ -343,7 +343,7 @@ projecting over the LDA subspace is, up to a scaling factor $k$, given by:
 \end{center}
 where $\varLambda (\mu_1-\mu_0) = b$. The LDA assumption that all the classes have the same
 within class covariance is related to the assumption done for the tied model.\
-\subsection{Gaussian Models Comparison}
+\subsubsection{Gaussian Models Comparison}
 \FloatBarrier
 	\begin{table}
 		\caption{MVG}
@@ -408,11 +408,143 @@ Some observations:
 \begin{itemize}
 	\item We can notice that Full-Cov model and Tied-Cov model achieve very good and similar results with
 		  slighlty better performances for the tied model.
-	\item 
-	\item The models trained with gaussianization
-		  pre processing perform overall better when PCA is applied (both for m=10 and m=9) while, in case of no PCA, the 
-		  gaussianization step achieves slightly worse results
+	\item Gaussianization pre processing does't really help in achieving better results maybe
+		  because data are already well distributed according to the Gaussian assumptions
+	\item Naive Bayes assumptio doesn't hold well, in particular if PCA is not applied. When 
+		  PCA is applied it behaves slightly worse than the other two models. In particular Naive
+		  Bayes classfier achieves better results when gaussianization is applied
 \end{itemize}
+
+\subsection{Logistic Regression Classifier}
+Logistic Regression is a discriminative classification model. Starting from the results obtained
+from the Gaussian classifiers we consider the linear decision function obtained from the expression
+of the posterior log-likelihood ratio:
+\begin{center}
+	\begin{math}
+		l(x) = log\;\frac{P(C=h_1|x)}{P(C=h_0|x)}=log\;\frac{f_{X|C}(x|h_1)}{f_{X|C}(x|h_0)} + log\;\frac{\pi}{1-\pi} = w^Tx + b
+	\end{math}
+\end{center}
+where $b$ takes into account all the prior information. Given $w$ and $b$ we can compute the
+expression for the posterior class probability:
+\begin{center}
+	\begin{math}
+		P(c=h_1|x,w,b)=\frac{e^{(w^Tx + b)}}{1+e^{(w^Tx+b)}}=\sigma(w^Tx+b)
+	\end{math}
+\end{center}
+where $\sigma(x)=\frac{1}{1+e^{-x}}$ is the sigmoid function. Decision rules will be hyperplanes
+orthogonal to $w$.
+\subsubsection{Linear Logistic Regression}
+We are going to look for the minimizer of the function:
+\begin{center}
+	\begin{math}
+		J(w,b) = \frac{\lambda}{2}||w||^2 + \frac{1}{n}\sum_{i=1}^{n}log(1 + e^{-z_i(w^Tx_i+b)})
+	\end{math}
+\end{center}
+where $\lambda$ is an hyperparameter that represents the regularization term (needed to make the 
+problem solvable in case of linearly separable classes).
+
+	\begin{table}[ht!]
+		\caption{Linear Logistic Regression - 3-fold cross validation}
+		\centering
+		\begin{tabular}{ |l|l|l|l| }
+			\hline
+			& $\tilde{\pi}=0.1$ & $\tilde{\pi}=0.5$ & $\tilde{\pi}=0.9$ \\ \hline
+			\multicolumn{4}{ |c| }{\bf{Z-normalized features - no PCA}} \\
+			\hline
+			\multirow{3}{*}{}
+			 Linear LR ($\lambda=10^{-3}$)& 0.170 & 0.170 & 0.155\\
+			 Linear LR ($\lambda=10^{-5}$)& 0.132 & 0.047 & 0.127\\
+			 Linear LR ($\lambda=10^{-6}$)& 0.132 & 0.047 & 0.126\\
+			\hline
+			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} \\
+			\hline
+			\multirow{3}{*}{}
+			 Linear LR ($\lambda=10^{-3}$)& 0.299 & 0.113 & 0.263\\
+			 Linear LR ($\lambda=10^{-5}$)& 0.297 & 0.114 & 0.263\\
+			 Linear LR ($\lambda=10^{-6}$)& 0.297 & 0.114 & 0.262\\
+			\hline
+			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=9)}} \\
+			\hline
+			\multirow{3}{*}{}
+			 Linear LR ($\lambda=10^{-3}$)& 0.390 & 0.153 & 0.369\\
+			 Linear LR ($\lambda=10^{-5}$)& 0.388 & 0.152 & 0.363\\
+			 Linear LR ($\lambda=10^{-6}$)& 0.388 & 0.152 & 0.362\\
+			\hline
+		\end{tabular}
+	\end{table}
+
+\begin{figure}[ht!]
+	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/dcfplotLLR.png}
+	\caption{minDCF for different values of $\lambda$ and different priors}
+	\label{dcfLLR} 
+\end{figure}
+Best performances are obtained for small values of $\lambda$.
+\subsubsection{Quadratic Logistic Regression}
+Now we are going to train a Quadratic LR model by performing features expansion.
+For binary linear LR the separation surfaces are linear decision function as already discussed (and
+we obtain the same form as for the Tied Gaussian classifier). By looking instead at the separation surface
+obtained through the MVG gaussian classifier we have:
+\begin{center}
+	\begin{math}
+		log\;\frac{P(C=h_1|x)}{P(C=h_0|x)} = x^TAx + b^Tx + c = s(x, A, b, c)
+	\end{math}
+\end{center}
+This expression is quadratic in $x$ but linear in $A$ and $b$. 
+We could rewrite it to obtain a decision function that is linear for the expanded features space
+but quadratic in the original features space. Features expansion is defined as:
+\begin{center}
+	\begin{math}
+		\Phi(x) = \begin{bmatrix}
+					vec(xx^T)\\
+					x
+				  \end{bmatrix} \;, 
+		w= 		 \begin{bmatrix}
+					vec(A)\\
+					b
+				  \end{bmatrix}
+	\end{math}
+\end{center}
+where $vec(X)$ is the operator that stacks the columns of $X$. In this way the posterior log-likelihood is expressed as:
+\begin{center}
+	\begin{math}
+		s(x, w, c) = s^T\phi(x)+c
+	\end{math}
+\end{center}
+We are now going to train the Linear Logistic Regression model using features vectors $\phi(x)$
+\begin{table}[ht!]
+	\caption{Linear Logistic Regression - 3-fold cross validation}
+	\centering
+	\begin{tabular}{ |l|l|l|l| }
+		\hline
+		& $\tilde{\pi}=0.1$ & $\tilde{\pi}=0.5$ & $\tilde{\pi}=0.9$ \\ \hline
+		\multicolumn{4}{ |c| }{\bf{Z-normalized features - no PCA}} \\
+		\hline
+		\multirow{3}{*}{}
+		 Quadratic LR ($\lambda=10^{-3}$)& 0.187 & 0.063 & 0.149\\
+		 Quadratic LR ($\lambda=10^{-5}$)& 0.153 & 0.052 & 0.142\\
+		 Quadratic LR ($\lambda=10^{-6}$)& 0.150 & 0.053 & 0.141\\
+		\hline
+		\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} \\
+		\hline
+		\multirow{3}{*}{}
+		 Quadratic LR ($\lambda=10^{-3}$)& 0.299 & 0.111 & 0.241\\
+		 Quadratic LR ($\lambda=10^{-5}$)& 0.307 & 0.109 & 0.249\\
+		 Quadratic LR ($\lambda=10^{-6}$)& 0.305 & 0.109 & 0.248\\
+		\hline
+		\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=9)}} \\
+		\hline
+		\multirow{3}{*}{}
+		 Quadratic LR ($\lambda=10^{-3}$)& 0.373 & 0.151 & 0.337\\
+		 Quadratic LR ($\lambda=10^{-5}$)& 0.378 & 0.149 & 0.349\\
+		 Quadratic LR ($\lambda=10^{-6}$)& 0.378 & 0.149 & 0.350\\
+		\hline
+	\end{tabular}
+\end{table}
+\begin{figure}[ht!]
+	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/dcfplotQLR.png}
+	\caption{minDCF for different values of $\lambda$ and different priors}
+	\label{dcfQLR} 
+\end{figure}
 %------------------------------------------------
 
 \subsection{Subsection}
