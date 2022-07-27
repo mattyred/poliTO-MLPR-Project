@@ -3,14 +3,17 @@ import scipy.special
 
 
 class GMM:
-    def __init__(self):
-        pass
+    def __init__(self, alpha=0.1, nComponents=2, psi=0.01, covType='Full'):
+        self.alpha = alpha
+        self.nComponents = nComponents
+        self.psi = psi
+        self.covType = covType
 
     def __logpdf_GAU_ND(self, X, mu, C):
         invC = np.linalg.inv(C)
         _, log_abs_detC = np.linalg.slogdet(C)
         M = X.shape[0]
-        return - M/2 * np.log(2 * np.pi) - 0.5 * log_abs_detC[1] - 0.5 * ((X - mu) * np.dot(invC, X - mu)).sum(0)
+        return - M/2 * np.log(2 * np.pi) - 0.5 * log_abs_detC - 0.5 * ((X - mu) * np.dot(invC, X - mu)).sum(0)
 
     def __logpdf_GMM(self, X, gmm):
         S = np.zeros((len(gmm), X.shape[1]))
@@ -123,11 +126,12 @@ class GMM:
         return gmm
 
     def __GMM_algorithm_LBG(self, X, alpha, nComponents, psi=0.01, covType='Full'):
-        gmm = [(1, utils.compute_mean(X), utils.compute_cov(X))]
+        mean = X.mean(axis=1).reshape(-1, 1)
+        cov = 1 / X.shape[1] * np.dot(X - mean, (X - mean).T)
+        gmm = [(1, mean, cov)]
 
         while len(gmm) <= nComponents:
-            # # print(f'\nGMM has {len(gmm)} components')
-            gmm = GMM_EM(X, gmm, psi, covType)
+            gmm = self.__GMM_algorithm_EM(X, gmm, psi, covType)
 
             if len(gmm) == nComponents:
                 break
@@ -135,7 +139,7 @@ class GMM:
             newGmm = []
             for i in range(len(gmm)):
                 (w, mu, sigma) = gmm[i]
-                U, s, Vh = numpy.linalg.svd(sigma)
+                U, s, Vh = np.linalg.svd(sigma)
                 d = U[:, 0:1] * s[0] ** 0.5 * alpha
                 newGmm.append((w / 2, mu + d, sigma))
                 newGmm.append((w / 2, mu - d, sigma))
@@ -143,13 +147,18 @@ class GMM:
 
         return gmm
 
-    def trainGMM(DTR, LTR, DTE, alpha, nComponents, psi=0.01, covType='Full'):
-        DTR_0 = DTR[:, LTR == 0]
-        gmm_c0 = GMM_LBG(DTR_0, alpha, nComponents, psi, covType)
-        _, llr_0 = logpdf_GMM(DTE, gmm_c0)
+    def train(self, Dtrain, Ltrain):
+        self.Dtrain_c0 = Dtrain[:, Ltrain == 0]
+        self.Dtrain_c1 = Dtrain[:, Ltrain == 1]
+        self.gmm_c0 = self.__GMM_algorithm_LBG(self.Dtrain_c0, self.alpha, self.nComponents, self.psi, self.covType)
+        self.gmm_c1 = self.__GMM_algorithm_LBG(self.Dtrain_c1, self.alpha, self.nComponents, self.psi, self.covType)
+        return self
 
-        DTR_1 = DTR[:, LTR == 1]
-        gmm_c1 = GMM_LBG(DTR_1, alpha, nComponents, psi, covType)
-        _, llr_1 = logpdf_GMM(DTE, gmm_c1)
-
-        return llr_1 - llr_0
+    def predict(self, Dtest, labels=False):
+        _, llr_0 = self.__logpdf_GMM(Dtest, self.gmm_c0)
+        _, llr_1 = self.__logpdf_GMM(Dtest, self.gmm_c1)
+        if labels:
+            S = np.vstack([llr_0.reshape(1, -1), llr_1.reshape(1, -1)])
+            return np.argmax(S, axis=0)
+        else:
+            return llr_1 - llr_0

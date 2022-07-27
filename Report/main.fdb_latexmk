@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex main"] 1658844613 "main.aux" "main.bbl" "main" 1658844619
+["bibtex main"] 1658938127 "main.aux" "main.bbl" "main" 1658938186
   "/usr/local/texlive/2020/texmf-dist/bibtex/bst/biblatex/biblatex.bst" 1575845417 65050 5c39e6f144c843a658dad8c93d2a6f3c ""
   "example.bib" 1440448286 2571 468bb707c293fcdecb60455ea84cd4af ""
-  "main-blx.bib" 1658844615 340 7bdce33d370fce05909e24f547f8d889 "pdflatex"
-  "main.aux" 1658844618 7286 42be5aae118822aa3191efcf9a4402d4 "pdflatex"
+  "main-blx.bib" 1658938129 340 7bdce33d370fce05909e24f547f8d889 "pdflatex"
+  "main.aux" 1658938131 7631 32975af38421184a5a5ced2d139f552f "pdflatex"
   (generated)
   "main.blg"
   "main.bbl"
-["pdflatex"] 1658844613 "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.tex" "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.pdf" "main" 1658844619
+["pdflatex"] 1658938127 "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.tex" "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.pdf" "main" 1658938186
   "./Pictures/FeaturesAnalysis/boxplot.png" 1658677793 32511 0f646f535b63f90165cad61520d99aa0 ""
   "./Pictures/FeaturesAnalysis/dcfplotLLR.png" 1658841710 51217 940b308fa11d788b8acff07d8d47ff39 ""
   "./Pictures/FeaturesAnalysis/dcfplotQLR.png" 1658844573 49946 9f7aea0436d5c2890a2e01d47568c38a ""
@@ -16,8 +16,8 @@
   "./Pictures/FeaturesAnalysis/hist_gau.png" 1658734363 44597 34b49993d36ea9bcd758d3a01db8b452 ""
   "./Pictures/FeaturesAnalysis/hist_znorm.png" 1658733119 54293 4d19e923992ea2f5b1087348d613c4d5 ""
   "./Pictures/FeaturesAnalysis/pca.png" 1658739399 23344 b0953bbf64b200fc5da669db61f6a1ef ""
-  "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.aux" 1658844618 7286 42be5aae118822aa3191efcf9a4402d4 ""
-  "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.tex" 1658844603 28146 90b3f75140721f1d97f1817b2d02c735 ""
+  "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.aux" 1658938131 7631 32975af38421184a5a5ced2d139f552f ""
+  "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.tex" 1658938123 29660 37f80e03b5ff73decb433c643c0778dd ""
   "/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/xcharter/xch_q7u3cc.enc" 1574460897 3591 1b1c8c6dca0d8ecd1109a21d9071797a ""
   "/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/xcharter/xch_uy5hgr.enc" 1574460897 3245 d735d31466b80f6ab81d4d1111f2e3b0 ""
@@ -184,16 +184,16 @@
   "Pictures/FeaturesAnalysis/hist_znorm.png" 1658733119 54293 4d19e923992ea2f5b1087348d613c4d5 ""
   "Pictures/FeaturesAnalysis/pca.png" 1658739399 23344 b0953bbf64b200fc5da669db61f6a1ef ""
   "bear.jpg" 1488227948 175294 1f666026cbb97399a2dd5c8baa609dd2 ""
-  "main.aux" 1658844618 7286 42be5aae118822aa3191efcf9a4402d4 "pdflatex"
-  "main.bbl" 1658844613 512 61b8edbafb0cff417a61773720bd5b7f "bibtex main"
-  "main.run.xml" 1658844618 2559 909c0cfb644a15a03fd756a5181d37b9 "pdflatex"
-  "main.tex" 1658844603 28146 90b3f75140721f1d97f1817b2d02c735 ""
+  "main.aux" 1658938131 7631 32975af38421184a5a5ced2d139f552f "pdflatex"
+  "main.bbl" 1658938127 512 61b8edbafb0cff417a61773720bd5b7f "bibtex main"
+  "main.run.xml" 1658938131 2559 909c0cfb644a15a03fd756a5181d37b9 "pdflatex"
+  "main.tex" 1658938123 29660 37f80e03b5ff73decb433c643c0778dd ""
   "structure.tex" 1488235760 6185 76f10d2a1f183006ff2411adcc83fbc3 ""
   (generated)
-  "main.run.xml"
   "main-blx.bib"
+  "main.log"
   "main.aux"
   "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.pdf"
-  "main.pdf"
-  "main.log"
   "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.log"
+  "main.pdf"
+  "main.run.xml"

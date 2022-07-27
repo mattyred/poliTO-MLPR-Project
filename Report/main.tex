@@ -545,6 +545,47 @@ We are now going to train the Linear Logistic Regression model using features ve
 	\caption{minDCF for different values of $\lambda$ and different priors}
 	\label{dcfQLR} 
 \end{figure}
+\subsection{GMM Classifier}
+The last model we take into account is a generative model. We are going to train a GMM
+over the samples of each class 
+\begin{table}[ht!]
+	\caption{GMM - 3-fold cross validation}
+	\centering
+	\begin{tabular}{ |l|l|l|l| }
+		\hline
+		& $\tilde{\pi}=0.1$ & $\tilde{\pi}=0.5$ & $\tilde{\pi}=0.9$ \\ \hline
+		\multicolumn{4}{ |c| }{\bf{Z-normalized features - no PCA}} \\
+		\hline
+		\multirow{6}{*}{}
+		 GMM Full (8 comp.)& 0.109 & 0.040 & 0.102\\
+		 GMM Full (16 comp.)& 0.136 & 0.053 & 0.132\\
+		 GMM Tied (8 comp.)& 0.099 & 0.031 & 0.075\\
+		 GMM Tied (16 comp.)& 0.094 & 0.030 & 0.075\\
+		 GMM Diag (8 comp.)& 0.214 & 0.085 & 0.215\\
+		 GMM Diag (16 comp.)& 0.224 & 0.084 & 0.231\\
+		\hline
+		\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} \\
+		\hline
+		\multirow{6}{*}{}
+		GMM Full (8 comp.)& 0.225 & 0.082 & 0.212\\
+		GMM Full (16 comp.)& 0.255 & 0.091 & 0.214\\
+		GMM Tied (8 comp.)& 0.204 & 0.072 & 0.186\\
+		GMM Tied (16 comp.)& 0.214 & 0.073 & 0.187\\
+		GMM Diag (8 comp.)& 0.310 & 0.108 & 0.260\\
+		GMM Diag (16 comp.)& 0.354 & 0.116 & 0.309\\
+		\hline
+		\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=9)}} \\
+		\hline
+		\multirow{6}{*}{}
+		GMM Full (8 comp.)& 0.389 & 0.150 & 0.361\\
+		GMM Full (16 comp.)& 0.409 & 0.165 & 0.404\\
+		GMM Tied (8 comp.)& 0.347 & 0.133 & 0.328\\
+		GMM Tied (16 comp.)& 0.371 & 0.136 & 0.338\\
+		GMM Diag (8 comp.)& 0.422 & 0.170 & 0.424\\
+		GMM Diag (16 comp.)& 0.466 & 0.183 & 0.444\\
+		\hline
+	\end{tabular}
+\end{table}
 %------------------------------------------------
 
 \subsection{Subsection}

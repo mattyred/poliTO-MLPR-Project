@@ -11,9 +11,10 @@ import LDAClassifier
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 import scipy.optimize
 from sklearn import svm
+from sklearn.mixture import GaussianMixture
 
 import SVMClassifier as SVMClf
-
+import GMMClassifier
 if __name__ == '__main__':
     DT, LT = DataImport.read_data_training('./Dataset/Train.txt')
     DE, LE = DataImport.read_data_evaluation('./Dataset/Test.txt')
@@ -119,7 +120,7 @@ if __name__ == '__main__':
                                            preproc='znorm',
                                            dimred=dim_red)
     """
-    ModelEvaluation.BinaryModelEvaluator().plot_lambda_minDCF_QuadraticLogisticRegression(DT=DT, LT=LT, k=3)
+    #ModelEvaluation.BinaryModelEvaluator().plot_lambda_minDCF_QuadraticLogisticRegression(DT=DT, LT=LT, k=3)
     """
     # SVM LINEAR
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
@@ -210,4 +211,17 @@ if __name__ == '__main__':
     # PCA K-FOLD
     m, t = DimRed.PCA().kfold_PCA(D=DT, k=3, threshold=0.95, show=True)
     """
+
+    # GMM
+    model_evaluator = ModelEvaluation.BinaryModelEvaluator()
+    dim_red = None#{'type': 'pca', 'm': 9}
+    nComponents = 8
+    cov = 'Full'
+    print('R: GMM Classifier(%d components - %s cov)\nPreprocessing: znorm\nDim. Reduction: %s\n' % (nComponents, cov, dim_red))
+    model_evaluator.kfold_cross_validation(GMMClassifier.GMM(alpha=0.1, nComponents=nComponents, psi=0.01, covType=cov),
+                                           DT,
+                                           LT,
+                                           k=3,
+                                           preproc='zg',
+                                           dimred=dim_red)
 
