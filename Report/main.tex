@@ -18,7 +18,6 @@
 %----------------------------------------------------------------------------------------
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
-
 \documentclass[10pt, a4paper, twocolumn]{article} % 10pt font size (11 and 12 also possible), A4 paper (letterpaper for US letter) and two column layout (remove for one column)
 \usepackage{placeins}
 \usepackage{multirow}
@@ -346,7 +345,7 @@ within class covariance is related to the assumption done for the tied model.\
 \subsubsection{Gaussian Models Comparison}
 \FloatBarrier
 	\begin{table}
-		\caption{MVG}
+		\caption{Gaussian Models}
 		\centering
 		\begin{tabular}{ |l|l|l|l|l| }
 			\hline
@@ -356,42 +355,42 @@ within class covariance is related to the assumption done for the tied model.\
 			\multirow{3}{*}{}
 			 Full Cov & 0.128 & 0.048 & 0.125&\\
 			 Tied Cov & 0.122 & \textcolor{red}{0.046} & 0.127&\\
-			 Naive Bayes & 0.822 & \textcolor{blue}{0.567} & 0.856&\\
+			 Naive Bayes & 0.822 & 0.567 & \textcolor{blue}{0.856}&\\
 			\hline
 			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} &\\
 			\hline
 			\multirow{3}{*}{}
 			 Full Cov & 0.303 & 0.115 & 0.267&\\
-			 Tied Cov & 0.293 & 0.112 & 0.264&\\
-			 Naive Bayes & \textcolor{red}{0.306} & 0.121 & 0.283&\\
+			 Tied Cov & 0.293 & \textcolor{red}{0.112} & 0.264&\\
+			 Naive Bayes & \textcolor{orange}{0.306} & \textcolor{orange}{0.121} & \textcolor{orange}{0.283}&\\
 			\hline
 			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=9)}} &\\
 			\hline
 			\multirow{3}{*}{}
 			 Full Cov & 0.398 & 0.153 & 0.369&\\
-			 Tied Cov & 0.392 & 0.151 & 0.367&\\
-			 Naive Bayes & 0.416 & 0.159 & 0.362&\\
+			 Tied Cov & 0.392 & \textcolor{red}{0.151} & 0.367&\\
+			 Naive Bayes & \textcolor{blue}{0.416} & 0.159 & 0.362&\\
 			\hline
 			\multicolumn{4}{ |c| }{\bf{Gaussianized features - no PCA}} &\\
 			\hline
 			\multirow{3}{*}{}
-			 Full Cov & 0.218 & 0.078 & 0.191&\\
-			 Tied Cov & 0.208 & 0.078 & 0.189&\\
-			 Naive Bayes & 0.813 & 0.586 & 0.847 &\\
+			 Full Cov & 0.218 & \textcolor{red}{0.078} & 0.191&\\
+			 Tied Cov & 0.208 & \textcolor{red}{0.078} & 0.189&\\
+			 Naive Bayes & 0.813 & 0.586 & \textcolor{blue}{0.847} &\\
 			\hline
 			\multicolumn{4}{ |c| }{\bf{Gaussianized features - PCA(m=10)}} &\\
 			\hline
 			\multirow{3}{*}{}
 			 Full Cov & 0.223 & 0.084 & 0.211&\\
-			 Tied Cov & 0.212 & 0.082 & 0.207&\\
-			 Naive Bayes & 0.279 & 0.103 & 0.254&\\
+			 Tied Cov & 0.212 & \textcolor{red}{0.082} & 0.207&\\
+			 Naive Bayes & \textcolor{blue}{0.279} & \textcolor{orange}{0.103} & 0.254&\\
 			\hline
 			\multicolumn{4}{ |c| }{\bf{Gaussianized features - PCA(m=9)}} &\\
 			\hline
 			\multirow{3}{*}{}
 			 Full Cov & 0.270 & 0.105 & 0.247&\\
-			 Tied Cov & 0.265 & 0.103 & 0.244&\\
-			 Naive Bayes & 0.305 & 0.119 & 0.282&\\
+			 Tied Cov & 0.265 & \textcolor{red}{0.103} & 0.244&\\
+			 Naive Bayes & \textcolor{blue}{0.305} & 0.119 & 0.282&\\
 			\hline
 		\end{tabular}
 	\end{table}
@@ -410,11 +409,37 @@ Some observations:
 		  slighlty better performances for the tied model.
 	\item Gaussianization pre processing does't really help in achieving better results maybe
 		  because data are already well distributed according to the Gaussian assumptions
-	\item Naive Bayes assumptio doesn't hold well, in particular if PCA is not applied. When 
-		  PCA is applied it behaves slightly worse than the other two models. In particular Naive
-		  Bayes classfier achieves better results when gaussianization is applied
+	\item Naive Bayes assumption doesn't hold really well, in particular if PCA is not applied. When 
+		  PCA is applied it has a really good impact only on Naive Bayes model and especialliy if also
+		  combined with Gaussianization pre processing.
+	\item Regarding Full and Tied models with PCA(m=10) there is no a high performance degradation
+		  since the minDCF obtained are still good. For lower values of $m$ the models become less
+		  able in taking decisions and the minDCF increases
+	\item For the MVG classifiers best performances are achieved by the Tied-Cov classifier with
+		  only Z-normalization pre processing and withouth PCA. Really good performacnes are also
+		  achieved by the Tied-Cov model trained with Gaussianized
+		  fetures and no-PCA (the PCA(m=10) version of this model achieves worse but comparable result w.r.t. to the no-PCA version
+		  and it can be selected to try to better avoid overfitting by reducing the features 
+		  space and also for reducing computational effort)
 \end{itemize}
-
+\begin{table}[ht!]
+	\caption{Best Gaussian Models}
+	\centering
+	\begin{tabular}{ |l|l|l|l|l| }
+		\hline
+		& $\tilde{\pi}=0.1$ & $\tilde{\pi}=0.5$ & $\tilde{\pi}=0.9$ &\\ \hline
+		\multicolumn{4}{ |c| }{\bf{Z-Normalized features - no PCA}} &\\
+		\hline
+		\multirow{1}{*}{}
+		 Tied Cov & 0.122 & 0.046 & 0.127&\\
+		\hline
+		\multicolumn{4}{ |c| }{\bf{Gaussianized features - PCA(m=10)}} &\\
+		\hline
+		\multirow{1}{*}{}
+		 Tied Cov & 0.212 & 0.082 & 0.207&\\
+		\hline
+	\end{tabular}
+\end{table}
 \subsection{Logistic Regression Classifier}
 Logistic Regression is a discriminative classification model. Starting from the results obtained
 from the Gaussian classifiers we consider the linear decision function obtained from the expression
@@ -452,23 +477,29 @@ problem solvable in case of linearly separable classes).
 			\multicolumn{4}{ |c| }{\bf{Z-normalized features - no PCA}} \\
 			\hline
 			\multirow{3}{*}{}
-			 Linear LR ($\lambda=10^{-3}$)& 0.170 & 0.170 & 0.155\\
-			 Linear LR ($\lambda=10^{-5}$)& 0.132 & 0.047 & 0.127\\
-			 Linear LR ($\lambda=10^{-6}$)& 0.132 & 0.047 & 0.126\\
+			 LLR \scriptsize{($\lambda=10^{-3}$)}& 0.170 & 0.170 & 0.155\\
+			 LLR \scriptsize{($\lambda=10^{-5}$)}& 0.132 & 0.047 & 0.127\\
+			 LLR \scriptsize{($\lambda=10^{-6}$)}& 0.132 & 0.047 & 0.126\\
 			\hline
 			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} \\
 			\hline
 			\multirow{3}{*}{}
-			 Linear LR ($\lambda=10^{-3}$)& 0.299 & 0.113 & 0.263\\
-			 Linear LR ($\lambda=10^{-5}$)& 0.297 & 0.114 & 0.263\\
-			 Linear LR ($\lambda=10^{-6}$)& 0.297 & 0.114 & 0.262\\
+			 LLR \scriptsize{($\lambda=10^{-3}$)}& 0.299 & 0.113 & 0.263\\
+			 LLR \scriptsize{($\lambda=10^{-5}$)}& 0.297 & 0.114 & 0.263\\
+			 LLR \scriptsize{($\lambda=10^{-6}$)}& 0.297 & 0.114 & 0.262\\
 			\hline
 			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=9)}} \\
 			\hline
 			\multirow{3}{*}{}
-			 Linear LR ($\lambda=10^{-3}$)& 0.390 & 0.153 & 0.369\\
-			 Linear LR ($\lambda=10^{-5}$)& 0.388 & 0.152 & 0.363\\
-			 Linear LR ($\lambda=10^{-6}$)& 0.388 & 0.152 & 0.362\\
+			 LLR \scriptsize{($\lambda=10^{-3}$)}& 0.390 & 0.153 & 0.369\\
+			 LLR \scriptsize{($\lambda=10^{-5}$)}& 0.388 & 0.152 & 0.363\\
+			 LLR \scriptsize{($\lambda=10^{-6}$)}& 0.388 & 0.152 & 0.362\\
+			\hline
+			\multicolumn{4}{ |c| }{\bf{Best Gaussian Models}} \\
+			\hline
+			\multirow{2}{*}{}
+			 Tied Cov \scriptsize{(Z-Norm, no PCA)} & 0.122 & 0.046 & 0.127\\
+			 Tied Cov \scriptsize{(Gau, PCA(m=10))} & 0.212 & 0.082 & 0.207\\
 			\hline
 		\end{tabular}
 	\end{table}
@@ -512,7 +543,7 @@ where $vec(X)$ is the operator that stacks the columns of $X$. In this way the p
 \end{center}
 We are now going to train the Linear Logistic Regression model using features vectors $\phi(x)$
 \begin{table}[ht!]
-	\caption{Linear Logistic Regression - 3-fold cross validation}
+	\caption{Quadratic Logistic Regression - 3-fold cross validation}
 	\centering
 	\begin{tabular}{ |l|l|l|l| }
 		\hline
@@ -520,23 +551,23 @@ We are now going to train the Linear Logistic Regression model using features ve
 		\multicolumn{4}{ |c| }{\bf{Z-normalized features - no PCA}} \\
 		\hline
 		\multirow{3}{*}{}
-		 Quadratic LR ($\lambda=10^{-3}$)& 0.187 & 0.063 & 0.149\\
-		 Quadratic LR ($\lambda=10^{-5}$)& 0.153 & 0.052 & 0.142\\
-		 Quadratic LR ($\lambda=10^{-6}$)& 0.150 & 0.053 & 0.141\\
+		 QLR \scriptsize{($\lambda=10^{-3}$)}& 0.187 & 0.063 & 0.149\\
+		 QLR \scriptsize{($\lambda=10^{-5}$)}& 0.153 & 0.052 & 0.142\\
+		 QLR \scriptsize{($\lambda=10^{-6}$)}& 0.150 & 0.053 & 0.141\\
 		\hline
 		\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} \\
 		\hline
 		\multirow{3}{*}{}
-		 Quadratic LR ($\lambda=10^{-3}$)& 0.299 & 0.111 & 0.241\\
-		 Quadratic LR ($\lambda=10^{-5}$)& 0.307 & 0.109 & 0.249\\
-		 Quadratic LR ($\lambda=10^{-6}$)& 0.305 & 0.109 & 0.248\\
+		 QLR \scriptsize{($\lambda=10^{-3}$)}& 0.299 & 0.111 & 0.241\\
+		 QLR \scriptsize{($\lambda=10^{-5}$)}& 0.307 & 0.109 & 0.249\\
+		 QLR \scriptsize{($\lambda=10^{-6}$)}& 0.305 & 0.109 & 0.248\\
 		\hline
 		\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=9)}} \\
 		\hline
 		\multirow{3}{*}{}
-		 Quadratic LR ($\lambda=10^{-3}$)& 0.373 & 0.151 & 0.337\\
-		 Quadratic LR ($\lambda=10^{-5}$)& 0.378 & 0.149 & 0.349\\
-		 Quadratic LR ($\lambda=10^{-6}$)& 0.378 & 0.149 & 0.350\\
+		 QLR \scriptsize{($\lambda=10^{-3}$)}& 0.373 & 0.151 & 0.337\\
+		 QLR \scriptsize{($\lambda=10^{-5}$)}& 0.378 & 0.149 & 0.349\\
+		 QLR \scriptsize{($\lambda=10^{-6}$)}& 0.378 & 0.149 & 0.350\\
 		\hline
 	\end{tabular}
 \end{table}
@@ -545,6 +576,89 @@ We are now going to train the Linear Logistic Regression model using features ve
 	\caption{minDCF for different values of $\lambda$ and different priors}
 	\label{dcfQLR} 
 \end{figure}
+\subsection{SVM Classifier}
+\subsubsection{Linear SVM}
+Support Vector Machines are linear classifiers that look for maximum margin separation hyperplanes
+The primal formulation consists in minimizing:
+\begin{center}
+	\begin{math}
+		J(w,b)=\frac{1}{2}||w^2|| + C\sum_{i=1}^{N}max(0, 1-z_i(w^Tx_i+b))
+	\end{math}
+\end{center}
+with $n$ the number of trainig samples and $C$ is an hyperparameter.\\
+We have also considered the dual formulation to solve the SVM problem that consists in maximizing:
+\begin{center}
+	\begin{math}
+		J^D(\alpha)=-\frac{1}{2}\alpha^TH\alpha + \alpha^T\textbf{1} \; s.t.\; 0 \le \alpha_i \le C, \forall i\in \{1,...,n\}\;,\;\sum_{i=1}^{n}\alpha_iz_i=0
+	\end{math}
+\end{center}
+where $\textbf{1}$ is a $n$-dimensional vector of ones and $H$ is the matrix
+whose elements are $H_ij = z_iz_jx_i^Tx_j$.\\
+The relation between the primal and the dual formulation(between the maximizer values $w^*$ and $\alpha^*$) is:
+\begin{center}
+	$w^*=\sum_{i=1}^{n}\alpha_i^*z_ix_i$
+\end{center}
+and the optimal bias $b$ can be computed considering a sample $x_i$ that lies on the margin: $z_i(w^{*T}x_i+b^*)=1$
+To be able to computationally solve the problem
+we need to modify the primal formulation as:
+\begin{center}
+	\begin{math}
+		\hat{J}(\hat{w})=\frac{1}{2}||\hat{w}||^2 + C\sum_{i=1}^{N}max(0, 1-z_i(\hat{w}^T\hat{x}_i))
+	\end{math}
+\end{center}
+where $\hat{x}_i = \begin{bmatrix} x_i\\ 1 \end{bmatrix}$ and $\hat{w} = \begin{bmatrix} w\\ b \end{bmatrix}$.\\
+The scoring rule $\hat{w}^T\hat{x}_i = w^Tx + b$ has the same form of the original formulation but
+we are also regularizing the norm of $\hat{w}: ||\hat{w}||^2 = ||w||^2 + b^2$ and we use a mapping
+$\hat{x}_i = \begin{bmatrix} x_i\\ K \end{bmatrix}$ to mitigate the fact that by regularizing  the bias
+term we could obtain sub-optimal results. The bigger is $K$ the lower the regularization effect of $b$
+becomes weaker and the dual formulation becomes harder to solve. According to the modification done to
+the primal formulation we also modify the dual formulation as:
+\begin{center}
+	\begin{math}
+		J^D(\alpha)=-\frac{1}{2}\alpha^T\hat{H}\alpha + \alpha^T\textbf{1} \; s.t.\; 0 \le \alpha_i \le C, \forall i\in \{1,...,n\}
+	\end{math}
+\end{center}
+where the equality constraint dissapeared (the one that L-BFGS was not able to incorporate) and the
+matrix $\hat{H}$ can be computed as $\hat{H}_{i,j}=z_iz_j\hat{x}_i^T\hat{x}_j$
+\begin{figure}[ht!]
+	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/LSVM.png}
+	\caption{Linear SVM - minDCF for different values of $C$ and different priors}
+	\label{lsvm} 
+\end{figure}
+\begin{table}[ht!]
+	\caption{Linear SVM - 3-fold cross validation}
+	\centering
+	\begin{tabular}{ |l|l|l|l| }
+		\hline
+		& $\tilde{\pi}=0.1$ & $\tilde{\pi}=0.5$ & $\tilde{\pi}=0.9$ \\ \hline
+		\multicolumn{4}{ |c| }{\bf{Z-normalized features - no PCA}} \\
+		\hline
+		\multirow{2}{*}{}
+		 Linear SVM \scriptsize{($C=0.1$)}& 0.158 & 0.052 & 0.141\\
+		 Linear SVM \scriptsize{($C=1$)}& 0.129 & 0.047 & 0.130\\
+		\hline
+		\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} \\
+		\hline
+		\multirow{2}{*}{}
+		Linear SVM \scriptsize{($C=0.1$)}& 0.295 & 0.114 & 0.259\\
+		Linear SVM \scriptsize{($C=1$)}& 0.301 & 0.113 & 0.267\\
+		\hline
+		\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=9)}} \\
+		\hline
+		\multirow{2}{*}{}
+		Linear SVM \scriptsize{($C=0.1$)}& 0.295 & 0.114 & 0.259\\
+		Linear SVM \scriptsize{($C=1$)}& 0.301 & 0.113 & 0.267\\
+		\hline
+	\end{tabular}
+\end{table}
+\subsubsection{Kernel SVM}
+SVMs allow for non-linear classification through an implicit expansion of the features in a higher
+dimensional space. In contrast with Quadratic Logistic Regression classifier we don't have to compute
+an explicit expansion of the features space, it is sufficient to be able to compute the scalar product between
+the expanded features $k(x_1, x_2) = \phi(x_1)^T\phi(x_2)$ and $k$ is the kernel function. We have to 
+replace $\hat{H}$ with $\hat{H} = z_iz_jk(z_1,x_2)$. We are going to try two types of kernel: polynomial and rbf.
+
+%--
 \subsection{GMM Classifier}
 The last model we take into account is a generative model. We are going to train a GMM
 over the samples of each class 

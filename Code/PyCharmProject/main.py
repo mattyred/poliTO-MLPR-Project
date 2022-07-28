@@ -121,18 +121,19 @@ if __name__ == '__main__':
                                            dimred=dim_red)
     """
     #ModelEvaluation.BinaryModelEvaluator().plot_lambda_minDCF_QuadraticLogisticRegression(DT=DT, LT=LT, k=3)
-    """
+
     # SVM LINEAR
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
     hparams = {'K': 10, 'eps': 1, 'gamma': 1, 'C': 10}
     dim_red = None#{'type': 'pca', 'm': 9}
-    print('R: SVM Linear\nPreprocessing: -\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
-    #score = trainLinearSVM(DT, LT, 1, 0.1, DE, 0)
+    model_evaluator.plot_lambda_minDCF_LinearSVM(DT, LT, 3)
+    """
+    print('R: SVM Linear\nPreprocessing: znorm\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
     model_evaluator.kfold_cross_validation(SVMClf.SVM(hparams, None),
                                            DT,
                                            LT,
                                            k=3,
-                                           preproc='raw',
+                                           preproc='znorm',
                                            dimred=dim_red,
                                            iprint=True)
     """
@@ -213,6 +214,7 @@ if __name__ == '__main__':
     """
 
     # GMM
+    """
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
     dim_red = None#{'type': 'pca', 'm': 9}
     nComponents = 8
@@ -224,4 +226,4 @@ if __name__ == '__main__':
                                            k=3,
                                            preproc='zg',
                                            dimred=dim_red)
-
+    """

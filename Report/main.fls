@@ -286,6 +286,7 @@ INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/xcharter/XCharter-Roma
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/gaumodels.png
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/gaumodels.png
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/gaumodels.png
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/xcharter/XCharter-Roman-tlf-t1.tfm
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/dcfplotLLR.png
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/dcfplotLLR.png
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/dcfplotLLR.png
@@ -304,6 +305,14 @@ INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/dcfplotQLR.png
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/dcfplotQLR.png
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/dcfplotQLR.png
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/vf/public/xcharter/XCharter-Roman-tlf-t1.vf
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/xcharter/XCharter-Roman-tlf-t1--base.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/xcharter/XCharter-Bold-tlf-t1.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/xcharter/XCharter-Roman-tlf-t1.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/xcharter/XCharter-Bold-tlf-t1.tfm
+INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/LSVM.png
+INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/LSVM.png
+INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/LSVM.png
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/bear.jpg
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/bear.jpg
 INPUT /Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/bear.jpg
