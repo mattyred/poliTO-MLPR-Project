@@ -5,6 +5,8 @@ import DimensionalityReduction as DimRed
 import GaussianClassifiers as GauClf
 import LogisticRegressionClassifier as LogRegClf
 import SVMClassifier as SVMClf
+import GMMClassifier
+
 
 class BinaryModelEvaluator:
     """
@@ -364,6 +366,49 @@ class BinaryModelEvaluator:
         plt.show()
 
     @staticmethod
+    def plot_lambda_minDCF_QuadraticSVM(DT=None, LT=None, k=3):
+        C = [1.E-4, 1.E-3, 1.E-2, 1.E-1, 1, 10, 10**2]
+        fig1, axs1 = plt.subplots(1, 3)
+        fig1.set_figheight(5)
+        fig1.set_figwidth(13)
+        colors = ["red", "blue", "green"]
+        i = 0
+        for dim_red in [None, {'type': 'pca', 'm': 10}, {'type': 'pca', 'm': 9}]:
+            minDCF_values_01 = []
+            minDCF_values_05 = []
+            minDCF_values_09 = []
+            for c in C:
+                hparams = {'K': 1, 'eps': 1, 'gamma': 1, 'C': c, 'c': 0, 'd':1}
+                model = SVMClf.SVM(hparams, kernel='Polynomial', prior=0.5)
+                DCF, minDCF = BinaryModelEvaluator.kfold_cross_validation(
+                    model,
+                    DT,
+                    LT,
+                    k=k,
+                    preproc='znorm',
+                    dimred=dim_red,
+                    iprint=False)
+                minDCF_values_01.append(minDCF[0])
+                minDCF_values_05.append(minDCF[1])
+                minDCF_values_09.append(minDCF[2])
+
+            axs1[i].plot(C, minDCF_values_01, label="π = 0.1", color=colors[0])
+            axs1[i].plot(C, minDCF_values_05, label="π = 0.5", color=colors[1])
+            axs1[i].plot(C, minDCF_values_09, label="π = 0.9", color=colors[2])
+            axs1[i].set_xscale('log')
+            axs1[i].set_xticks(C)
+            axs1[i].set_xlabel("C")
+            axs1[i].set_ylim([0, 1])
+            if dim_red is None:
+                axs1[i].set_title('no PCA')
+            else:
+                axs1[i].set_title('PCA(m=%d)' % (dim_red['m']))
+            i += 1
+        axs1[0].set_ylabel("minDCF")
+        fig1.legend(['π = 0.1', 'π = 0.5', 'π = 0.9'], loc='lower right')
+        plt.show()
+
+    @staticmethod
     def plot_gaussian_models(DT, LT):
         # Z-Normalized
         fig1, axs1 = plt.subplots(2, 3)
@@ -418,4 +463,55 @@ class BinaryModelEvaluator:
         axs1[1, 2].plot(x, mindcf_naive, '--o', label='Naive')
         axs1[1, 2].set_ylim(0, 1)
         fig1.legend(['Full', 'Tied', 'Naive'], loc='lower right')
+        plt.show()
+
+    @staticmethod
+    def plot_histogramGMM(DT, LT):
+        fig1, axs1 = plt.subplots(1, 3, constrained_layout = True)
+        fig1.set_figheight(5)
+        fig1.set_figwidth(13)
+        comp = [1, 2, 4, 8, 16]
+        colors = ["red", "blue", "green"]
+        i = 0
+        for cov in ['Full', 'Tied', 'Diag']:
+            minDCF_values_01_z = []
+            minDCF_values_05_z = []
+            minDCF_values_09_z = []
+            minDCF_values_01_zg = []
+            minDCF_values_05_zg = []
+            minDCF_values_09_zg = []
+            for c_components in comp:
+                _,minDCF_z = BinaryModelEvaluator.kfold_cross_validation(
+                                                            GMMClassifier.GMM(alpha=0.1, nComponents=c_components, psi=0.01, covType=cov),
+                                                            DT,
+                                                            LT,
+                                                            k=3,
+                                                            preproc='znorm',
+                                                            dimred=None,
+                                                            iprint=False)
+                _, minDCF_zg = BinaryModelEvaluator.kfold_cross_validation(
+                                                            GMMClassifier.GMM(alpha=0.1, nComponents=c_components, psi=0.01, covType=cov),
+                                                            DT,
+                                                            LT,
+                                                            k=3,
+                                                            preproc='zg',
+                                                            dimred=None,
+                                                            iprint=False)
+                # minDCF_values_01_z.append(minDCF_z[0])
+                minDCF_values_05_z.append(minDCF_z[1])
+                # minDCF_values_09_z.append(minDCF_z[2])
+                # minDCF_values_01_zg.append(minDCF_zg[0])
+                minDCF_values_05_zg.append(minDCF_zg[1])
+                # minDCF_values_09_zg.append(minDCF_zg[2])
+            ind = np.arange(len(comp))
+            axs1[i].bar(x=ind, height=minDCF_values_05_z, width=0.25, alpha=0.6, color=colors[0]) # z-norm features
+            axs1[i].bar(x=ind+0.25, height=minDCF_values_05_zg, width=0.25, alpha=0.6, color=colors[1]) # gau features
+
+            axs1[i].set_xticks(ind+0.25, comp)
+            axs1[i].set_xlabel("GMM components")
+            axs1[i].set_title(cov)
+            axs1[i].set_ylim([0, 0.6])
+            i += 1
+        axs1[0].set_ylabel("minDCF")
+        fig1.legend(['minDCF(π = 0.5) - Z-Norm Features', 'minDCF(π = 0.5) - Gaussianization'], loc='lower right')
         plt.show()

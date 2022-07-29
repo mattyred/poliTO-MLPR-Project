@@ -123,11 +123,11 @@ if __name__ == '__main__':
     #ModelEvaluation.BinaryModelEvaluator().plot_lambda_minDCF_QuadraticLogisticRegression(DT=DT, LT=LT, k=3)
 
     # SVM LINEAR
+    """
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
     hparams = {'K': 10, 'eps': 1, 'gamma': 1, 'C': 10}
     dim_red = None#{'type': 'pca', 'm': 9}
     model_evaluator.plot_lambda_minDCF_LinearSVM(DT, LT, 3)
-    """
     print('R: SVM Linear\nPreprocessing: znorm\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
     model_evaluator.kfold_cross_validation(SVMClf.SVM(hparams, None),
                                            DT,
@@ -138,7 +138,20 @@ if __name__ == '__main__':
                                            iprint=True)
     """
     # SVM KERNEL POLY
-
+    """
+    model_evaluator = ModelEvaluation.BinaryModelEvaluator()
+    hparams = {'K': 0, 'eps': 0, 'gamma': 1, 'C': 1, 'c': 0, 'd': 1}
+    # hparams = {'K': 0, 'eps': 0, 'gamma': 10**-3, 'C': 10**-1, 'c': 0, 'd': 1} 0.158 / 0.059 / 0.144
+    # hparams = {'K': 0, 'eps': 0, 'gamma': 10 ** -3, 'C': 10 ** -1, 'c': 0, 'd': 1} # 0.168 / 0.061 / 0.148
+    dim_red = None#{'type': 'pca', 'm': 8}
+    model_evaluator.kfold_cross_validation(SVMClf.SVM(hparams, kernel='Polynomial', prior=0.5),
+                                           DT,
+                                           LT,
+                                           k=3,
+                                           preproc='raw',
+                                           dimred=dim_red,
+                                           iprint=True)
+    """
     # SVM KERNEL RBF
     """
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
@@ -227,3 +240,4 @@ if __name__ == '__main__':
                                            preproc='zg',
                                            dimred=dim_red)
     """
+    ModelEvaluation.BinaryModelEvaluator().plot_histogramGMM(DT, LT)

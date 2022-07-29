@@ -649,6 +649,18 @@ matrix $\hat{H}$ can be computed as $\hat{H}_{i,j}=z_iz_j\hat{x}_i^T\hat{x}_j$
 		Linear SVM \scriptsize{($C=0.1$)}& 0.295 & 0.114 & 0.259\\
 		Linear SVM \scriptsize{($C=1$)}& 0.301 & 0.113 & 0.267\\
 		\hline
+		\multicolumn{4}{ |c| }{\bf{Best Gaussian Models}} \\
+		\hline
+		\multirow{2}{*}{}
+		Tied Cov \scriptsize{(Z-Norm, no PCA)} & 0.122 & 0.046 & 0.127\\
+		Tied Cov \scriptsize{(Gau, PCA(m=10))} & 0.212 & 0.082 & 0.207\\
+		\hline
+		\multicolumn{4}{ |c| }{\bf{Best Logistic Regression Models}} \\
+		\hline
+		\multirow{2}{*}{}
+		Tied Cov \scriptsize{(Z-Norm, no PCA)} & 0.122 & 0.046 & 0.127\\
+		Tied Cov \scriptsize{(Gau, PCA(m=10))} & 0.212 & 0.082 & 0.207\\
+		\hline
 	\end{tabular}
 \end{table}
 \subsubsection{Kernel SVM}
