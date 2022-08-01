@@ -107,10 +107,10 @@ if __name__ == '__main__':
                                            dimred=dim_red)
     """
     #model_evaluator.plot_lambda_minDCF_LinearLogisticRegression(DT=DT, LT=LT, k=3)
-    """
+
     # QUADRATIC LOGISTIC REGRESSION
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
-    dim_red = {'type': 'pca', 'm': 9}
+    dim_red = {'type': 'pca', 'm': 10}
     lbd = 10**-6
     print('R: Quadric Logistic Regression\nPreprocessing: znorm\nDim. Reduction: %s\n' % dim_red)
     model_evaluator.kfold_cross_validation(LogRegClf.QuadraticLogisticRegression(lbd, prior_weighted=False),
@@ -119,7 +119,7 @@ if __name__ == '__main__':
                                            k=3,
                                            preproc='znorm',
                                            dimred=dim_red)
-    """
+
     #ModelEvaluation.BinaryModelEvaluator().plot_lambda_minDCF_QuadraticLogisticRegression(DT=DT, LT=LT, k=3)
 
     # SVM LINEAR
@@ -229,9 +229,9 @@ if __name__ == '__main__':
     # GMM
     """
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
-    dim_red = None#{'type': 'pca', 'm': 9}
+    dim_red = {'type': 'pca', 'm': 9}
     nComponents = 8
-    cov = 'Full'
+    cov = 'Diag'
     print('R: GMM Classifier(%d components - %s cov)\nPreprocessing: znorm\nDim. Reduction: %s\n' % (nComponents, cov, dim_red))
     model_evaluator.kfold_cross_validation(GMMClassifier.GMM(alpha=0.1, nComponents=nComponents, psi=0.01, covType=cov),
                                            DT,
@@ -240,4 +240,4 @@ if __name__ == '__main__':
                                            preproc='zg',
                                            dimred=dim_red)
     """
-    ModelEvaluation.BinaryModelEvaluator().plot_histogramGMM(DT, LT)
+    #ModelEvaluation.BinaryModelEvaluator().plot_histogramGMM(DT, LT)
