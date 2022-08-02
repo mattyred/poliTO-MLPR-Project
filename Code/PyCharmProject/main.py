@@ -47,10 +47,11 @@ if __name__ == '__main__':
     m, t = DimRed.PCA().kfold_PCA(D=DT, k=3, threshold=0.95, show=True)
     """
 
-    """
+
     # Test k-fold cross validation (on MVG classifier)
+    """
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
-    dim_red = None#{'type': 'pca', 'm': 9}
+    dim_red = {'type': 'pca', 'm': 11}
     model_evaluator.plot_gaussian_models(DT=DT, LT=LT)
     print('R: MVG Classifier\nPreprocessing: znorm\nDim. Reduction: %s\nValidation: k-fold' % dim_red)
     model_evaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='znorm', dimred=dim_red,  iprint=True)
@@ -92,23 +93,24 @@ if __name__ == '__main__':
     plt.show()
     """
 
-    # LOGISTIC REGRESSION
+    # LINEAR LOGISTIC REGRESSION
     """
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
-    dim_red = {'type': 'pca', 'm': 10}
+    dim_red = None#{'type': 'pca', 'm': 11}
 
     lbd = 10**-3
     print('R: Linear Logistic Regression\nPreprocessing: znorm\nDim. Reduction: %s\n' % dim_red)
-    model_evaluator.kfold_cross_validation(LogRegClf.LinearLogisticRegression(lbd, prior_weighted=False, prior=0.5),
+    model_evaluator.kfold_cross_validation(LogRegClf.LinearLogisticRegression(lbd, prior_weighted=True, prior=0.5),
                                            DT,
                                            LT,
                                            k=3,
                                            preproc='znorm',
                                            dimred=dim_red)
-    """
-    #model_evaluator.plot_lambda_minDCF_LinearLogisticRegression(DT=DT, LT=LT, k=3)
 
+    #model_evaluator.plot_lambda_minDCF_LinearLogisticRegression(DT=DT, LT=LT, k=3)
+    """
     # QUADRATIC LOGISTIC REGRESSION
+    """
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
     dim_red = {'type': 'pca', 'm': 10}
     lbd = 10**-6
@@ -121,7 +123,7 @@ if __name__ == '__main__':
                                            dimred=dim_red)
 
     #ModelEvaluation.BinaryModelEvaluator().plot_lambda_minDCF_QuadraticLogisticRegression(DT=DT, LT=LT, k=3)
-
+    """
     # SVM LINEAR
     """
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
@@ -241,3 +243,10 @@ if __name__ == '__main__':
                                            dimred=dim_red)
     """
     #ModelEvaluation.BinaryModelEvaluator().plot_histogramGMM(DT, LT)
+    # RBF SVM
+    ModelEvaluation.BinaryModelEvaluator().plot_lambda_minDCF_RBFSVM(DT, LT)
+    # Score Calibration
+    model_evaluator = ModelEvaluation.BinaryModelEvaluator()
+    dim_red = None#{'type': 'pca', 'm': 9}
+    hparams = {'K': 0, 'eps': 0, 'gamma': 1, 'C': 10, 'c': 0, 'd': 1}
+    #model_evaluator.plot_Bayes_error(LogRegClf.LinearLogisticRegression(lbd=10**-6), preproc='znorm', dimred=dim_red, DT=DT, LT=LT, calibrate_scores=True)

@@ -49,6 +49,10 @@ class LinearLogisticRegression:
         """
         return self
 
+    def get_model_parameters(self):
+        w, b = self.x[0:-1], self.x[-1]
+        return w, b
+
     def predict(self, Dtest, labels=True):
         w, b = self.x[0:-1], self.x[-1]
         S = np.zeros((Dtest.shape[1]))

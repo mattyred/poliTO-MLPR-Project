@@ -347,50 +347,50 @@ within class covariance is related to the assumption done for the tied model.\
 	\begin{table}
 		\caption{Gaussian Models}
 		\centering
-		\begin{tabular}{ |l|l|l|l|l| }
+		\begin{tabular}{ |l|l|l|l| }
 			\hline
-			& $\tilde{\pi}=0.1$ & $\tilde{\pi}=0.5$ & $\tilde{\pi}=0.9$ &\\ \hline
-			\multicolumn{4}{ |c| }{\bf{Z-normalized features - no PCA}} &\\
-			\hline
-			\multirow{3}{*}{}
-			 Full Cov & 0.128 & 0.048 & 0.125&\\
-			 Tied Cov & 0.122 & \textcolor{red}{0.046} & 0.127&\\
-			 Naive Bayes & 0.822 & 0.567 & \textcolor{blue}{0.856}&\\
-			\hline
-			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} &\\
+			& $\tilde{\pi}=0.1$ & $\tilde{\pi}=0.5$ & $\tilde{\pi}=0.9$ \\ \hline
+			\multicolumn{4}{ |c| }{\bf{Z-normalized features - no PCA}} \\
 			\hline
 			\multirow{3}{*}{}
-			 Full Cov & 0.303 & 0.115 & 0.267&\\
-			 Tied Cov & 0.293 & \textcolor{red}{0.112} & 0.264&\\
-			 Naive Bayes & \textcolor{orange}{0.306} & \textcolor{orange}{0.121} & \textcolor{orange}{0.283}&\\
+			 Full Cov & 0.128 & 0.048 & 0.125\\
+			 Tied Cov & 0.122 & \textcolor{red}{0.046} & 0.127\\
+			 Naive Bayes & 0.822 & 0.567 & \textcolor{blue}{0.856}\\
 			\hline
-			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=9)}} &\\
-			\hline
-			\multirow{3}{*}{}
-			 Full Cov & 0.398 & 0.153 & 0.369&\\
-			 Tied Cov & 0.392 & \textcolor{red}{0.151} & 0.367&\\
-			 Naive Bayes & \textcolor{blue}{0.416} & 0.159 & 0.362&\\
-			\hline
-			\multicolumn{4}{ |c| }{\bf{Gaussianized features - no PCA}} &\\
+			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=11)}} \\
 			\hline
 			\multirow{3}{*}{}
-			 Full Cov & 0.218 & \textcolor{red}{0.078} & 0.191&\\
-			 Tied Cov & 0.208 & \textcolor{red}{0.078} & 0.189&\\
-			 Naive Bayes & 0.813 & 0.586 & \textcolor{blue}{0.847} &\\
+			 Full Cov & 0.265 & 0.100 & 0.231\\
+			 Tied Cov & 0.257 & \textcolor{red}{0.098} & 0.227\\
+			 Naive Bayes & \textcolor{orange}{0.278} & \textcolor{orange}{0.108} & \textcolor{orange}{0.245}\\
 			\hline
-			\multicolumn{4}{ |c| }{\bf{Gaussianized features - PCA(m=10)}} &\\
-			\hline
-			\multirow{3}{*}{}
-			 Full Cov & 0.223 & 0.084 & 0.211&\\
-			 Tied Cov & 0.212 & \textcolor{red}{0.082} & 0.207&\\
-			 Naive Bayes & \textcolor{blue}{0.279} & \textcolor{orange}{0.103} & 0.254&\\
-			\hline
-			\multicolumn{4}{ |c| }{\bf{Gaussianized features - PCA(m=9)}} &\\
+			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} \\
 			\hline
 			\multirow{3}{*}{}
-			 Full Cov & 0.270 & 0.105 & 0.247&\\
-			 Tied Cov & 0.265 & \textcolor{red}{0.103} & 0.244&\\
-			 Naive Bayes & \textcolor{blue}{0.305} & 0.119 & 0.282&\\
+			 Full Cov & 0.303 & 0.115 & 0.267\\
+			 Tied Cov & 0.293 & \textcolor{red}{0.112} & 0.264\\
+			 Naive Bayes & \textcolor{orange}{0.306} & \textcolor{orange}{0.121} & \textcolor{orange}{0.283}\\
+			\hline
+			\multicolumn{4}{ |c| }{\bf{Gaussianized features - no PCA}} \\
+			\hline
+			\multirow{3}{*}{}
+			 Full Cov & 0.218 & \textcolor{red}{0.078} & 0.191\\
+			 Tied Cov & 0.208 & \textcolor{red}{0.078} & 0.189\\
+			 Naive Bayes & 0.813 & 0.586 & \textcolor{blue}{0.847} \\
+			\hline
+			\multicolumn{4}{ |c| }{\bf{Gaussianized features - PCA(m=11)}} \\
+			\hline
+			\multirow{3}{*}{}
+			 Full Cov & 0.227 & 0.087 & 0.218\\
+			 Tied Cov & 0.215 & \textcolor{red}{0.084} & 0.208\\
+			 Naive Bayes & \textcolor{blue}{0.278} & \textcolor{orange}{0.106} & 0.257\\
+			\hline
+			\multicolumn{4}{ |c| }{\bf{Gaussianized features - PCA(m=10)}} \\
+			\hline
+			\multirow{3}{*}{}
+			 Full Cov & 0.223 & 0.084 & 0.211\\
+			 Tied Cov & 0.212 & \textcolor{red}{0.082} & 0.207\\
+			 Naive Bayes & \textcolor{blue}{0.279} & \textcolor{orange}{0.103} & 0.254\\
 			\hline
 		\end{tabular}
 	\end{table}
@@ -412,34 +412,21 @@ Some observations:
 	\item Naive Bayes assumption doesn't hold really well, in particular if PCA is not applied. When 
 		  PCA is applied it has a really good impact only on Naive Bayes model and especialliy if also
 		  combined with Gaussianization pre processing.
-	\item Regarding Full and Tied models with PCA(m=10) there is no a high performance degradation
+	\item Regarding Full and Tied models with PCA(m=11) there is no a high performance degradation
 		  since the minDCF obtained are still good. For lower values of $m$ the models become less
 		  able in taking decisions and the minDCF increases
 	\item For the MVG classifiers best performances are achieved by the Tied-Cov classifier with
 		  only Z-normalization pre processing and withouth PCA. Really good performacnes are also
 		  achieved by the Tied-Cov model trained with Gaussianized
-		  fetures and no-PCA (the PCA(m=10) version of this model achieves worse but comparable result w.r.t. to the no-PCA version
+		  fetures and no-PCA (the PCA(m=11) version of this model achieves worse but comparable result w.r.t. to the no-PCA version
 		  and it can be selected to try to better avoid overfitting by reducing the features 
 		  space and also for reducing computational effort)
 \end{itemize}
-\begin{table}[ht!]
-	\caption{Best Gaussian Models}
-	\centering
-	\begin{tabular}{ |l|l|l|l|l| }
-		\hline
-		& $\tilde{\pi}=0.1$ & $\tilde{\pi}=0.5$ & $\tilde{\pi}=0.9$ &\\ \hline
-		\multicolumn{4}{ |c| }{\bf{Z-Normalized features - no PCA}} &\\
-		\hline
-		\multirow{1}{*}{}
-		 Tied Cov & 0.122 & 0.046 & 0.127&\\
-		\hline
-		\multicolumn{4}{ |c| }{\bf{Gaussianized features - PCA(m=10)}} &\\
-		\hline
-		\multirow{1}{*}{}
-		 Tied Cov & 0.212 & 0.082 & 0.207&\\
-		\hline
-	\end{tabular}
-\end{table}
+\underline{Best Gaussian Models}: 
+\begin{itemize}
+	\item Tied Cov (Z-Normalization, no PCA)
+	\item Tied Cov (Gaussianization, PCA(m=11))
+\end{itemize}
 \subsection{Logistic Regression Classifier}
 Logistic Regression is a discriminative classification model. Starting from the results obtained
 from the Gaussian classifiers we consider the linear decision function obtained from the expression
@@ -481,24 +468,24 @@ problem solvable in case of linearly separable classes).
 			\multicolumn{4}{ |c| }{\bf{Z-normalized features - no PCA}} \\
 			\hline
 			\multirow{3}{*}{}
-			 LLR \scriptsize{($\lambda=10^{-3}$)}& \textcolor{blue}{0.170} & 0.170 & 0.155\\
+			 LLR \scriptsize{($\lambda=10^{-3}$)}& \textcolor{blue}{0.170} & 0.059 & 0.155\\
 			 LLR \scriptsize{($\lambda=10^{-5}$)}& 0.132 & \textcolor{red}{0.047} & 0.127\\
-			 LLR \scriptsize{($\lambda=10^{-6}$)}& 0.132 & 0.047 & 0.126\\
+			 LLR \scriptsize{($\lambda=10^{-6}$)}& 0.132 & \textcolor{red}{0.047} & \textcolor{orange}{0.126}\\
 			\hline
-			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} \\
-			\hline
-			\multirow{3}{*}{}
-			 LLR \scriptsize{($\lambda=10^{-3}$)}& 0.299 & \textcolor{red}{0.113} & 0.263\\
-			 LLR \scriptsize{($\lambda=10^{-5}$)}& 0.297 & 0.114 & 0.263\\
-			 LLR \scriptsize{($\lambda=10^{-6}$)}& 0.297 & 0.114 & 0.262\\
-			\hline
-			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=9)}} \\
+			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=11)}} \\
 			\hline
 			\multirow{3}{*}{}
-			 LLR \scriptsize{($\lambda=10^{-3}$)}& 0.390 & 0.153 & 0.369\\
-			 LLR \scriptsize{($\lambda=10^{-5}$)}& 0.388 & 0.152 & 0.363\\
-			 LLR \scriptsize{($\lambda=10^{-6}$)}& 0.388 & 0.152 & 0.362\\
-			\hline
+			 LLR \scriptsize{($\lambda=10^{-3}$)}& \textcolor{blue}{0.278} & 0.104 & 0.232\\
+			 LLR \scriptsize{($\lambda=10^{-5}$)}& 0.269 & \textcolor{red}{0.098} & 0.221\\
+			 LLR \scriptsize{($\lambda=10^{-6}$)}& \textcolor{orange}{0.268} & 0.098 & 0.222\\
+			 \hline
+			 \multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} \\
+			 \hline
+			 \multirow{3}{*}{}
+			  LLR \scriptsize{($\lambda=10^{-3}$)}& \textcolor{blue}{0.299} & \textcolor{red}{0.113} & 0.263\\
+			  LLR \scriptsize{($\lambda=10^{-5}$)}& \textcolor{orange}{0.297} & 0.114 & 0.263\\
+			  LLR \scriptsize{($\lambda=10^{-6}$)}& 0.297 & 0.114 & \textcolor{orange}{0.262}\\
+			 \hline
 		\end{tabular}
 	\end{table}
 \begin{table}[ht!]
@@ -511,7 +498,7 @@ problem solvable in case of linearly separable classes).
 			\hline
 			\multirow{2}{*}{}
 			 Tied Cov \scriptsize{(Z-Norm, no PCA)}& 0.122 & 0.046 & 0.127\\
-			 Tied Cov \scriptsize{(Gau, PCA(m=10))}& 0.212 & 0.082 & 0.207\\
+			 Tied Cov \scriptsize{(Gau, PCA(m=10))}& 0.215 & 0.082 & 0.207\\
 			\hline
 		\end{tabular}
 \end{table}
@@ -525,7 +512,10 @@ and without PCA.\\
 with the ones achieved by the Tied-Cov Gaussian model (Z-Norm, no PCA) for $\tilde{\pi}=0.5$ and $\tilde{\pi}=0.9$
 applications but a worse performance is obtained for $\tilde{\pi}=0.1$. The LLR model behaves better than the
 Tied-Cov Gaussian model (Gau, PCA(m=10)) in all the three applications.\\
-\underline{Selected LLR Model}: Z-normalized features, $\lambda=10^{-5}$, no PCA
+\underline{Selected LLR Model}: 
+\begin{itemize}
+	\item Z-normalized features, $\lambda=10^{-6}$, no PCA
+\end{itemize}
 \subsubsection{Quadratic Logistic Regression}
 Now we are going to train a Quadratic LR model by performing features expansion.
 For binary linear LR the separation surfaces are linear decision function as already discussed (and
@@ -607,7 +597,7 @@ We are now going to train the Linear Logistic Regression model using features ve
 		\multicolumn{4}{ |c| }{\bf{Logistic Regression Models}} \\
 		\hline
 		\multirow{1}{*}{}
-		LLR &&&\\\scriptsize{(Z-Norm, $\lambda=10^{-5}$, no PCA)}& 0.132 & 0.047 & 0.127\\
+		LLR &&&\\\scriptsize{(Z-Norm, $\lambda=10^{-6}$, no PCA)}& 0.132 & 0.047 & 0.126\\
 		\hline
 	\end{tabular}
 \end{table}
@@ -619,7 +609,14 @@ are more penalized. When PCA is applied no improvements are obtained. However we
 choice for $\lambda$ for unbalanced applications changes when PCA is applied (with $\lambda=10^{-3}$ we 
 achieve better results for $\tilde{{\pi}}=0.1$ and $\tilde{{\pi}}=0.9$ applications w.r.t. $\lambda=10^{-5}$ while for target application $\lambda=10^{-5}$ is the best choice)
 \\
-\underline{Selected QLR Model}: Z-Normalized features, $\lambda=10^{-5}$, no PCA
+\textit{Comparison}: With respect to Gaussian models comparable performances are achieved for $\lambda=10^{-6}$ and
+no PCA even if the model performs slightly worse. The quadratic model performs also worse than the linear model and
+we won't consider it in score calibration.
+\\ 
+\underline{Selected QLR Model}: 
+\begin{itemize}
+	\item Z-Normalized features, $\lambda=10^{-5}$, no PCA
+\end{itemize}
 \subsection{SVM Classifier}
 \subsubsection{Linear SVM}
 Support Vector Machines are linear classifiers that look for maximum margin separation hyperplanes
@@ -666,7 +663,7 @@ where the equality constraint dissapeared (the one that L-BFGS was not able to i
 matrix $\hat{H}$ can be computed as $\hat{H}_{i,j}=z_iz_j\hat{x}_i^T\hat{x}_j$
 \begin{figure}[ht!]
 	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/LSVM.png}
-	\caption{Linear SVM - minDCF for different values of $C$ and different priors}
+	\caption{Linear SVM (K=0, Z-Normalized features) - minDCF for different values of $C$ and different priors}
 	\label{lsvm} 
 \end{figure}
 \begin{table}[ht!]
@@ -678,20 +675,20 @@ matrix $\hat{H}$ can be computed as $\hat{H}_{i,j}=z_iz_j\hat{x}_i^T\hat{x}_j$
 		\multicolumn{4}{ |c| }{\bf{Z-normalized features - no PCA}} \\
 		\hline
 		\multirow{2}{*}{}
-		 Linear SVM \scriptsize{($C=0.1$)}& 0.158 & 0.052 & 0.141\\
+		 Linear SVM \scriptsize{($C=0.1$)}& \textcolor{blue}{0.158} & 0.052 & 0.141\\
 		 Linear SVM \scriptsize{($C=1$)}& 0.129 & \textcolor{red}{0.047} & 0.130\\
+		\hline
+		\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=11)}} \\
+		\hline
+		\multirow{2}{*}{}
+		Linear SVM \scriptsize{($C=0.1$)}& \textcolor{blue}{0.275} & 0.102 & 0.233\\
+		Linear SVM \scriptsize{($C=1$)}& 0.269 & \textcolor{red}{0.100} & 0.226\\
 		\hline
 		\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} \\
 		\hline
 		\multirow{2}{*}{}
 		Linear SVM \scriptsize{($C=0.1$)}& 0.295 & 0.114 & 0.259\\
-		Linear SVM \scriptsize{($C=1$)}& 0.301 & 0.113 & 0.267\\
-		\hline
-		\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=9)}} \\
-		\hline
-		\multirow{2}{*}{}
-		Linear SVM \scriptsize{($C=0.1$)}& 0.295 & 0.114 & 0.259\\
-		Linear SVM \scriptsize{($C=1$)}& 0.301 & 0.113 & 0.267\\
+		Linear SVM \scriptsize{($C=1$)}& \textcolor{blue}{0.301} & \textcolor{red}{0.113} & 0.267\\
 		\hline
 	\end{tabular}
 \end{table}
@@ -706,19 +703,15 @@ matrix $\hat{H}$ can be computed as $\hat{H}_{i,j}=z_iz_j\hat{x}_i^T\hat{x}_j$
 		\hline
 		\multirow{2}{*}{}
 		 Tied Cov \scriptsize{(Z-Norm, no PCA)}& 0.122 & 0.046 & 0.127\\
+		 \hline
 		 Tied Cov \scriptsize{(Gau, PCA(m=10))}& 0.212 & 0.082 & 0.207\\
 		\hline
 		\multicolumn{4}{ |c| }{\bf{Logistic Regression Models}} \\
 		\hline
 		\multirow{2}{*}{}
-		GMM Full (8 comp.)& 0.225 & 0.082 & 0.212\\
-		GMM Tied (8 comp.)& 0.204 & 0.072 & 0.186\\
+		LLR &&&\\\scriptsize{(Z-Norm, $\lambda = 10^{-6}$, no PCA)}& 0.132 & 0.047 & 0.126\\
 		\hline
-		\multicolumn{4}{ |c| }{\bf{SVM Models}} \\
-		\hline
-		\multirow{2}{*}{}
-		GMM Full (8 comp.)& 0.389 & 0.150 & 0.361\\
-		GMM Tied (8 comp.)& 0.347 & 0.133 & 0.328\\
+		QLR &&&\\\scriptsize{(Z-Norm, $\lambda = 10^{-5}$, no PCA)}& 0.153 & 0.052 & 0.142\\
 		\hline
 	\end{tabular}
 \end{table}
@@ -736,7 +729,7 @@ the expanded features $k(x_1, x_2) = \phi(x_1)^T\phi(x_2)$ and $k$ is the kernel
 replace $\hat{H}$ with $\hat{H} = z_iz_jk(z_1,x_2)$. We are going to try two types of kernel: polynomial and rbf.
 \begin{figure}[ht!]
 	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/polysvm.png}
-	\caption{Polynomial SVM (K=1, c=0, d=2) - minDCF for different values of C}
+	\caption{Polynomial SVM (K=1, c=0, d=2, raw features) - minDCF for different values of C}
 	\label{polysvm} 
 \end{figure}
 The model was trained with raw features since the Z-Normalization steps brought to very poor results
@@ -744,7 +737,7 @@ for almost all values of the hyperparameter C. By looking at figure \ref{polysvm
 realize that the choice of $C$ is crucial and best performance are obtained for $C \le10^{-4}$.
 For this reason i have chosen $C=10^{-4}$ to show more detailed obtained results.
 \begin{table}[ht!]
-	\caption{Polynomial Kernel SVM - C=1}
+	\caption{Polynomial Kernel SVM - $C=10^{-4}$}
 	\centering
 	\begin{tabular}{ |l|l|l|l| }
 		\hline
@@ -753,38 +746,45 @@ For this reason i have chosen $C=10^{-4}$ to show more detailed obtained results
 		\hline
 		\multirow{2}{*}{}
 		 Poly SVM \scriptsize{(c=0, d=2)}& 0.465 & 0.158 & 0.396\\
-		 Poly SVM \scriptsize{(c=1, d=2)}& 0.187 & 0.060 & 0.164\\
-		 Poly SVM \scriptsize{(c=1, d=3)}& 0.408 & 0.157 & 0.563\\
+		 Poly SVM \scriptsize{(c=1, d=2)}& 0.187 & \textcolor{red}{0.060} & 0.164\\
+		 Poly SVM \scriptsize{(c=1, d=3)}& 0.408 & 0.157 & \textcolor{blue}{0.563}\\
 		\hline
 		\multicolumn{4}{ |c| }{\bf{Raw features - PCA(m=11)}} \\
 		\hline
 		\multirow{2}{*}{}
-		Poly SVM \scriptsize{(c=0, d=2)}& 0.553 & 0.199 & 0.487\\
-		Poly SVM \scriptsize{(c=1, d=2)}& 0.210 & 0.062 & 0.158\\
+		Poly SVM \scriptsize{(c=0, d=2)}& \textcolor{blue}{0.553} & 0.199 & 0.487\\
+		Poly SVM \scriptsize{(c=1, d=2)}& 0.210 & \textcolor{red}{0.062} & \textcolor{orange}{0.158}\\
 		Poly SVM \scriptsize{(c=1, d=3)}& 0.452 & 0.183 & 0.537\\
 		\hline
 		\multicolumn{4}{ |c| }{\bf{Raw features - PCA(m=10)}} \\
 		\hline
 		\multirow{2}{*}{}
 		Poly SVM \scriptsize{(c=0, d=2)}& 0.746 & 0.258 & 0.576\\
-		Poly SVM \scriptsize{(c=1, d=2)}& 0.465 & 0.158 & 0.396\\
-		Poly SVM \scriptsize{(c=1, d=3)}& 0.784 & 0.280 & 0.815\\
+		Poly SVM \scriptsize{(c=1, d=2)}& 0.465 & \textcolor{red}{0.158} & 0.396\\
+		Poly SVM \scriptsize{(c=1, d=3)}& \textcolor{blue}{0.784} & 0.280 & \textcolor{blue}{0.815}\\
 		\hline
 	\end{tabular}
 \end{table}
-The other kernel that was emplyed is the RBF kernel and these are the results achieved. In this case
+\begin{itemize}
+	\item The Polynomial SVM is able to achieve better results with respect to some versions
+		  of the Linear SVM. Best performances for the target application are achieved
+		  by the model trained with $c=1$ and $d=2$.
+	\item The use of PCA(m=11) helps in reducing the minDCF for the $\tilde{\pi}=0.9$ application for the
+		  model trained with $c=1$ and $d=2$ but gives in general no real benefits
+		  to the model.
+\end{itemize}
+The other kernel that was employed is the RBF kernel and these are the results achieved. In this case
 it was used Z-normalization as pre-processing step since it provides better results. The hyperparameter $\gamma$ has to be tuned
-so i trained the model for different values of $\lambda$ to analyze the performances
+so i trained the model for different values of $\gamma$ to analyze the performances and here are showed
+the results for $\gamma = 0.1$ and $\gamma = 0.01$.  
 \begin{figure}[ht!]
-	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/rbfsvm_znorm.png}
-	\caption{RBF SVM ($K=1, \gamma=0.1$) - minDCF for different values of C}
+	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/rbfsvm_znorm_compl.png}
+	\caption{RBF SVM ($K=1$) - minDCF for different values of C}
 	\label{rbfsvm_znorm} 
 \end{figure}
-\begin{figure}[ht!]
-	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/rbfsvm_g001_znorm.png}
-	\caption{RBF SVM ($K=1, \gamma=0.01$) - minDCF for different values of C}
-	\label{rbfsvm_g001_znorm} 
-\end{figure}
+The value of the hyperparameter $C$ is be critical and we should choose a value
+$C \ge 10^{-1}$. The table below shows the results obtained with $C=10$.
+\FloatBarrier
 \begin{table}[ht!]
 	\caption{RBF Kernel SVM - C=10}
 	\centering
@@ -794,27 +794,67 @@ so i trained the model for different values of $\lambda$ to analyze the performa
 		\multicolumn{4}{ |c| }{\bf{Z-Normalized features - no PCA}} \\
 		\hline
 		\multirow{3}{*}{}
-		 RBF SVM \scriptsize{($\gamma=1$)}& 0.291 & 0.095 & 0.281\\
+		 RBF SVM \scriptsize{($\gamma=1$)}& \textcolor{blue}{0.291} & 0.095 & 0.281\\
 		 RBF SVM \scriptsize{($\gamma=0.1$)}& 0.163 & 0.056 & 0.137\\
-		 RBF SVM \scriptsize{($\gamma=0.01$)}& 0.153 & 0.049 & 0.133\\
+		 RBF SVM \scriptsize{($\gamma=0.01$)}& 0.153 & \textcolor{red}{0.049} & 0.133\\
 		\hline
 		\multicolumn{4}{ |c| }{\bf{Z-Normalized features - PCA(m=11)}} \\
 		\hline
 		\multirow{3}{*}{}
-		RBF SVM \scriptsize{($\gamma=1$)}& 0.362 & 0.123 & 0.350\\
+		RBF SVM \scriptsize{($\gamma=1$)}& \textcolor{blue}{0.362} & 0.123 & 0.350\\
 		RBF SVM \scriptsize{($\gamma=0.1$)}& 0.255 & 0.092 & 0.255\\
-		RBF SVM \scriptsize{($\gamma=0.01$)}& 0.254 & 0.091 & 0.211\\
+		RBF SVM \scriptsize{($\gamma=0.01$)}& 0.254 & \textcolor{red}{0.091} & 0.211\\
 		\hline
 		\multicolumn{4}{ |c| }{\bf{Z-Normalized features - PCA(m=10)}} \\
 		\hline
 		\multirow{3}{*}{}
-		RBF SVM \scriptsize{($\gamma=1$)}& 0.386 & 0.136 & 0.379\\
-		RBF SVM \scriptsize{($\gamma=0.1$)}& 0.271 & 0.106 & 0.273\\
+		RBF SVM \scriptsize{($\gamma=1$)}& \textcolor{blue}{0.386} & 0.136 & 0.379\\
+		RBF SVM \scriptsize{($\gamma=0.1$)}& 0.271 & \textcolor{red}{0.106} & 0.273\\
 		RBF SVM \scriptsize{($\gamma=0.01$)}& 0.291 & 0.107 & 0.239\\
 		\hline
 	\end{tabular}
 \end{table}
-
+\FloatBarrier
+\begin{itemize}
+	\item RBF kernel version of the SVM achieves results that are near to the ones
+		  obtained with the linear version and behaves better w.r.t. the Polynomial
+		  version
+	\item The most promising value of $\gamma$ seems to be $\gamma=0.01$ because with this
+		  value we are able to obtain the best minDCF for the target application (when no
+		  PCA is applied)
+	\item PCA is not able to provide any better results in terms of minDCF
+\end{itemize}
+\textit{Comparison}: The linear version of the SVM achieves better results with
+respect to the two kernel versions...
+\underline{Selected Kernel SVM Models}:
+\begin{itemize}
+	\item Polynomial SVM: Raw features, $K=1$, $C=10^{-4}$, $c=1$, $d=2$, PCA(m=11)
+	\item RBF SVM: Z-Normalized features, $K=1$, $C=10$, $\gamma=0.01$, no PCA
+\end{itemize}
+\begin{table}[ht!]
+	\caption{Best models analyzed up to now}
+	\centering
+	\begin{tabular}{ |l|l|l|l| }
+		\hline
+		& $\tilde{\pi}=0.1$ & $\tilde{\pi}=0.5$ & $\tilde{\pi}=0.9$ \\ \hline
+		\multicolumn{4}{ |c| }{\bf{Gaussian Models}} \\
+		\hline
+		\multirow{2}{*}{}
+		 Tied Cov \scriptsize{(Z-Norm, no PCA)}& 0.122 & 0.046 & 0.127\\
+		 \hline
+		 Tied Cov \scriptsize{(Gau, PCA(m=10))}& 0.212 & 0.082 & 0.207\\
+		\hline
+		\multicolumn{4}{ |c| }{\bf{Logistic Regression Models}} \\
+		\hline
+		\multirow{2}{*}{}
+		LLR &&&\\\scriptsize{(Z-Norm, $\lambda = 10^{-6}$, no PCA)}& 0.132 & 0.047 & 0.126\\
+		\hline
+		QLR &&&\\\scriptsize{(Z-Norm, $\lambda = 10^{-5}$, no PCA)}& 0.153 & 0.052 & 0.142\\
+		\hline
+		\multicolumn{4}{ |c| }{\bf{SVM Models}} \\
+		\hline
+	\end{tabular}
+\end{table}
 %--
 \subsection{GMM Classifier}
 The last model we take into account is a generative model. We are going to train a GMM
@@ -918,6 +958,48 @@ in obtaing lower values for $minDCF$ in case of GMM-Diag with gaussianized featu
 gaussainization and PCA but they are better w.r.t. to the GMM-Diag with gaussianized features and without
 PCA. WHen features gaussianization is applied the GMM-Diag model works better with a lower number of componenets (a similar
 behaviour was also noticed in the firstly Gaussian models)
+\section{Score Calibration}
+\subsection{Calibration Analysis On Selected Models}
+We now select one candidate for each of the previous analyzed classification models (Gaussian, Logisti Regression,
+SVM, GMM):
+\begin{itemize}
+	\item \underline{Gaussian model}: Tied-Cov (Z-Normalization, no PCA)
+	\item \underline{Logistic Regression}: Linear LR (Z-Normalization, no PCA)
+	\item \underline{SVM}: 
+	\item \underline{GMM}:
+\end{itemize}
+% Bayes error plot
+% Comment on Bayes error plot
+\subsection{Calbrating Scores For Selected Models}
+We are going to transform the scores so that the theoretical threshold $t = -log\;\frac{\tilde{\pi}}{1-\tilde{\pi}}$
+provides close to optimal values over a wild range of effective priors $\tilde{\pi}$. What we want to find is a 
+monotonic function $f$ that maps not-calibrated scores in calibrated scores.\\
+We assume that the function $f$ has the form:
+\begin{center}
+	$f(s) = \alpha s + \beta$
+\end{center}
+and $f(s)$ can be interpreted as log-likelihood ratio for the two class hypotheses:
+\begin{center}
+	$f(s) = log\;\frac{f_{S|C}(s|\mathcal{H}_T)}{f_{S|C}(s|\mathcal{H}_F)} = \alpha s + \beta$
+\end{center}
+and the class posterior probabilty for prior $\tilde{\pi}$ corresponds to:
+\begin{center}
+	$log\;\frac{P(C=\mathcal{H}_T|s)}{P(C=\mathcal{H}_F|s)} = \alpha s + \beta + log\;\frac{\tilde{\pi}}{1-\tilde{\pi}}$
+\end{center}
+By interpreting scores $s$ as samples of a dataset (each sample has 1 feature) we can employ a prior weighted
+logistic regression model to learn the model parameters over our calibration set (the dataset composed of the
+scores for a certain model). If we let:
+\begin{center}
+	$\beta' = \beta + log\;\frac{\tilde{\pi}}{1-\tilde{\pi}}$
+\end{center}
+we have exactly a Logistic Regression model where $\alpha$ and $\beta'$ are the model parameters we have to learn.
+We have still to specify a prior $\tilde{\pi}$ that will be the one of our target application even if we will notice
+that the improvements in term of calibration will also involve the unbalanced applications. To obtain calibrated
+scores we will have to compute:
+\begin{center}
+	$f(s) = \alpha s + \beta = \alpha s + \beta' - log\;\frac{\tilde{\pi}}{1-\tilde{\pi}}$
+\end{center}
+
 %------------------------------------------------
 
 \subsection{Subsection}

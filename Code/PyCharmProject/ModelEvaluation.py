@@ -111,23 +111,25 @@ class BinaryModelEvaluator:
         plt.show()
 
     @staticmethod
-    def plot_Bayes_error(scores, actual_labels):
+    def plot_Bayes_error(model=None, preproc='raw', dimred=None, DT=None, LT=None, calibrate_scores=False):
         effPriorLogOdds = np.linspace(-3, 3, 21)
         effPrior = 1 / (1 + np.exp(-effPriorLogOdds))
         mindcf = []
         dcf = []
         for prior in effPrior:
-            mindcf.append(BinaryModelEvaluator.minDCF(scores, actual_labels, prior, 1, 1))
-            dcf.append(BinaryModelEvaluator.DCF(scores, actual_labels, prior, 1, 1))
-        plt.plot(effPriorLogOdds, dcf, label='DCF', color='r')
-        plt.plot(effPriorLogOdds, mindcf, label='min DCF', color='b')
-        plt.ylim([0, 1.1])
+            DCF, minDCF = BinaryModelEvaluator().kfold_cross_validation(model, DT, LT, k=3, preproc=preproc, dimred=dimred, prior=prior, calibrated=calibrate_scores)
+            mindcf.append(minDCF)
+            dcf.append(DCF)
+        plt.plot(effPriorLogOdds, dcf, label='DCF', color='red')
+        plt.plot(effPriorLogOdds, mindcf, label='min DCF', color='blue', linestyle='dashed')
+        #plt.ylim([0, 1.1])
         plt.xlim([-3, 3])
         plt.legend(['DCF', 'min DCF'])
+        plt.xlabel("prior log-odds")
         plt.show()
 
     @staticmethod
-    def kfold_cross_validation(model=None, D=None, L=None, k=10, preproc='raw', dimred=None, iprint=True):
+    def kfold_cross_validation(model=None, D=None, L=None, k=10, preproc='raw', dimred=None, iprint=True, prior=None, calibrated=False):
         PreProcesser = PreProcessing.DataPreProcesser()
         Nsamples = D.shape[1]
         np.random.seed(0)
@@ -193,12 +195,28 @@ class BinaryModelEvaluator:
         # --- Model Evaluation (for different applications)--- #
         k_scores = np.hstack(k_scores)
         k_labels = np.hstack(k_labels)
+
+        # --- Score Calibration--- #
+        if calibrated is True:
+            # Train a logistic regression model prior weighted with k_scores as samples
+            s = k_scores.reshape(1, -1)
+            p = 0.5
+            lr = LogRegClf.LinearLogisticRegression(lbd=10**-6, prior_weighted=True, prior=p)
+            alpha, betafirst = lr.train(s, k_labels).get_model_parameters()
+            k_scores_cal = (alpha*s + betafirst - np.log(p/(1-p))).reshape(Nsamples,)
+        else:
+            k_scores_cal = k_scores
+
         dcf = []
         min_dcf = []
         priors = [0.1, 0.5, 0.9]
-        for prior in priors:
-            dcf.append(BinaryModelEvaluator.DCF(k_scores, k_labels, prior, 1, 1))
-            min_dcf.append(BinaryModelEvaluator.minDCF(k_scores, k_labels, prior, 1, 1))
+        if prior is None:
+            for p in priors:
+                dcf.append(BinaryModelEvaluator.DCF(k_scores_cal, k_labels, p, 1, 1))
+                min_dcf.append(BinaryModelEvaluator.minDCF(k_scores_cal, k_labels, p, 1, 1))
+        else:  # For Bayes error plot
+            return BinaryModelEvaluator.DCF(k_scores_cal, k_labels, prior, 1, 1), BinaryModelEvaluator.minDCF(k_scores_cal, k_labels, prior, 1, 1)
+
         if iprint:
             for i in range(len(priors)): # for each application (prior)
                 print('pi=[%.1f] DCF = %.3f - minDCF = %.3f' % (priors[i], dcf[i], min_dcf[i]))
@@ -246,7 +264,7 @@ class BinaryModelEvaluator:
         fig1.set_figwidth(13)
         colors = ["red", "blue", "green"]
         i = 0
-        for dim_red in [None, {'type': 'pca', 'm': 10}, {'type': 'pca', 'm': 9}]:
+        for dim_red in [None, {'type': 'pca', 'm': 11}, {'type': 'pca', 'm': 10}]:
             minDCF_values_01 = []
             minDCF_values_05 = []
             minDCF_values_09 = []
@@ -288,7 +306,7 @@ class BinaryModelEvaluator:
         fig1.set_figwidth(13)
         colors = ["red", "blue", "green"]
         i = 0
-        for dim_red in [None, {'type': 'pca', 'm': 10}, {'type': 'pca', 'm': 9}]:
+        for dim_red in [None, {'type': 'pca', 'm': 11}, {'type': 'pca', 'm': 10}]:
             minDCF_values_01 = []
             minDCF_values_05 = []
             minDCF_values_09 = []
@@ -330,7 +348,7 @@ class BinaryModelEvaluator:
         fig1.set_figwidth(13)
         colors = ["red", "blue", "green"]
         i = 0
-        for dim_red in [None, {'type': 'pca', 'm': 10}, {'type': 'pca', 'm': 9}]:
+        for dim_red in [None, {'type': 'pca', 'm': 11}, {'type': 'pca', 'm': 10}]:
             minDCF_values_01 = []
             minDCF_values_05 = []
             minDCF_values_09 = []
@@ -352,10 +370,10 @@ class BinaryModelEvaluator:
             axs1[i].plot(C, minDCF_values_01, label="π = 0.1", color=colors[0])
             axs1[i].plot(C, minDCF_values_05, label="π = 0.5", color=colors[1])
             axs1[i].plot(C, minDCF_values_09, label="π = 0.9", color=colors[2])
-            axs1[i].xscale('log')
-            axs1[i].xticks(C)
-            axs1[i].xlabel("λ")
-            axs1[i].ylim([0, 1])
+            axs1[i].set_xscale('log')
+            axs1[i].set_xticks(C)
+            axs1[i].set_xlabel("λ")
+            axs1[i].set_ylim([0, 1])
             if dim_red is None:
                 axs1[i].set_title('no PCA')
             else:
@@ -366,20 +384,24 @@ class BinaryModelEvaluator:
         plt.show()
 
     @staticmethod
-    def plot_lambda_minDCF_QuadraticSVM(DT=None, LT=None, k=3):
+    def plot_lambda_minDCF_RBFSVM(DT=None, LT=None, k=3):
         C = [1.E-4, 1.E-3, 1.E-2, 1.E-1, 1, 10, 10**2]
-        fig1, axs1 = plt.subplots(1, 3)
+        fig1, axs1 = plt.subplots(1, 2)
         fig1.set_figheight(5)
         fig1.set_figwidth(13)
         colors = ["red", "blue", "green"]
         i = 0
-        for dim_red in [None, {'type': 'pca', 'm': 10}, {'type': 'pca', 'm': 9}]:
-            minDCF_values_01 = []
-            minDCF_values_05 = []
-            minDCF_values_09 = []
+        for dim_red in [None, {'type': 'pca', 'm': 10}]:
+            minDCF_values_01_g01 = []
+            minDCF_values_05_g01 = []
+            minDCF_values_09_g01 = []
+            minDCF_values_01_g001 = []
+            minDCF_values_05_g001 = []
+            minDCF_values_09_g001 = []
             for c in C:
-                hparams = {'K': 1, 'eps': 1, 'gamma': 1, 'C': c, 'c': 0, 'd':1}
-                model = SVMClf.SVM(hparams, kernel='Polynomial', prior=0.5)
+                # gamma = 0.1
+                hparams = {'K': 1, 'eps': 1, 'gamma': 0.1, 'C': c, 'c': 0, 'd': 2}
+                model = SVMClf.SVM(hparams, kernel='RBF')
                 DCF, minDCF = BinaryModelEvaluator.kfold_cross_validation(
                     model,
                     DT,
@@ -388,24 +410,43 @@ class BinaryModelEvaluator:
                     preproc='znorm',
                     dimred=dim_red,
                     iprint=False)
-                minDCF_values_01.append(minDCF[0])
-                minDCF_values_05.append(minDCF[1])
-                minDCF_values_09.append(minDCF[2])
+                minDCF_values_01_g01.append(minDCF[0])
+                minDCF_values_05_g01.append(minDCF[1])
+                minDCF_values_09_g01.append(minDCF[2])
+                # gamma = 0.01
+                hparams = {'K': 1, 'eps': 1, 'gamma': 0.01, 'C': c, 'c': 0, 'd': 2}
+                model = SVMClf.SVM(hparams, kernel='RBF')
+                DCF, minDCF = BinaryModelEvaluator.kfold_cross_validation(
+                    model,
+                    DT,
+                    LT,
+                    k=k,
+                    preproc='znorm',
+                    dimred=dim_red,
+                    iprint=False)
+                minDCF_values_01_g001.append(minDCF[0])
+                minDCF_values_05_g001.append(minDCF[1])
+                minDCF_values_09_g001.append(minDCF[2])
 
-            axs1[i].plot(C, minDCF_values_01, label="π = 0.1", color=colors[0])
-            axs1[i].plot(C, minDCF_values_05, label="π = 0.5", color=colors[1])
-            axs1[i].plot(C, minDCF_values_09, label="π = 0.9", color=colors[2])
+            axs1[i].plot(C, minDCF_values_01_g01, label="π = 0.1", color=colors[0])
+            axs1[i].plot(C, minDCF_values_01_g001, label="π = 0.1", color=colors[0], linestlye='dashed')
+            axs1[i].plot(C, minDCF_values_05_g01, label="π = 0.5", color=colors[1])
+            axs1[i].plot(C, minDCF_values_05_g001, label="π = 0.5", color=colors[1], linestlye='dashed')
+            axs1[i].plot(C, minDCF_values_09_g01, label="π = 0.9", color=colors[2])
+            axs1[i].plot(C, minDCF_values_09_g001, label="π = 0.9", color=colors[2], linestlye='dashed')
             axs1[i].set_xscale('log')
             axs1[i].set_xticks(C)
             axs1[i].set_xlabel("C")
-            axs1[i].set_ylim([0, 1])
+            axs1[i].set_ylim([0, 1.2])
             if dim_red is None:
                 axs1[i].set_title('no PCA')
             else:
                 axs1[i].set_title('PCA(m=%d)' % (dim_red['m']))
             i += 1
         axs1[0].set_ylabel("minDCF")
-        fig1.legend(['π = 0.1', 'π = 0.5', 'π = 0.9'], loc='lower right')
+        fig1.legend(['π = 0.1 - γ = 0.1', 'π = 0.1 - γ = 0.01',
+                     'π = 0.5 - γ = 0.1', 'π = 0.5 - γ = 0.01',
+                     'π = 0.9 - γ = 0.1', 'π = 0.9 - γ = 0.01'], loc='lower right')
         plt.show()
 
     @staticmethod
@@ -421,7 +462,9 @@ class BinaryModelEvaluator:
         axs1[0, 0].plot(x, mindcf_naive, '--o', label='Naive')
         axs1[0, 0].set_ylim(0, 1)
         axs1[0, 0].set_title('no PCA')
-        dim_red = {'type': 'pca', 'm': 10}
+        axs1[0, 0].set_xticks([0.1, 0.5, 0.9])
+        axs1[0, 0].set_xlabel("π")
+        dim_red = {'type': 'pca', 'm': 11}
         _, mindcf_mvg = BinaryModelEvaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='znorm', dimred=dim_red, iprint=False)
         _, mindcf_tied = BinaryModelEvaluator.kfold_cross_validation(GauClf.TiedG(), DT, LT, k=3, preproc='znorm', dimred=dim_red, iprint=False)
         _, mindcf_naive = BinaryModelEvaluator.kfold_cross_validation(GauClf.NaiveBayes(), DT, LT, k=3, preproc='znorm', dimred=dim_red, iprint=False)
@@ -429,8 +472,10 @@ class BinaryModelEvaluator:
         axs1[0, 1].plot(x, mindcf_tied, '--o', label='Tied')
         axs1[0, 1].plot(x, mindcf_naive, '--o', label='Naive')
         axs1[0, 1].set_ylim(0, 1)
-        axs1[0, 1].set_title('PCA(m=10)')
-        dim_red = {'type': 'pca', 'm': 9}
+        axs1[0, 1].set_title('PCA(m=11)')
+        axs1[0, 1].set_xticks([0.1, 0.5, 0.9])
+        axs1[0, 1].set_xlabel("π")
+        dim_red = {'type': 'pca', 'm': 10}
         _, mindcf_mvg = BinaryModelEvaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='znorm', dimred=dim_red, iprint=False)
         _, mindcf_tied = BinaryModelEvaluator.kfold_cross_validation(GauClf.TiedG(), DT, LT, k=3, preproc='znorm', dimred=dim_red, iprint=False)
         _, mindcf_naive = BinaryModelEvaluator.kfold_cross_validation(GauClf.NaiveBayes(), DT, LT, k=3, preproc='znorm', dimred=dim_red, iprint=False)
@@ -438,7 +483,9 @@ class BinaryModelEvaluator:
         axs1[0, 2].plot(x, mindcf_tied, '--o', label='Tied')
         axs1[0, 2].plot(x, mindcf_naive, '--o', label='Naive')
         axs1[0, 2].set_ylim(0, 1)
-        axs1[0, 2].set_title('PCA(m=9)')
+        axs1[0, 2].set_title('PCA(m=10)')
+        axs1[0, 2].set_xticks([0.1, 0.5, 0.9])
+        axs1[0, 2].set_xlabel("π")
         # Gaussianized
         _, mindcf_mvg = BinaryModelEvaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='zg', dimred=None, iprint=False)
         _, mindcf_tied = BinaryModelEvaluator.kfold_cross_validation(GauClf.TiedG(), DT, LT, k=3, preproc='zg', dimred=None, iprint=False)
@@ -446,7 +493,9 @@ class BinaryModelEvaluator:
         axs1[1, 0].plot(x, mindcf_mvg, '--o', label='Full')
         axs1[1, 0].plot(x, mindcf_tied, '--o', label='Tied')
         axs1[1, 0].plot(x, mindcf_naive, '--o', label='Naive')
-        dim_red = {'type': 'pca', 'm': 10}
+        axs1[1, 0].set_xticks([0.1, 0.5, 0.9])
+        axs1[1, 0].set_xlabel("π")
+        dim_red = {'type': 'pca', 'm': 11}
         _, mindcf_mvg = BinaryModelEvaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='zg', dimred=dim_red, iprint=False)
         _, mindcf_tied = BinaryModelEvaluator.kfold_cross_validation(GauClf.TiedG(), DT, LT, k=3, preproc='zg', dimred=dim_red, iprint=False)
         _, mindcf_naive = BinaryModelEvaluator.kfold_cross_validation(GauClf.NaiveBayes(), DT, LT, k=3, preproc='zg', dimred=dim_red, iprint=False)
@@ -454,7 +503,9 @@ class BinaryModelEvaluator:
         axs1[1, 1].plot(x, mindcf_tied, '--o', label='Tied')
         axs1[1, 1].plot(x, mindcf_naive, '--o', label='Naive')
         axs1[1, 1].set_ylim(0, 1)
-        dim_red = {'type': 'pca', 'm': 9}
+        axs1[1, 1].set_xticks([0.1, 0.5, 0.9])
+        axs1[1, 1].set_xlabel("π")
+        dim_red = {'type': 'pca', 'm': 10}
         _, mindcf_mvg = BinaryModelEvaluator.kfold_cross_validation(GauClf.MVG(), DT, LT, k=3, preproc='zg', dimred=dim_red, iprint=False)
         _, mindcf_tied = BinaryModelEvaluator.kfold_cross_validation(GauClf.TiedG(), DT, LT, k=3, preproc='zg', dimred=dim_red, iprint=False)
         _, mindcf_naive = BinaryModelEvaluator.kfold_cross_validation(GauClf.NaiveBayes(), DT, LT, k=3, preproc='zg', dimred=dim_red, iprint=False)
@@ -462,7 +513,10 @@ class BinaryModelEvaluator:
         axs1[1, 2].plot(x, mindcf_tied, '--o', label='Tied')
         axs1[1, 2].plot(x, mindcf_naive, '--o', label='Naive')
         axs1[1, 2].set_ylim(0, 1)
+        axs1[1, 2].set_xticks([0.1, 0.5, 0.9])
+        axs1[1, 2].set_xlabel("π")
         fig1.legend(['Full', 'Tied', 'Naive'], loc='lower right')
+        fig1.tight_layout()
         plt.show()
 
     @staticmethod
@@ -515,3 +569,4 @@ class BinaryModelEvaluator:
         axs1[0].set_ylabel("minDCF")
         fig1.legend(['minDCF(π = 0.5) - Z-Norm Features', 'minDCF(π = 0.5) - Gaussianization'], loc='lower right')
         plt.show()
+
