@@ -111,7 +111,7 @@ class BinaryModelEvaluator:
         plt.show()
 
     @staticmethod
-    def plot_Bayes_error(model=None, preproc='raw', dimred=None, DT=None, LT=None, calibrate_scores=False):
+    def plot_Bayes_error(ax=None, title=None, model=None, preproc='raw', dimred=None, DT=None, LT=None, calibrate_scores=False):
         effPriorLogOdds = np.linspace(-3, 3, 21)
         effPrior = 1 / (1 + np.exp(-effPriorLogOdds))
         mindcf = []
@@ -120,13 +120,13 @@ class BinaryModelEvaluator:
             DCF, minDCF = BinaryModelEvaluator().kfold_cross_validation(model, DT, LT, k=3, preproc=preproc, dimred=dimred, prior=prior, calibrated=calibrate_scores)
             mindcf.append(minDCF)
             dcf.append(DCF)
-        plt.plot(effPriorLogOdds, dcf, label='DCF', color='red')
-        plt.plot(effPriorLogOdds, mindcf, label='min DCF', color='blue', linestyle='dashed')
+        ax.plot(effPriorLogOdds, dcf, label='DCF', color='red')
+        ax.plot(effPriorLogOdds, mindcf, label='min DCF', color='blue', linestyle='dashed')
         #plt.ylim([0, 1.1])
-        plt.xlim([-3, 3])
-        plt.legend(['DCF', 'min DCF'])
-        plt.xlabel("prior log-odds")
-        plt.show()
+        ax.set_xlim([-3, 3])
+        ax.legend(['DCF', 'min DCF'])
+        ax.set_xlabel("prior log-odds")
+        ax.set_title(title)
 
     @staticmethod
     def kfold_cross_validation(model=None, D=None, L=None, k=10, preproc='raw', dimred=None, iprint=True, prior=None, calibrated=False):

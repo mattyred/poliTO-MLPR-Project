@@ -229,9 +229,8 @@ if __name__ == '__main__':
     """
 
     # GMM
-    """
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
-    dim_red = {'type': 'pca', 'm': 9}
+    dim_red = {'type': 'pca', 'm': 10}
     nComponents = 8
     cov = 'Diag'
     print('R: GMM Classifier(%d components - %s cov)\nPreprocessing: znorm\nDim. Reduction: %s\n' % (nComponents, cov, dim_red))
@@ -241,12 +240,6 @@ if __name__ == '__main__':
                                            k=3,
                                            preproc='zg',
                                            dimred=dim_red)
-    """
+
     #ModelEvaluation.BinaryModelEvaluator().plot_histogramGMM(DT, LT)
-    # RBF SVM
-    ModelEvaluation.BinaryModelEvaluator().plot_lambda_minDCF_RBFSVM(DT, LT)
-    # Score Calibration
-    model_evaluator = ModelEvaluation.BinaryModelEvaluator()
-    dim_red = None#{'type': 'pca', 'm': 9}
-    hparams = {'K': 0, 'eps': 0, 'gamma': 1, 'C': 10, 'c': 0, 'd': 1}
-    #model_evaluator.plot_Bayes_error(LogRegClf.LinearLogisticRegression(lbd=10**-6), preproc='znorm', dimred=dim_red, DT=DT, LT=LT, calibrate_scores=True)
+
