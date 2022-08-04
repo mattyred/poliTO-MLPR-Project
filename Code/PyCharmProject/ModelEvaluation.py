@@ -223,38 +223,56 @@ class BinaryModelEvaluator:
         return dcf, min_dcf
 
     @staticmethod
-    def singlefold_validation(model=None, D=None, L=None, preproc='raw', app=None):
+    def validate_final_model(model=None, DT=None, LT=None, DE=None, LE=None, preproc='raw', dimred=None, iprint=True):
         PreProcesser = PreProcessing.DataPreProcesser()
-        nTrain = int(D.shape[1] * 2.0 / 3.0)  # 2/3 of the dataset D are used for training, 1/3 for validation
-        np.random.seed(0)
-        idx = np.random.permutation(D.shape[1])
-        idxTrain = idx[0:nTrain]
-        idxTest = idx[nTrain:]
-        DTR = D[:, idxTrain]
-        DTE = D[:, idxTest]
-        LTR = L[idxTrain]
-        LTE = L[idxTest]
-        pi = app['pi']
-        Cfn = app['Cfn']
-        Cfp = app['Cfp']
-        scores = []
-        if preproc == 'gau':
-            Dtrain_gaussianized = PreProcesser.gaussianized_features_training(DTR)
-            Dtest_gaussianized = PreProcesser.gaussianized_features_evaluation(DTE, DTR)
-            scores = model.train(Dtrain_gaussianized, LTR).predict(Dtest_gaussianized, labels=False)
-        elif preproc == 'znorm':
-            Dtrain_znorm = PreProcesser.znormalized_features_training(DTR)
-            Dtest_znorm = PreProcesser.znormalized_features_evaluation(DTE, DTR)
-            scores = model.train(Dtrain_znorm, LTR).predict(Dtest_znorm, labels=False)
-        elif preproc == 'raw':
-            scores = model.train(DTR, LTR).predict(DTE, labels=False)
-        dcf_app1 = BinaryModelEvaluator.DCF(scores, LTE, pi, Cfn, Cfp)
-        mindcf_app1 = BinaryModelEvaluator.minDCF(scores, LTE, pi, Cfn, Cfp)
-        print('DCF = %.3f - minDCF = %.3f\n\n' % (dcf_app1, mindcf_app1))
+        if dimred is not None:
+            dimred_type = dimred['type']
+            m = dimred['m']
 
-    @staticmethod
-    def validate_final_model(model=None):
-        pass
+        # --- Preprocessing --- #
+        if preproc == 'gau':
+            # Gaussianize features of Dtrain
+            DTnorm = PreProcesser.gaussianized_features_training(DT)
+            # Gaussianize features of Dtest
+            DEnorm = PreProcesser.gaussianized_features_evaluation(DE, DT)
+        elif preproc == 'znorm':
+            # Z-Normalize features of Dtrain
+            DTnorm = PreProcesser.znormalized_features_training(DT)
+                # Z-Normalize features of Dtest
+            DEnorm = PreProcesser.znormalized_features_evaluation(DE, DT)
+        elif preproc == 'zg':
+            DTz = PreProcesser.znormalized_features_training(DT)
+            DTnorm = PreProcesser.gaussianized_features_training(DTz)
+            DEz = PreProcesser.znormalized_features_evaluation(DE, DT)
+            DEnorm = PreProcesser.gaussianized_features_evaluation(DEz, DTnorm)
+        else:
+            DTnorm = DT
+            DEnorm = DE
+
+        # --- Dimensionality Reduction --- #
+        if dimred is not None and dimred_type == 'pca':
+            pca = DimRed.PCA(DTnorm)
+            DTnorm_red = pca.fitPCA_train(m)
+            DEnorm_red = pca.fitPCA_test(DEnorm)
+        else:
+            DTnorm_red = DTnorm
+            DEnorm_red = DEnorm
+
+        # --- Training and Predicting --- #
+        scores = model.train(DTnorm_red, LT).predict(DEnorm_red, labels=False)
+
+        # --- Model Evaluation (for different applications)--- #
+        dcf = []
+        min_dcf = []
+        priors = [0.1, 0.5, 0.9]
+        for p in priors:
+            dcf.append(BinaryModelEvaluator.DCF(scores, LE, p, 1, 1))
+            min_dcf.append(BinaryModelEvaluator.minDCF(scores, LE, p, 1, 1))
+
+        if iprint:
+            for i in range(len(priors)):  # for each application (prior)
+                print('pi=[%.1f] DCF = %.3f - minDCF = %.3f' % (priors[i], dcf[i], min_dcf[i]))
+        return dcf, min_dcf
 
     @staticmethod
     def plot_lambda_minDCF_LinearLogisticRegression(DT=None, LT=None, k=3):
