@@ -29,18 +29,18 @@ if __name__ == '__main__':
     PreProcesser = PreProcessing.DataPreProcesser()
     PreProcesser.plot_features_hist(DT, LT, preproc='gau', title=False)
     """
-    """
+
     # Features analysis - correlation of non-preprocessed features
     PreProcesser = PreProcessing.DataPreProcesser()
     DTz = PreProcesser.znormalized_features_training(DT)
-    DTzgau = PreProcesser.gaussianized_features_training(DTz)
-    PreProcesser.heatmap(DTzgau, LT, plt, 'Features correlation (no preprocessing)')
+    #DTzgau = PreProcesser.gaussianized_features_training(DTz)
+    PreProcesser.heatmap(DTz, LT, plt, 'Features correlation (no preprocessing)')
     # Features analyssis - correlation of gaussianized features
     #PreProcesser.heatmap(DTzgau, LT, plt, 'Features correlation (z-norm + gaussianization)')
     # Features analyssis - correlation of gaussianized features
     #PreProcesser.heatmap(DTz, LT, plt, 'Features correlation (z-normalized features)')
     plt.show()
-    """
+
 
     """
     # PCA K-FOLD
@@ -229,6 +229,7 @@ if __name__ == '__main__':
     """
 
     # GMM
+    """
     model_evaluator = ModelEvaluation.BinaryModelEvaluator()
     dim_red = {'type': 'pca', 'm': 10}
     nComponents = 8
@@ -242,4 +243,4 @@ if __name__ == '__main__':
                                            dimred=dim_red)
 
     #ModelEvaluation.BinaryModelEvaluator().plot_histogramGMM(DT, LT)
-
+    """

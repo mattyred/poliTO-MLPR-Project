@@ -67,30 +67,31 @@ evaluation set}
 
 \section{Dataset analysis}
 \subsection{Training and evaluation sets}
-The training set contains:
+The datasets provided are:
 \begin{itemize}
 	\item Training Set: 3000 samples belonging to Male class (Label = 0) and
 						3000 samples belonging to Female class (Label = 1).
 	\item Evaluation Set: 2000 samples belonging to Male class (Label = 0) and
 						  2000 samples belonging to Female class (Label = 1).
 \end{itemize}
-
-\subsection{Training set features analysis}
+We will use the Training Set to perform all the anaylsis and only
+once we will have selected the most propmising models we will train these using the 
+entire Training Set and final consideraions will be done considering how their 
+behaviour on the Evaluation Set.
 \subsection{Features Statistics}
-All the features are contiguous and their main statics can be
+All the features are contiguous and their main statistics can be
 showed through a boxplot in figure \ref{boxplot}. 
 
 \subsection{Z-normalization}
 A useful operation that can be applied in order to avoid to deal with numerical 
-issues and to make data more uniform is to apply Z-normalization as a preprocessing step:\\
+issues and to make data more uniform is to apply Z-normalization as a preprocessing step. We 
+are going to transform each sample of our dataset as:
 \begin{center}
-	\begin{math}
-		z_{i,j} = \frac{x_{i,j} - \mu_{j}}{\sigma_{j}} \forall x_{i} \in D 
-	\end{math}
+	$z_{i,j} = \frac{x_{i,j} - \mu_{j}}{\sigma_{j}} \forall x_{i} \in D$
 \end{center}
 Where $z_{i,j}$ is the Z-normalized value correspongin to the feature $j$
 of sample $i$ while $\mu_{j}$ and $\sigma_{j}$ are, respectively,
-the mean and the variance computed over all values for feature $j$.
+the mean and the variance computed over all the values for feature $j$.
 \comment{
 \FloatBarrier
 	\begin{table}
@@ -116,14 +117,14 @@ the mean and the variance computed over all values for feature $j$.
 }
 \begin{figure}[ht!]
 	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/boxplot.png}
-	\caption{Features boxplot}
+	\caption{Raw features boxplots}
 	\label{boxplot} 
 \end{figure}
 
 \subsection{Features distribution}
-By plotting historams for each feature, separated for male and female, it is possible to show
-how much each feature follows a gaussian distribution in order to understend whether a pre processing
-like gaussianization can be useful to go on with our classification task
+By plotting one histogram for each feature, separated for classes male and female, it is possible to show
+if the samples (separately for each feature) follow a Gaussian distribution and how well. This
+is done in order to understend whether a pre processing step like Gaussianization can be useful or not for our training data.
 \begin{figure}[ht!]
 	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/hist_znorm.png}
 	\caption{Z-normalized features distribution}
@@ -131,19 +132,20 @@ like gaussianization can be useful to go on with our classification task
 \end{figure}
 
 We can notice from figure \ref{hist_znorm} that almost all the features are already 
-well-distributed except for features 3, 7, 9. We can apply an additional pre-processing step in
-order to make all the features following a gaussian distribution.
+well-distributed (w.r.t. the Gaussian distribution) except for features 3, 7, 9. 
+We can thus apply an additional pre-processing step in order to make all the features following a Gaussian distribution:
+this step is called Gaussianization.
 
 \subsubsection{Gaussianization}
-Gaussianization is a pre processing step that maps each fature to values whose empirical cumulative
-distribution is well approximated by a Gaussian cumulative distribution function. For each
+Gaussianization is a pre-processing step that maps each fature to values whose empirical cumulative
+distribution are well approximated by a Gaussian cumulative distribution function. For each
 feature $x$ that we want to gaussianize we firstly compute the rank over the dataset:\\
 \begin{center}
 	\begin{math}
 		r(x) = \frac{\sum_{i=1}^{N}\mathbb{I}[x_{i} < x] + 1}{N + 2}
 	\end{math}
 \end{center}
-where $\mathbb{I}$ is the indicator function ($1$ when the condition inside $[ ]$ is true, $0$ 
+where $\mathbb{I}$ is the indicator function ($1$ when the condition inside $[\;]$ is true, $0$ 
 otherwise). Actually, we are counting how many samples in the dataset $D$ have a greater value
 with respect to the feature we are computing the rank on. \\
 The next step is to compute the transformed feature as $y = \Phi^{-1}(r(x))$ where $\Phi$ is
@@ -154,7 +156,9 @@ the inverse of the cumulative distribution function.
 	\caption{Gaussianized features distribution}
 	\label{hist_gau} 
 \end{figure}
-
+%%%%%%%%%%%%%%%
+%%% HEATMAP %%%
+%%%%%%%%%%%%%%%
 \subsection{Features correlation}
 We can show how much features are correlated by using a heatmap plot showing a darker
 color inside cells $[i, j]$ for which it exists an high correlation among feaure $i$ and 
@@ -166,23 +170,28 @@ correlation among feature $X$ and feature $Y$:
 	\end{math}
 \end{center}
 \begin{figure}[ht!]
-	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/heatmap_znormgau.png}
-	\caption{Z-normalized+Gaussianized features correlation: grey the whole dataset, orange F class, 
+	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/heatmap_znorm.png}
+	\caption{Z-normalized features correlation: grey the whole dataset, orange F class, 
 	blue M class}
 	\label{heatmap} 
 \end{figure}
 
-Correlation is quite high among most of the features, we can understand that applying PCA
-would be meaningful for values of $m$ not below $10$ or $9$ at most. For smaller values of $m$
-we would lose important information coming from high-correlated features. 
-
+Correlation is quite high among most of the features. We can understand that applying PCA
+would be meaningful for values of $m$ not below $11$ or $10$ at most. For smaller values of $m$
+we would probably loose important information coming from high-correlated features. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DIMENSIONALITY REDUCTION DISCUSSION %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Dimensionality reduction}
-Before proceeding with the classification task i would spend some words on the possible 
-dimensioanlity reduction rechniques that can be applied: PCA, LDA.
+Before proceeding with the classification task we will spend some words on the possible 
+dimensioanlity reduction rechniques that we have analyzed and could be applied: PCA and LDA.
+%%%%%%%%%%%%%%%%%%%%%%
+%%% PCA DISCUSSION %%%
+%%%%%%%%%%%%%%%%%%%%%%
 \subsection{PCA}
 As already anticipated, given the heatmap in figure \ref{heatmap} we can observe that PCA
-with reasonable values of $m$ can be applied. PCA is a dimensionality reduction technique
-that, given a centered dataset $X = {x_{1}, ..., x_{k}}$, it aims to find the subspace of 
+with reasonable values of $m$ can be applied. 
+PCA is a dimensionality reduction technique that, given a centered dataset $X = \{x_{1}, ..., x_{k}\}$, it aims to find the subspace of 
 $\mathbb{R}^{n}$ that allows to preserve most of the information (the directions with the
 highest variance).\\Starting from the sample covariance matrix
 \begin{center}
@@ -197,13 +206,15 @@ spanned by the $m$ columns of $U$ corresponding to the $m$ highest eigenvalues:
 		y_{i} = P^T(x_{i}-\bar{x})
 	\end{math}
 \end{center}
-In order to select the optimal $m$ we can use a cross-validation approach by inspecting how much
-of the total variance of data we are able to retain by using that value of $m$. We exploit the fact
-that each eigenvalue correspond to the variance along the corresponding axis and the
+where $P$ is the matrix corresponding the the $m$ columns of $U$ associated the to
+the $m$ highest eigenvalues of $C$.
+In this preliminary analysis, in order to select the optimal $m$, we can use a cross-validation approach by inspecting how much
+of the total variance of the data we are able to retain by using different values for $m$. We exploit the fact
+that each eigenvalue corresponds to the variance along the corresponding axis and the
 eigenvalues are the elements of the diagonal of the matrix $\Sigma$. We selecte $m$ as:
 \begin{center}
 	\begin{math}
-		\min_m\;s.t \frac{\sum_{i}^{m}\sigma_{i}}{\sum_{i}^{n}\sigma_{i}} >= t,\;t \ge 95\%
+		\min_m\;s.t \frac{\sum_{i}^{m}\sigma_{i}}{\sum_{i}^{n}\sigma_{i}} \ge t,\;t \ge 95\%
 	\end{math}
 \end{center}
 \begin{figure}[ht!]
@@ -212,13 +223,16 @@ eigenvalues are the elements of the diagonal of the matrix $\Sigma$. We selecte 
 	\label{pca} 
 \end{figure}
 We can clearly understand from figure \ref{pca} that values of $m < 9$ would rapidly
-decrease the amout of retained variance. We will see better later on how this would 
-badly impact the performance of the classifiers
+decrease the amout of retained variance of the data. We will see better later on how 
+choosing a too small value of $m$ would badly impact the performances of the different classifiers.
 
+%%%%%%%%%%%%%%%%%%%%%%
+%%% LDA DISCUSSION %%%
+%%%%%%%%%%%%%%%%%%%%%%
 \subsection{LDA}
 PCA technique is unsupervised so we have no guarantee of obtainig discriminant directions.
-Despite the fact that LDA allows to find at most $C - 1$, where $C$ is the number of classes,
-directions, so it makes no sense to apply it as a dimensionality reduction technique, it can
+Despite the fact that LDA allows to find at most $C - 1$ discriminant directions (where $C$ is the number of classes), so 
+it makes no sense to apply it as a dimensionality reduction technique in a bianry classification task, it can
 be used as a linear classifier and we can understand it by its definition; LDA mazimizes the
 between-class variability over the within-class variability ratio for the transformed samples:
 \begin{center}
@@ -231,27 +245,30 @@ corresponding to the largest eigenvalue. Once that we have estimated $w$ we can 
 the test samples over $w$ and assign the class label looking at the score obtained:\\
 \begin{center}
 	\begin{math}
-		f(x)=\left\{
+		C(x_t)=\left\{
 		\begin{array}{ll}
-			1, & \mbox{if $x<0$}.\\
-			0, & \mbox{otherwise}.
+			C_1, & \mbox{if $w^Tx_t \ge t$}.\\
+			C_0, & \mbox{if $w^Tx_t < t$}.
 		\end{array}
 		\right.
 	\end{math}
 \end{center}
-It will be showed later the result of the classifier
+It will be showed later the result of the classifier when it will be proved how this model
+is related to the Tied Gaussian Generative Classifier model.
 \section{Classification models analysis}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% CLASSIFICATION INTRO %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Premises}
 In the next paragraphs we are going to compare different classification models. 
-We will employ a k-fold cross validation technique (with $k=3$) for model evaluation and the
-best models will be chosen to train the entire training set for performing a final comparison.
+We will employ a k-fold cross validation technique (with $k=3$) for model evaluation.
 We will consider three types of applications:
 \begin{center}
 	$(\tilde{\pi}, C_{fp}, C_{fn}) = (0.1, 1, 1)$\\
 	$(\tilde{\pi}, C_{fp}, C_{fn}) = (0.5, 1, 1)$\\
 	$(\tilde{\pi}, C_{fp}, C_{fn}) = (0.9, 1, 1)$\\
 \end{center}
-and the target application will be 
+and the target application (the one we will optimize for) will be the balanced one:
 \begin{center}
 	$(\tilde{\pi}, C_{fp}, C_{fn}) = (0.5, 1, 1)$
 \end{center}
@@ -264,51 +281,57 @@ detection cost:
 			\frac{\pi_{T}C_{fn}P_{fn} + (1-\pi_{T})C_{fp}P_{fp}}{min(\pi_{T},C_{fn}, (1-\pi_{T}C_{fp}))}
 	\end{math}
 \end{center}
-and for $minDCF$ computation we will look for:
+and for $minDCF$ computation we will look for the threshold:
 \begin{center}
 	\begin{math}
 		t' = -log(\frac{\tilde{\pi}}{1-\tilde{\pi}})
 	\end{math}
 \end{center}
-that allows us to obtain the lowest possible $DCF$ (as if knew in advance this optimal threshold)
+that allows us to obtain the lowest possible $DCF$ (as if knew in advance this optimal value fot threshold).
+%%%%%%%%%%%%%%%%%%%%%%%
+%%% GAUSSIAN MODELS %%%
+%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Gaussian models}
-The first class of models we are going to analyze are the generative gaussian models. Model assumption are that,
-given the dataset $X$ we assume that the sample $x_{t}$ is a realization of the R.V. $X_{t}$. A simple
+The first class of models we are going to analyze are the generative Gaussian models. We assume that,
+given the dataset $X$, the sample $x_{t}$ is a realization of the R.V. $X_{t}$. A simple
 model consists in assuming that our data, given the class, can be described by a Gaussian distribution:
 \begin{center}
 	\begin{math}
 		(X_{t}|C_{t}=c) \sim (X|C=c) \sim \mathcal{N} (x_{t}|\mu_{c},\Sigma_{c})
 	\end{math}
 \end{center}
-We will assign a probabilistic score to each sample in term of the class-posterior 
+Since we are dealing with a binary classification task 
+we will assign a probabilistic score to each sample in terms of the class-posterior 
 log-likelihood ratio:
 \begin{center}
 	\begin{math}
-		log\;r(x_{t}) = log\;\frac{P(C = h_{1}|x_{t})}{P(C = h_{0}|x_{t})}
+		llr(x_t)=log\;r(x_{t}) = log\;\frac{P(C = h_{1}|x_{t})}{P(C = h_{0}|x_{t})}
 	\end{math}
 \end{center}
 We can expand this expression by writing:
 \begin{center}
-	\begin{math}
-		log\;r(x_{t}) = log\;\frac{f_{X|C}(x_{t}|h_{1})}{f_{X|C}(x_{t}|h_{0})} + log\;\frac{\pi}{1-\pi}
-	\end{math}
+	$log\;r(x_{t}) = log\;\frac{f_{X|C}(x_{t}|h_{1})}{f_{X|C}(x_{t}|h_{0})} + log\;\frac{\pi}{1-\pi}$
 \end{center}
-While the training phase consists in estimating the model parameters the scoring phase
+\begin{center}
+	with\;$ f_{X|C}(x_{t}|c) = \mathcal{N}(x|\mu_c,\Sigma_c)$
+\end{center}
+While the training phase consists in estimating the model parameters of the Mutlivariate Gaussian
+distribution the scoring phase
 consists in computing the log-likelihood ratio (first term of the equation) for each sample. 
 It will be then compared with  a threshold specific for each application for computing 
-the $minDCF$. What differentiate the different Gaussian models is the way how we estimate the
-model parameters.
+the $minDCF$. What differentiate the Gaussian models is the way how we estimate the
+model parameters of the Gaussian distribution.
+
 \subsubsection{MVG Gaussian Classifier}
-The ML solution to the previous desribed problem is given by the empirical mean and covariance
+The ML solution to the previous described problem is given by the empirical mean and covariance
 matrix for each class:
 \begin{center}
 	$\mu_{c}^* = \frac{1}{N_c}\sum_{i=1}^{N}x_{c,i}$ \\
-	$\Sigma_c^* = \frac{1}{N_c}\sum_{i=1}^{N}(x_{c,i}-\mu_c^*)(x_{c,i}-\mu_c^*)$
+	$\Sigma_c^* = \frac{1}{N_c}\sum_{i=1}^{N}(x_{c,i}-\mu_c^*)(x_{c,i}-\mu_c^*)^T$
 \end{center}
-We will then compute the log densities for each sample by using the estimated model parameters
 \subsubsection{Naive Bayes Classifier}
 The Naive Bayes assumption simplifies the MVG full covariance model stating that if we knew
-that for each class the componenets are approximately independent we can assume that the 
+that for each class the components are approximately independent we can assume that the 
 distribution $X|C$ can be factorized over its components. The ML solution to this problem is:
 \begin{center}
 	$\mu_{c,[j]}^* = \frac{1}{N_c}\sum_{i|c_i=c}^{}x_{i,[j]}$ \\
@@ -317,9 +340,9 @@ distribution $X|C$ can be factorized over its components. The ML solution to thi
 The density of a sample $x$ can be expressed as $\mathcal{N}(x|\mu_c,\Sigma_c)$ where
 $\mu_c$ is an array where each element $\mu_{c,[j]}$ is the the mean for each class
 for each component while $\Sigma_c$ is a diagonal covariance matrix. The Naive Bayes classifier
-corresponds to the MVG full covariance classifier with a diagonal covariance matrix
+corresponds to the MVG full covariance classifier with a diagonal covariance matrix.
 \subsubsection{Tied Gaussian Classifier}
-This model assumes that the covariance matrices of the different class are tied (we consider
+This model assumes that the covariance matrices of the different classes are tied (we consider
 only one covariance matrix common to all classes). We are assuming that:
 \begin{center}
 	$f_{X|C}(x|c) = \mathcal{N} (x|\mu_c, \Sigma)$
@@ -328,7 +351,7 @@ so each class has its own mean but the covariance matrix is the same for all the
 solution to this problem is:
 \begin{center}
 	$\mu_{c}^* = \frac{1}{N_c}\sum_{i=1}^{N}x_{c,i}$ \\
-	$\Sigma^* = \frac{1}{N}\sum_c{}^{}\sum_{i|c_i=c}^{}(x_{i}-\mu_c^*)(x_{i}-\mu_c^*)$
+	$\Sigma^* = \frac{1}{N}\sum_c{}^{}\sum_{i|c_i=c}^{}(x_{i}-\mu_c^*)(x_{i}-\mu_c^*)^T$
 \end{center}
 This model is strongly related to LDA (used as a linear classfication model). By considering 
 the binary log-likelihood ratio of the tied model we obtain a linear decision function:
@@ -341,7 +364,7 @@ projecting over the LDA subspace is, up to a scaling factor $k$, given by:
 	$w^Tx = k \cdot x^T\varLambda (\mu_1-\mu_0)$ 
 \end{center}
 where $\varLambda (\mu_1-\mu_0) = b$. The LDA assumption that all the classes have the same
-within class covariance is related to the assumption done for the tied model.\
+within class covariance matrix is related to the assumption done for the tied model.\\
 \subsubsection{Gaussian Models Comparison}
 \FloatBarrier
 	\begin{table}
@@ -403,17 +426,21 @@ A graphical version of the table can be helpful in analyzing results:
 	\label{gauplots} 
 \end{figure}
 
-Some observations:
 \begin{itemize}
 	\item We can notice that Full-Cov model and Tied-Cov model achieve very good and similar results with
-		  slighlty better performances for the tied model.
-	\item Gaussianization pre processing does't really help in achieving better results maybe
-		  because data are already well distributed according to the Gaussian assumptions
+		  slighlty better performances for the Tied-Cov model (this means that the covariance matrices
+		  of the different classes are similar and infact the model provides more robust estimates
+		  in this case).
+	\item Gaussianization pre processing does't really help in achieving better results because 
+	      data are already well distributed according to the Gaussian assumptions (this was also noticed
+		  previously while discussing the Gaussianization pre-processing).
 	\item Naive Bayes assumption doesn't hold really well, in particular if PCA is not applied. When 
 		  PCA is applied it has a really good impact only on Naive Bayes model and especialliy if also
-		  combined with Gaussianization pre processing.
+		  combined with Gaussianization pre-processing (the Naive Bayes assumption that the covariance
+		  matrix of each class is diagonal holds better with lower features dimensionality and improved
+		  features distribution from a Gaussian point of view).
 	\item Regarding Full and Tied models with PCA(m=11) there is no a high performance degradation
-		  since the minDCF obtained are still good. For lower values of $m$ the models become less
+		  since the minDCFs values obtained are still good. For lower values of $m$ the models become less
 		  able in taking decisions and the minDCF increases
 	\item For the MVG classifiers best performances are achieved by the Tied-Cov classifier with
 		  only Z-normalization pre processing and withouth PCA. Really good performacnes are also

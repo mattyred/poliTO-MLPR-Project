@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.11.28)  4 AUG 2022 17:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.11.28)  8 AUG 2022 17:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1142,21 +1142,16 @@ Package microtype Info: Character `textrbrackdbl ' is missing
 Package microtype Info: Character `texttildelow ' is missing
 (microtype)             in font `TS1/XCharter-TLF/m/n/10'.
 (microtype)             Ignoring protrusion settings for this character.
-
-Underfull \hbox (badness 10000) in paragraph at lines 84--86
-
- []
-
-(/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/mt-cmr.cfg
+ (/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/mt-cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 87.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 90.
  (/usr/local/texlive/2020/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 87.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 90.
  (/usr/local/texlive/2020/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/mt-msb.cfg
@@ -1165,51 +1160,39 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 <./Pictures/FeaturesAnalysis/boxplot.png, id=1, 807.2559pt x 497.2176pt>
 File: ./Pictures/FeaturesAnalysis/boxplot.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/boxplot.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/boxplot.png  used on input line 118.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/boxplot.png  used on input line 119.
 (pdftex.def)             Requested size: 231.88997pt x 142.82376pt.
 LaTeX Font Info:    Font shape `T1/XCharter-TLF/m/n' will be
-(Font)              scaled to size 9.0pt on input line 119.
+(Font)              scaled to size 9.0pt on input line 120.
 LaTeX Font Info:    Font shape `T1/XCharter-TLF/b/n' will be
-(Font)              scaled to size 9.0pt on input line 119.
+(Font)              scaled to size 9.0pt on input line 120.
 LaTeX Font Info:    Font shape `T1/XCharter-TLF/m/it' will be
-(Font)              scaled to size 9.0pt on input line 119.
+(Font)              scaled to size 9.0pt on input line 120.
 <./Pictures/FeaturesAnalysis/hist_znorm.png, id=3, 801.4743pt x 403.2666pt>
 File: ./Pictures/FeaturesAnalysis/hist_znorm.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/hist_znorm.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/hist_znorm.png  used on input line 128.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/hist_znorm.png  used on input line 129.
 (pdftex.def)             Requested size: 231.88997pt x 116.67357pt.
-
-Underfull \hbox (badness 1721) in paragraph at lines 138--141
-\T1/XCharter-TLF/m/n/10 (+20) dis-tri-bu-tion is well ap-prox-i-mated by a Gaus-sian
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 138--141
-
- []
-
-[1{/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+ [1{/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
  </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/boxplot.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 140--143
+
+ []
+
 <./Pictures/FeaturesAnalysis/hist_gau.png, id=21, 462.528pt x 346.896pt>
 File: ./Pictures/FeaturesAnalysis/hist_gau.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/hist_gau.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/hist_gau.png  used on input line 153.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/hist_gau.png  used on input line 155.
 (pdftex.def)             Requested size: 231.88997pt x 173.91866pt.
-<./Pictures/FeaturesAnalysis/heatmap_znormgau.png, id=22, 462.528pt x 346.896pt>
-File: ./Pictures/FeaturesAnalysis/heatmap_znormgau.png Graphic file (type png)
-<use ./Pictures/FeaturesAnalysis/heatmap_znormgau.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/heatmap_znormgau.png  used on input line 169.
-(pdftex.def)             Requested size: 231.88997pt x 173.91866pt.
-<./Pictures/FeaturesAnalysis/pca.png, id=23, 462.528pt x 346.896pt>
-File: ./Pictures/FeaturesAnalysis/pca.png Graphic file (type png)
-<use ./Pictures/FeaturesAnalysis/pca.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/pca.png  used on input line 210.
-(pdftex.def)             Requested size: 231.88997pt x 173.91866pt.
+<./Pictures/FeaturesAnalysis/heatmap_znorm.png, id=22, 736.4313pt x 346.896pt>
+File: ./Pictures/FeaturesAnalysis/heatmap_znorm.png Graphic file (type png)
+<use ./Pictures/FeaturesAnalysis/heatmap_znorm.png>
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/heatmap_znorm.png  used on input line 173.
+(pdftex.def)             Requested size: 231.88997pt x 109.23047pt.
 LaTeX Font Info:    Font shape `T1/XCharter-TLF/m/it' will be
-(Font)              scaled to size 10.0pt on input line 217.
-
+(Font)              scaled to size 10.0pt on input line 215.
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
 Make it at least 22.43503pt.
@@ -1217,42 +1200,53 @@ We now make it that large for the rest of the document.
 This may cause the page layout to be inconsistent, however.
 
 LaTeX Font Info:    Font shape `T1/XCharter-TLF/m/n' will be
-(Font)              scaled to size 8.0pt on input line 217.
-[2 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/hist_znorm.png> </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/hist_gau.png> </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/heatmap_znormgau.png>]
-Underfull \hbox (badness 3503) in paragraph at lines 229--232
+(Font)              scaled to size 8.0pt on input line 215.
+[2 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/hist_znorm.png> </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/hist_gau.png> </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/heatmap_znorm.png>]
+<./Pictures/FeaturesAnalysis/pca.png, id=35, 462.528pt x 346.896pt>
+File: ./Pictures/FeaturesAnalysis/pca.png Graphic file (type png)
+<use ./Pictures/FeaturesAnalysis/pca.png>
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/pca.png  used on input line 221.
+(pdftex.def)             Requested size: 231.88997pt x 173.91866pt.
+
+Underfull \hbox (badness 3503) in paragraph at lines 243--246
 \T1/XCharter-TLF/m/n/10 (+20) to the eigen-vec-tor of $\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 1\OML/cmm/m/it/10 S[]$ \T1/XCharter-TLF/m/n/10 (+20) cor-re-spond-ing to
  []
 
 
-Underfull \hbox (badness 1024) in paragraph at lines 229--232
+Underfull \hbox (badness 1024) in paragraph at lines 243--246
 \T1/XCharter-TLF/m/n/10 (+20) the largest eigen-value. Once that we have es-ti-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 229--232
+Underfull \hbox (badness 10000) in paragraph at lines 243--246
 
  []
 
 [3 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/pca.png>]
-Underfull \hbox (badness 1194) in paragraph at lines 317--321
+Underfull \hbox (badness 1194) in paragraph at lines 340--344
 \T1/XCharter-TLF/m/n/10 (+20) The den-sity of a sam-ple $\OML/cmm/m/it/10 x$ \T1/XCharter-TLF/m/n/10 (+20) can be ex-pressed as
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 366--368
+
  []
 
 <./Pictures/FeaturesAnalysis/gaumodels.png, id=41, 462.528pt x 346.896pt>
 File: ./Pictures/FeaturesAnalysis/gaumodels.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/gaumodels.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/gaumodels.png  used on input line 401.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/gaumodels.png  used on input line 424.
 (pdftex.def)             Requested size: 231.88997pt x 173.91866pt.
 [4 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/gaumodels.png>]
 <./Pictures/FeaturesAnalysis/dcfplotLLR.png, id=46, 939.51pt x 361.35pt>
 File: ./Pictures/FeaturesAnalysis/dcfplotLLR.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/dcfplotLLR.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/dcfplotLLR.png  used on input line 458.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/dcfplotLLR.png  used on input line 485.
 (pdftex.def)             Requested size: 231.88997pt x 89.1849pt.
 LaTeX Font Info:    Font shape `T1/XCharter-TLF/m/n' will be
-(Font)              scaled to size 7.0pt on input line 471.
+(Font)              scaled to size 7.0pt on input line 498.
 
-Overfull \hbox (13.05418pt too wide) in paragraph at lines 494--504
+Overfull \hbox (13.05418pt too wide) in paragraph at lines 521--531
  [][] 
  []
 
@@ -1260,79 +1254,79 @@ Overfull \hbox (13.05418pt too wide) in paragraph at lines 494--504
 <./Pictures/FeaturesAnalysis/dcfplotQLR.png, id=52, 939.51pt x 361.35pt>
 File: ./Pictures/FeaturesAnalysis/dcfplotQLR.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/dcfplotQLR.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/dcfplotQLR.png  used on input line 552.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/dcfplotQLR.png  used on input line 579.
 (pdftex.def)             Requested size: 231.88997pt x 89.1849pt.
 
-Overfull \hbox (13.05418pt too wide) in paragraph at lines 588--603
+Overfull \hbox (13.05418pt too wide) in paragraph at lines 615--630
  [][] 
  []
 
 LaTeX Font Info:    Font shape `T1/XCharter-TLF/m/n' will be
-(Font)              scaled to size 5.0pt on input line 637.
+(Font)              scaled to size 5.0pt on input line 664.
 [6 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/dcfplotQLR.png>]
 <./Pictures/FeaturesAnalysis/LSVM.png, id=57, 885.3075pt x 348.30125pt>
 File: ./Pictures/FeaturesAnalysis/LSVM.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/LSVM.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/LSVM.png  used on input line 670.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/LSVM.png  used on input line 697.
 (pdftex.def)             Requested size: 231.88997pt x 91.23114pt.
 
-Underfull \hbox (badness 4144) in paragraph at lines 671--671
+Underfull \hbox (badness 4144) in paragraph at lines 698--698
 [][]|\T1/XCharter-TLF/m/it/9 (+20) Lin-ear SVM (K=0, Z-Normalized fea-tures) -
  []
 
 
-Overfull \hbox (1.94287pt too wide) in paragraph at lines 678--700
+Overfull \hbox (1.94287pt too wide) in paragraph at lines 705--727
  [][] 
  []
 
 
-Overfull \hbox (13.05418pt too wide) in paragraph at lines 705--723
+Overfull \hbox (13.05418pt too wide) in paragraph at lines 732--750
  [][] 
  []
 
 <./Pictures/FeaturesAnalysis/polysvm.png, id=58, 878.28125pt x 348.30125pt>
 File: ./Pictures/FeaturesAnalysis/polysvm.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/polysvm.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/polysvm.png  used on input line 760.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/polysvm.png  used on input line 787.
 (pdftex.def)             Requested size: 231.88997pt x 91.95924pt.
 [7 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/LSVM.png> </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/polysvm.png>]
 <./Pictures/FeaturesAnalysis/rbfsvm_znorm_compl.png, id=65, 878.28125pt x 346.29375pt>
 File: ./Pictures/FeaturesAnalysis/rbfsvm_znorm_compl.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/rbfsvm_znorm_compl.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/rbfsvm_znorm_compl.png  used on input line 814.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/rbfsvm_znorm_compl.png  used on input line 841.
 (pdftex.def)             Requested size: 231.88997pt x 91.42921pt.
 
-Overfull \hbox (18.75403pt too wide) in paragraph at lines 860--882
+Overfull \hbox (18.75403pt too wide) in paragraph at lines 887--909
  [][] 
  []
 
 
-Underfull \hbox (badness 2435) in paragraph at lines 894--899
+Underfull \hbox (badness 2435) in paragraph at lines 921--926
 \T1/XCharter-TLF/m/n/10 (+20) sions. This is aligned with the fact that also
  []
 
 <./Pictures/FeaturesAnalysis/gmmhist.png, id=66, 656.9343pt x 342.5598pt>
 File: ./Pictures/FeaturesAnalysis/gmmhist.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/gmmhist.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/gmmhist.png  used on input line 913.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/gmmhist.png  used on input line 940.
 (pdftex.def)             Requested size: 231.88997pt x 120.91699pt.
 
-Overfull \hbox (5.67024pt too wide) in paragraph at lines 927--973
+Overfull \hbox (5.67024pt too wide) in paragraph at lines 954--1000
  [][] 
  []
 
 [8 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/rbfsvm_znorm_compl.png>]
-Overfull \hbox (17.53485pt too wide) in paragraph at lines 978--1001
+Overfull \hbox (17.53485pt too wide) in paragraph at lines 1005--1028
  [][] 
  []
 
 
-Underfull \hbox (badness 1681) in paragraph at lines 1010--1010
+Underfull \hbox (badness 1681) in paragraph at lines 1037--1037
 []\OT1/phv/b/n/12 Calibration Anal-y-sis On Se-lected
  []
 
 
-Underfull \hbox (badness 7451) in paragraph at lines 1021--1021
+Underfull \hbox (badness 7451) in paragraph at lines 1048--1048
 []\OT1/phv/b/n/12 Calbrating Scores For Se-lected
  []
 
@@ -1340,30 +1334,30 @@ Underfull \hbox (badness 7451) in paragraph at lines 1021--1021
 <./Pictures/FeaturesAnalysis/bestmodels_nc.png, id=79, 940.51375pt x 350.30875pt>
 File: ./Pictures/FeaturesAnalysis/bestmodels_nc.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/bestmodels_nc.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/bestmodels_nc.png  used on input line 1051.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/bestmodels_nc.png  used on input line 1078.
 (pdftex.def)             Requested size: 231.88997pt x 86.36893pt.
 <./Pictures/FeaturesAnalysis/bestmodels_c.png, id=80, 863.225pt x 323.2075pt>
 File: ./Pictures/FeaturesAnalysis/bestmodels_c.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/bestmodels_c.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/bestmodels_c.png  used on input line 1060.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/bestmodels_c.png  used on input line 1087.
 (pdftex.def)             Requested size: 231.88997pt x 86.82333pt.
 
-Overfull \hbox (42.85689pt too wide) in paragraph at lines 1068--1088
+Overfull \hbox (42.85689pt too wide) in paragraph at lines 1095--1115
  [][] 
  []
 
 
-Overfull \hbox (22.86864pt too wide) in paragraph at lines 1099--1133
+Overfull \hbox (22.86864pt too wide) in paragraph at lines 1126--1160
  [][] 
  []
 
 
-Overfull \hbox (22.86864pt too wide) in paragraph at lines 1138--1172
+Overfull \hbox (22.86864pt too wide) in paragraph at lines 1165--1199
  [][] 
  []
 
 
-LaTeX Warning: Empty bibliography on input line 1178.
+LaTeX Warning: Empty bibliography on input line 1205.
 
 
 AED: lastpage setting LastPage
@@ -1375,15 +1369,15 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 17729 strings out of 480608
- 310656 string characters out of 5903629
- 990939 words of memory out of 5000000
+ 17732 strings out of 480608
+ 310710 string characters out of 5903629
+ 991939 words of memory out of 5000000
  33119 multiletter control sequences out of 15000+600000
- 679075 words of font info for 199 fonts, out of 8000000 for 9000
+ 679344 words of font info for 201 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  44i,12n,77p,989b,1598s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/xcharter/xch_uy5hgr.enc}{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/xcharter/xch_q7u3cc.enc}{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/xcharter/XCharter-Bold.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/xcharter/XCharter-Italic.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/xcharter/XCharter-Roman.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb>
-Output written on "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.pdf" (11 pages, 982637 bytes).
+Output written on "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.pdf" (11 pages, 986353 bytes).
 PDF statistics:
  162 PDF objects out of 1000 (max. 8388607)
  98 compressed objects within 1 object stream
