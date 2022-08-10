@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.11.28)  9 AUG 2022 22:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.11.28)  10 AUG 2022 17:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1305,79 +1305,82 @@ Underfull \hbox (badness 2435) in paragraph at lines 921--926
 \T1/XCharter-TLF/m/n/10 (+20) sions. This is aligned with the fact that also
  []
 
-<./Pictures/FeaturesAnalysis/gmmhist.png, id=66, 656.9343pt x 342.5598pt>
+[8 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/rbfsvm_znorm_compl.png>]
+<./Pictures/FeaturesAnalysis/gmmhist.png, id=74, 656.9343pt x 342.5598pt>
 File: ./Pictures/FeaturesAnalysis/gmmhist.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/gmmhist.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/gmmhist.png  used on input line 940.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/gmmhist.png  used on input line 994.
 (pdftex.def)             Requested size: 231.88997pt x 120.91699pt.
 
-Overfull \hbox (5.67024pt too wide) in paragraph at lines 954--1000
+Overfull \hbox (5.67024pt too wide) in paragraph at lines 1003--1049
  [][] 
  []
 
-[8 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/rbfsvm_znorm_compl.png>]
-Overfull \hbox (17.53485pt too wide) in paragraph at lines 1005--1028
+[9 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/gmmhist.png>]
+Overfull \hbox (13.05418pt too wide) in paragraph at lines 1071--1094
  [][] 
  []
 
 
-Underfull \hbox (badness 1681) in paragraph at lines 1037--1037
+Underfull \hbox (badness 3646) in paragraph at lines 1095--1099
+\T1/XCharter-TLF/m/n/10 (+20) The GMM Tied(8 com-po-nents) trained with Z-
+ []
+
+
+Underfull \hbox (badness 1681) in paragraph at lines 1102--1102
 []\OT1/phv/b/n/12 Calibration Anal-y-sis On Se-lected
  []
 
 
-Underfull \hbox (badness 7451) in paragraph at lines 1048--1048
+Underfull \hbox (badness 7451) in paragraph at lines 1113--1113
 []\OT1/phv/b/n/12 Calbrating Scores For Se-lected
  []
 
-[9 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/gmmhist.png>]
 <./Pictures/FeaturesAnalysis/bestmodels_nc.png, id=79, 940.51375pt x 350.30875pt>
 File: ./Pictures/FeaturesAnalysis/bestmodels_nc.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/bestmodels_nc.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/bestmodels_nc.png  used on input line 1078.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/bestmodels_nc.png  used on input line 1143.
 (pdftex.def)             Requested size: 231.88997pt x 86.36893pt.
 <./Pictures/FeaturesAnalysis/bestmodels_c.png, id=80, 863.225pt x 323.2075pt>
 File: ./Pictures/FeaturesAnalysis/bestmodels_c.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/bestmodels_c.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/bestmodels_c.png  used on input line 1087.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/bestmodels_c.png  used on input line 1152.
 (pdftex.def)             Requested size: 231.88997pt x 86.82333pt.
-
-Overfull \hbox (42.85689pt too wide) in paragraph at lines 1095--1115
+[10]
+Overfull \hbox (5.30386pt too wide) in paragraph at lines 1160--1180
  [][] 
  []
 
 
-Overfull \hbox (22.86864pt too wide) in paragraph at lines 1126--1160
+Overfull \hbox (22.86864pt too wide) in paragraph at lines 1191--1225
  [][] 
  []
 
 
-Overfull \hbox (32.39966pt too wide) in paragraph at lines 1165--1199
+Overfull \hbox (32.39966pt too wide) in paragraph at lines 1230--1264
  [][] 
  []
 
 
-LaTeX Warning: Empty bibliography on input line 1205.
+LaTeX Warning: Empty bibliography on input line 1270.
 
 
 AED: lastpage setting LastPage
-[10 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/bestmodels_nc.png> </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/bestmodels_c.png>] [11
-
-] (/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.aux)
+[11 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/bestmodels_nc.png> </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/bestmodels_c.png>] (/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.aux)
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 17732 strings out of 480608
- 310710 string characters out of 5903629
- 991939 words of memory out of 5000000
+ 17736 strings out of 480608
+ 310815 string characters out of 5903629
+ 985940 words of memory out of 5000000
  33119 multiletter control sequences out of 15000+600000
- 679344 words of font info for 201 fonts, out of 8000000 for 9000
+ 680122 words of font info for 204 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  44i,12n,77p,989b,1598s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/xcharter/xch_uy5hgr.enc}{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/xcharter/xch_q7u3cc.enc}{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/xcharter/XCharter-Bold.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/xcharter/XCharter-Italic.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/xcharter/XCharter-Roman.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb>
-Output written on "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.pdf" (11 pages, 986222 bytes).
+Output written on "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.pdf" (11 pages, 993206 bytes).
 PDF statistics:
  162 PDF objects out of 1000 (max. 8388607)
  98 compressed objects within 1 object stream
