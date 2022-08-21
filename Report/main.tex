@@ -454,6 +454,9 @@ A graphical version of the table can be helpful in analyzing results:
 	\item Tied Cov (Z-Normalization, no PCA)
 	\item Tied Cov (Gaussianization, PCA(m=11))
 \end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% LOGREG CLASSIFIER %%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Logistic Regression Classifier}
 Logistic Regression is a discriminative classification model. Starting from the results obtained
 from the Gaussian classifiers we consider the linear decision function obtained from the expression
@@ -472,7 +475,7 @@ expression for the posterior class probability:
 \end{center}
 where $\sigma(x)=\frac{1}{1+e^{-x}}$ is the sigmoid function. Decision rules will be hyperplanes
 orthogonal to $w$.
-\subsubsection{Linear Logistic Regression}
+\subsubsection{Linear Logistic Regression (LLR)}
 We are going to look for the minimizer of the function:
 \begin{center}
 	\begin{math}
@@ -525,17 +528,19 @@ problem solvable in case of linearly separable classes).
 			\hline
 			\multirow{2}{*}{}
 			 Tied Cov \scriptsize{(Z-Norm, no PCA)}& 0.122 & 0.046 & 0.127\\
-			 Tied Cov \scriptsize{(Gau, PCA(m=10))}& 0.215 & 0.082 & 0.207\\
+			 Tied Cov \scriptsize{(Gau, PCA(m=10))}& 0.212 & 0.082 & 0.207\\
 			\hline
 		\end{tabular}
 \end{table}
-The choice of $\lambda$ appear to be critical for all the applications, in particular for the 
-unbalanced ones. By observing figure \ref{dcfLLR} it is clear that for values of $\lambda$ greater
-than $10^-3$ the $minDCF$ rapidly increases for all the considered applications. (WHY). 
-Best performances are obtained for small values of $\lambda$. PCA with $m=10$ helps in obtaining better
-results for the target application with $\lambda=10^{-3}$, however, better results are achieved for $\lambda=10^-5$
-and without PCA.\\
-\textit{Comparison}: the LLR model trained with $\lambda=10^{-5}$ and no-PCA achieves really similar results
+\begin{itemize}
+	\item The choice of $\lambda$ appear to be critical for all the applications, in particular for the 
+	unbalanced ones. By observing figure \ref{dcfLLR} it is clear that for values of $\lambda$ greater
+	than $10^{-3}$ the $minDCF$ rapidly increases for all the considered applications (WHY)
+	\item PCA with $m=10$ helps in obtaining better
+	results for the target application with $\lambda=10^{-3}$, however, better results are achieved for $\lambda=10^-5$
+	and without PCA
+\end{itemize}
+\textit{Comparison}: the LLR model trained with $\lambda=10^{-6}$ and no-PCA achieves really similar results
 with the ones achieved by the Tied-Cov Gaussian model (Z-Norm, no PCA) for $\tilde{\pi}=0.5$ and $\tilde{\pi}=0.9$
 applications but a worse performance is obtained for $\tilde{\pi}=0.1$. The LLR model behaves better than the
 Tied-Cov Gaussian model (Gau, PCA(m=10)) in all the three applications.\\
@@ -543,11 +548,11 @@ Tied-Cov Gaussian model (Gau, PCA(m=10)) in all the three applications.\\
 \begin{itemize}
 	\item Z-normalized features, $\lambda=10^{-6}$, no PCA
 \end{itemize}
-\subsubsection{Quadratic Logistic Regression}
+\subsubsection{Quadratic Logistic Regression (QLR)}
 Now we are going to train a Quadratic LR model by performing features expansion.
-For binary linear LR the separation surfaces are linear decision function as already discussed (and
+For binary linear LR the separation surfaces are linear decision functions as already discussed (and
 we obtain the same form as for the Tied Gaussian classifier). By looking instead at the separation surface
-obtained through the MVG gaussian classifier we have:
+obtained through the MVG Gaussian classifier we have:
 \begin{center}
 	\begin{math}
 		log\;\frac{P(C=h_1|x)}{P(C=h_0|x)} = x^TAx + b^Tx + c = s(x, A, b, c)
@@ -596,15 +601,15 @@ We are now going to train the Linear Logistic Regression model using features ve
 		\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=11)}} \\
 		\hline
 		\multirow{3}{*}{}
-		 QLR \scriptsize{($\lambda=10^{-3}$)}& \textcolor{orange}{0.267} & 0.098 & \textcolor{orange}{0.222}\\
-		 QLR \scriptsize{($\lambda=10^{-5}$)}& 0.263 & 0.098 & 0.230\\
+		 QLR \scriptsize{($\lambda=10^{-3}$)}& 0.267 & 0.098 & \textcolor{orange}{0.222}\\
+		 QLR \scriptsize{($\lambda=10^{-5}$)}& \textcolor{orange}{0.263} & 0.098 & 0.230\\
 		 QLR \scriptsize{($\lambda=10^{-6}$)}& 0.305 & \textcolor{red}{0.096} & 0.230\\
 		\hline
 		\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} \\
 		\hline
 		\multirow{3}{*}{}
 		 QLR \scriptsize{($\lambda=10^{-3}$)}& 0.299 & 0.111 & 0.241\\
-		 QLR \scriptsize{($\lambda=10^{-5}$)}& 0.307 & \textcolor{red}{0.109} & 0.249\\
+		 QLR \scriptsize{($\lambda=10^{-5}$)}& \textcolor{blue}{0.307} & \textcolor{red}{0.109} & 0.249\\
 		 QLR \scriptsize{($\lambda=10^{-6}$)}& 0.305 & 0.109 & 0.248\\
 		\hline
 	\end{tabular}
@@ -628,14 +633,22 @@ We are now going to train the Linear Logistic Regression model using features ve
 		\hline
 	\end{tabular}
 \end{table}
-By rapidly looking at the results obtianed we can say that quadratic version of the logistic regression
-performs worse w.r.t the linear version (the one without features expansion). The choice of $\lambda$
-is still critical and $\lambda <= 10^{-5}$ still remains the best choice. Regarding the target application
-we are able to reach similar results comparing to the linear version while the unbalanced applications
-are more penalized. When PCA is applied no improvements are obtained. However we can notice how the best
-choice for $\lambda$ for unbalanced applications changes when PCA is applied (with $\lambda=10^{-3}$ we 
-achieve better results for $\tilde{{\pi}}=0.1$ and $\tilde{{\pi}}=0.9$ applications w.r.t. $\lambda=10^{-5}$ while for target application $\lambda=10^{-5}$ is the best choice)
-\\
+
+\begin{itemize}
+	\item By rapidly looking at the results obtianed we can say that quadratic version of the logistic regression
+	performs worse w.r.t the linear version (the one without features expansion)
+	\item The choice of $\lambda$ is still critical and $\lambda <= 10^{-5}$ still remains the best choice
+	\item Regarding the target application
+	we are able to reach similar results comparing to the linear version while the unbalanced applications
+	are more penalized
+	\item When PCA is applied no effective improvements are obtained. However we can notice how the best
+	choice for $\lambda$ for unbalanced applications changes when PCA is applied (the best choice
+	for $\lambda$ is $10^{-3}$ for the $\tilde{\pi} = 0.9$ application and it happens both with
+	PCA(m=11) and PCA(m=10))
+	
+\end{itemize}
+
+
 \textit{Comparison}: With respect to Gaussian models comparable performances are achieved for $\lambda=10^{-6}$ and
 no PCA even if the model performs slightly worse. The quadratic model performs also worse than the linear model and
 we won't consider it in score calibration.
@@ -651,26 +664,27 @@ we won't consider it in score calibration.
 % ---- LINEAR SVM MATH ----
 \subsubsection{Linear SVM}
 Support Vector Machines are linear classifiers that look for maximum margin separation hyperplanes.
-The primal formulation consists in minimizing the function:
+The primal formulation of the soft-margin SVM problem consists in minimizing the function:
 \begin{center}
 	\begin{math}
 		J(w,b)=\frac{1}{2}||w^2|| + C\sum_{i=1}^{N}max(0, 1-z_i(w^Tx_i+b))
 	\end{math}
 \end{center}
-with $N$ is the number of trainig samples and $C$ is an hyperparameter.\\
-We are also goint to take into account the dual formulation to solve the problem that consists in maximizing the function:
+where $N$ is the number of trainig samples and $C$ is an hyperparameter.\\
+We are also going to take into account the dual formulation to solve the problem that consists in maximizing the function:
 \begin{center}
 	\begin{math}
-		J^D(\alpha)=-\frac{1}{2}\alpha^TH\alpha + \alpha^T\textbf{1} \; s.t.\; 0 \le \alpha_i \le C, \forall i\in \{1,...,n\}\;,\;\sum_{i=1}^{n}\alpha_iz_i=0
+		J^D(\alpha)=-\frac{1}{2}\alpha^TH\alpha + \alpha^T\textbf{1} \; s.t.\; 0 \le \alpha_i \le C \;and\;\sum_{i=1}^{n}\alpha_iz_i=0 \; \forall i\in \{1,...,n\}
 	\end{math}
 \end{center}
 where $\textbf{1}$ is a $n$-dimensional vector of ones and $H$ is the matrix
 whose elements are $H_{ij} = z_iz_jx_i^Tx_j$.\\
-The relation between the primal and the dual formulation(between the maximizer values $w^*$ and $\alpha^*$) is:
+From the constraints of the Lagrangian problem that allows to introduce the dual formulation
+we can obtain that:
 \begin{center}
 	$w^*=\sum_{i=1}^{n}\alpha_i^*z_ix_i$
 \end{center}
-and the optimal bias $b$ can be computed considering a sample $x_i$ that lies on the margin: $z_i(w^{*T}x_i+b^*)=1$
+and the optimal bias $b$ can be computed considering a sample $x_i$ that lies on the margin: $z_i(w^{*T}x_i+b^*)=1$.
 To be able to computationally solve the problem
 we need to modify the primal formulation as:
 \begin{center}
@@ -682,8 +696,7 @@ where $\hat{x}_i = \begin{bmatrix} x_i\\ 1 \end{bmatrix}$ and $\hat{w} = \begin{
 The scoring rule $\hat{w}^T\hat{x}_i = w^Tx + b$ has the same form of the original formulation but
 we are also regularizing the norm of $\hat{w}: ||\hat{w}||^2 = ||w||^2 + b^2$ and we use a mapping
 $\hat{x}_i = \begin{bmatrix} x_i\\ K \end{bmatrix}$ to mitigate the fact that by regularizing  the bias
-term we could obtain sub-optimal results. The bigger is $K$ the lower the regularization effect of $b$
-becomes weaker and the dual formulation becomes harder to solve. According to the modification done to
+term we could obtain sub-optimal results. According to the modification done to
 the primal formulation we also modify the dual formulation as:
 \begin{center}
 	\begin{math}
@@ -753,22 +766,22 @@ better results are achieved for smaller values of the hyperparameter $C$ so the 
 % ---- LINEAR SVM CONSIDERATIONS ---
 \begin{itemize}
 	\item Best performances on the target application are reached for $C=1$ combined with
-		  Z-normalized features and no PCA is applied
+		  Z-normalized features and no PCA.
 	\item PCA is not helpful in reducing the minDCF in any of the considered applications
 		  even if with PCA(m=11) there is no a high performance degradation for the target
-		  application
+		  application.
 \end{itemize}
 % ---- LINEAR SVM COMPARISON ---
 \textit{Comparison}: The results achieved by the model trained with Z-normalization, 
 $C=1$ and no PCA are closed to the the results obtained by the Linear Logistic Regression Model
 but slighlty worse with respect to the results obtained by the Tied Gaussian model.
-\underline{Selected Linear SVM Model}: C=1 - Z-normalized features - no PCA
+\underline{Selected Linear SVM Model}: \\C=1 - Z-normalized features - no PCA
 % ---- KERNEL SVM MATH ----
 \subsubsection{Kernel SVM}
 SVMs allow for non-linear classification through an implicit expansion of the features in a higher
 dimensional space. In contrast with Quadratic Logistic Regression classifier we don't have to compute
 an explicit expansion of the features space, it is sufficient to be able to compute the scalar product between
-the expanded features $k(x_1, x_2) = \phi(x_1)^T\phi(x_2)$ where $k$ is the kernel function. We have to 
+the expanded features: $k(x_1, x_2) = \phi(x_1)^T\phi(x_2)$ where $k$ is the kernel function. We have to 
 replace $\hat{H}$ with $\hat{H} = z_iz_jk(z_1,x_2)$. We are going to implement two types of kernel: polynomial and rbf.
 \begin{itemize}
 	\item Polynomial kernel of degree $d$: 
@@ -785,7 +798,7 @@ replace $\hat{H}$ with $\hat{H} = z_iz_jk(z_1,x_2)$. We are going to implement t
 % ---- POLYNOMIAL SVM MINDCF PLOT ---
 \begin{figure}[ht!]
 	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/polysvm.png}
-	\caption{Polynomial SVM (K=1, c=0, d=2, raw features) - minDCF for different values of C}
+	\caption{Polynomial SVM (K=1, c=1, d=2, raw features) - minDCF for different values of C}
 	\label{polysvm} 
 \end{figure}
 The Polynomial Kernel SVM model was trained with raw features since the Z-Normalization step led to very poor results
@@ -830,9 +843,9 @@ $C=10^{-4}$ to show more detailed results.
 	\item The Polynomial SVM is able to achieve better results with respect to some versions
 		  of the Linear SVM. Best performances for the target application are achieved
 		  by the model trained with $c=1$ and $d=2$.
-	\item The use of PCA(m=11) helps in reducing the minDCF for the $\tilde{\pi}=0.9$ application for the
-		  model trained with $c=1$ and $d=2$ and doesn't affect that much the target application
-	\item PCA(m=10) brings worse performances in for all the considered applications
+	\item The use of PCA(m=11) helps in reducing the $minDCF$ for the $\tilde{\pi}=0.9$ application for the
+		  model trained with $c=1$ and $d=2$ and doesn't affect that much the target application.
+	\item PCA(m=10) led to worse performances in all the considered applications.
 \end{itemize}
 % ---- RBF SVM INTRO ---
 The other kernel that was employed is the RBF kernel and these are the results achieved:
@@ -843,10 +856,10 @@ The other kernel that was employed is the RBF kernel and these are the results a
 	\label{rbfsvm_znorm} 
 \end{figure}
 In this case it was again used Z-normalization as pre-processing step. The hyperparameter $\gamma$ has to be tuned
-so i trained the model for different values of $\gamma$ to analyze the performances and here are showed
+so we trained the model for different values of $\gamma$ to analyze the performances and here are showed
 the results for $\gamma = 0.1$ and $\gamma = 0.01$. Also the hyperparameter $C$ is still to be
 chosed and needs to be estimated via cross-validation. The parameter $K$ has been set to $1$.
-The value of the hyperparameter $C$ is critical and we should choose a value
+From figure \ref{rbfsvm_znorm} we again realize that the value of the hyperparameter $C$ is critical and we should choose a value
 $C \ge 10^{-1}$. The table below shows the results obtained with $C=10$ and also results
 obtained with $\gamma = 1$ appear for completeness.
 \FloatBarrier
@@ -913,9 +926,9 @@ obtained with $\gamma = 1$ appear for completeness.
 		  obtained with the linear version and behaves better w.r.t. the Polynomial
 		  version
 	\item The most promising value of $\gamma$ seems to be $\gamma=0.01$ because with this
-		  value we are able to obtain the best minDCF for the target application (when no
+		  value we are able to obtain the best $minDCF$ for the target application (when no
 		  PCA is applied)
-	\item PCA is not able to provide any better results in terms of minDCF
+	\item PCA is not able to provide any better results in terms of $minDCF$
 \end{itemize}
 % ---- KERNEL SVM COMPARISON ---
 \textit{Comparison}: The linear version of the SVM achieves better results with
