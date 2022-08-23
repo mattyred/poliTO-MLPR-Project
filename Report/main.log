@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.11.28)  21 AUG 2022 14:47
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.11.28)  23 AUG 2022 12:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1296,7 +1296,7 @@ File: ./Pictures/FeaturesAnalysis/rbfsvm_znorm_compl.png Graphic file (type png)
 Package pdftex.def Info: ./Pictures/FeaturesAnalysis/rbfsvm_znorm_compl.png  used on input line 854.
 (pdftex.def)             Requested size: 231.88997pt x 91.42921pt.
 
-Overfull \hbox (18.75403pt too wide) in paragraph at lines 900--922
+Overfull \hbox (13.05418pt too wide) in paragraph at lines 900--922
  [][] 
  []
 
@@ -1332,6 +1332,11 @@ Underfull \hbox (badness 1681) in paragraph at lines 1115--1115
  []
 
 
+Underfull \hbox (badness 3646) in paragraph at lines 1122--1123
+[]$[]$\T1/XCharter-TLF/m/n/10 (+20) : Tied GMM with 8 com-po-nents (Z-
+ []
+
+
 Underfull \hbox (badness 7451) in paragraph at lines 1126--1126
 []\OT1/phv/b/n/12 Calbrating Scores For Se-lected
  []
@@ -1344,29 +1349,32 @@ Package pdftex.def Info: ./Pictures/FeaturesAnalysis/bestmodels_nc.png  used on 
 <./Pictures/FeaturesAnalysis/bestmodels_c.png, id=80, 863.225pt x 323.2075pt>
 File: ./Pictures/FeaturesAnalysis/bestmodels_c.png Graphic file (type png)
 <use ./Pictures/FeaturesAnalysis/bestmodels_c.png>
-Package pdftex.def Info: ./Pictures/FeaturesAnalysis/bestmodels_c.png  used on input line 1165.
+Package pdftex.def Info: ./Pictures/FeaturesAnalysis/bestmodels_c.png  used on input line 1166.
 (pdftex.def)             Requested size: 231.88997pt x 86.82333pt.
 [10]
-Overfull \hbox (5.30386pt too wide) in paragraph at lines 1173--1193
+Overfull \hbox (5.30386pt too wide) in paragraph at lines 1174--1194
  [][] 
  []
 
 
-Overfull \hbox (22.86864pt too wide) in paragraph at lines 1204--1238
+Overfull \hbox (22.86864pt too wide) in paragraph at lines 1209--1243
  [][] 
  []
 
 
-Overfull \hbox (32.39966pt too wide) in paragraph at lines 1243--1277
+Overfull \hbox (32.39966pt too wide) in paragraph at lines 1248--1282
  [][] 
  []
 
+[11 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/bestmodels_nc.png> </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/bestmodels_c.png>]
 
-LaTeX Warning: Empty bibliography on input line 1283.
+LaTeX Warning: Empty bibliography on input line 1291.
 
 
 AED: lastpage setting LastPage
-[11 </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/bestmodels_nc.png> </Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/./Pictures/FeaturesAnalysis/bestmodels_c.png>] (/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.aux)
+[12
+
+] (/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.aux)
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
@@ -1380,10 +1388,10 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  44i,12n,77p,989b,1598s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/xcharter/xch_uy5hgr.enc}{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/xcharter/xch_q7u3cc.enc}{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/xcharter/XCharter-Bold.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/xcharter/XCharter-Italic.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/xcharter/XCharter-Roman.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb>
-Output written on "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.pdf" (11 pages, 993460 bytes).
+Output written on "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.pdf" (12 pages, 994495 bytes).
 PDF statistics:
- 162 PDF objects out of 1000 (max. 8388607)
- 98 compressed objects within 1 object stream
+ 165 PDF objects out of 1000 (max. 8388607)
+ 100 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  37447 words of extra memory for PDF output out of 42996 (max. 10000000)
 

@@ -775,7 +775,7 @@ better results are achieved for smaller values of the hyperparameter $C$ so the 
 \textit{Comparison}: The results achieved by the model trained with Z-normalization, 
 $C=1$ and no PCA are closed to the the results obtained by the Linear Logistic Regression Model
 but slighlty worse with respect to the results obtained by the Tied Gaussian model.
-\underline{Selected Linear SVM Model}: \\C=1 - Z-normalized features - no PCA
+\underline{Selected Linear SVM Model}: \\Z-normalized features - K=0, C=1 - no PCA
 % ---- KERNEL SVM MATH ----
 \subsubsection{Kernel SVM}
 SVMs allow for non-linear classification through an implicit expansion of the features in a higher
@@ -916,7 +916,7 @@ obtained with $\gamma = 1$ appear for completeness.
 		\hline
 		\multicolumn{4}{ |c| }{\bf{SVM Models}} \\
 		\hline
-		LSVM &&&\\\scriptsize{(Z-Norm, $K=0$, $C=1$, no PCA)}& 0.129 & 0.047 & 0.130\\
+		LSVM &&&\\\scriptsize{(Z-Norm, $C=1$, no PCA)}& 0.129 & 0.047 & 0.130\\
 		\hline
 	\end{tabular}
 \end{table}
@@ -1118,8 +1118,8 @@ SVM, GMM):
 \begin{itemize}
 	\item \underline{Gaussian model}: Tied-Cov (Z-Normalization, no PCA)
 	\item \underline{Logistic Regression}: Linear LR (Z-Normalization, no PCA)
-	\item \underline{SVM}: 
-	\item \underline{GMM}:
+	\item \underline{SVM}: Linear SVM (Z-Normalization, no PCA)
+	\item \underline{GMM}: Tied GMM with 8 components (Z-normalization, no PCA)
 \end{itemize}
 % Bayes error plot
 % Comment on Bayes error plot
@@ -1131,7 +1131,7 @@ We assume that the function $f$ has the form:
 \begin{center}
 	$f(s) = \alpha s + \beta$
 \end{center}
-and $f(s)$ can be interpreted as log-likelihood ratio for the two class hypotheses:
+and $f(s)$ can be interpreted as log-likelihood ratio for the two classes hypotheses:
 \begin{center}
 	$f(s) = log\;\frac{f_{S|C}(s|\mathcal{H}_T)}{f_{S|C}(s|\mathcal{H}_F)} = \alpha s + \beta$
 \end{center}
@@ -1158,9 +1158,10 @@ scores we will have to compute:
 	\label{bayesianerrornotcalibrated} 
 \end{figure}
 Gaussian, Logistic Regression and GMM seem to be already well calibrated
-in particolar for positive values of the prior log-odds. The Gaussian model
+in particular for positive values of the prior log-odds. The Gaussian model
 could be slightly improved in terms of calibration for negative values
-of the prior log odds. The SVM instead is not well calibrated.
+of the prior log odds. The SVM instead is not well calibrated for almost every
+considered threshold.
 \begin{figure}[ht!]
 	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/bestmodels_c.png}
 	\caption{Bayesian Error Plots for each of the selected models (with score calibration)}
@@ -1184,14 +1185,18 @@ of the prior log odds. The SVM instead is not well calibrated.
 		\multicolumn{4}{ |c| }{\bf{Calibrated scores [minDCF / DCF]}} \\
 		\hline
 		\multirow{4}{*}{}
-		\small{Tied Gaussian} & \footnotesize{0.122/0.128} & \footnotesize{0.046/0.049} & \footnotesize{0.127/0.135}\\
-		\small{Lnear LR} & \footnotesize{0.132/0.141} & \footnotesize{0.047/0.048} & \footnotesize{0.126/0.132}\\
-		\small{Linear SVM} & \footnotesize{0.132/0.135} & \footnotesize{0.047/0.047} & \footnotesize{0.129/0.137}\\
-		\small{Tied GMM} & \footnotesize{0.099/0.105} & \footnotesize{0.031/0.031} & \footnotesize{0.075/0.076}\\
+		\small{Tied Gaussian} & \footnotesize{0.122/\textcolor{red}{0.128}} & \footnotesize{0.046/\textcolor{green}{0.049}} & \footnotesize{0.127/\textcolor{red}{0.135}}\\
+		\small{Lnear LR} & \footnotesize{0.132/\textcolor{red}{0.141}} & \footnotesize{0.047/0.048} & \footnotesize{0.126/\textcolor{green}{0.132}}\\
+		\small{Linear SVM} & \footnotesize{0.132/\textcolor{green}{0.135}} & \footnotesize{0.047/0.047} & \footnotesize{0.129/\textcolor{green}{0.137}}\\
+		\small{Tied GMM} & \footnotesize{0.099/\textcolor{green}{0.105}} & \footnotesize{0.031/0.031} & \footnotesize{0.075/\textcolor{green}{0.076}}\\
 		\hline
 	\end{tabular}
 \end{table}
 \FloatBarrier
+We can easily notice that for models where scores where already well calibrated the score
+calibration doesn't provide better effective benefits (in some cases we also obtain
+slightyl worse results). For SVM model great benefits are obtained for the unbalanced
+applications.
 \section{Experimental Results}
 Now we are going to train all the previous models on the entire training set and the 
 evaluation set will be used for the first time to assest if the results obtained so far
@@ -1275,6 +1280,9 @@ other choices would have been better for this evaluation set).
 		\hline
 	\end{tabular}
 \end{table}
+The results obtained by training the models on the entire training set and by evaluating
+them on the entire evaluation set are coherent with the results previously
+obtained and with the osservations made
 
 %----------------------------------------------------------------------------------------
 %	BIBLIOGRAPHY

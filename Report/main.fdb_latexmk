@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex main"] 1661085884 "main.aux" "main.bbl" "main" 1661086042
+["bibtex main"] 1661249356 "main.aux" "main.bbl" "main" 1661249362
   "/usr/local/texlive/2020/texmf-dist/bibtex/bst/biblatex/biblatex.bst" 1575845417 65050 5c39e6f144c843a658dad8c93d2a6f3c ""
   "example.bib" 1440448286 2571 468bb707c293fcdecb60455ea84cd4af ""
-  "main-blx.bib" 1661086038 340 7bdce33d370fce05909e24f547f8d889 "pdflatex"
-  "main.aux" 1661086040 11913 31cf788681ae19bc8799d0a5a22a0a6a "pdflatex"
+  "main-blx.bib" 1661249358 340 7bdce33d370fce05909e24f547f8d889 "pdflatex"
+  "main.aux" 1661249360 11913 03f85ae9f777618e3cb3bdaf32019edd "pdflatex"
   (generated)
-  "main.blg"
   "main.bbl"
-["pdflatex"] 1661086037 "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.tex" "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.pdf" "main" 1661086042
+  "main.blg"
+["pdflatex"] 1661249356 "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.tex" "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.pdf" "main" 1661249362
   "./Pictures/FeaturesAnalysis/LSVM.png" 1659447522 40416 d60148ddf31cbc35b146b865b4f73161 ""
   "./Pictures/FeaturesAnalysis/bestmodels_c.png" 1659596601 245473 79e18730e647c84087ac5af7426894ab ""
   "./Pictures/FeaturesAnalysis/bestmodels_nc.png" 1659596057 59366 8913623420ff90afce8c601299b04497 ""
@@ -22,8 +22,8 @@
   "./Pictures/FeaturesAnalysis/pca.png" 1658739399 23344 b0953bbf64b200fc5da669db61f6a1ef ""
   "./Pictures/FeaturesAnalysis/polysvm.png" 1659353940 35224 b8fd2c0e258f62e5a2324c0e483e8f4c ""
   "./Pictures/FeaturesAnalysis/rbfsvm_znorm_compl.png" 1659460222 55874 ea2a81cb387d38e7a5c785c4e4c80a52 ""
-  "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.aux" 1661086040 11913 31cf788681ae19bc8799d0a5a22a0a6a ""
-  "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.tex" 1661086035 60335 1ebd5d838b7155a5f56f905029738be5 ""
+  "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.aux" 1661249360 11913 03f85ae9f777618e3cb3bdaf32019edd ""
+  "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.tex" 1661249350 61105 9e5111c57c7c210fa72be52158e017ad ""
   "/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/xcharter/xch_q7u3cc.enc" 1574460897 3591 1b1c8c6dca0d8ecd1109a21d9071797a ""
   "/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/xcharter/xch_uy5hgr.enc" 1574460897 3245 d735d31466b80f6ab81d4d1111f2e3b0 ""
@@ -199,16 +199,16 @@
   "Pictures/FeaturesAnalysis/pca.png" 1658739399 23344 b0953bbf64b200fc5da669db61f6a1ef ""
   "Pictures/FeaturesAnalysis/polysvm.png" 1659353940 35224 b8fd2c0e258f62e5a2324c0e483e8f4c ""
   "Pictures/FeaturesAnalysis/rbfsvm_znorm_compl.png" 1659460222 55874 ea2a81cb387d38e7a5c785c4e4c80a52 ""
-  "main.aux" 1661086040 11913 31cf788681ae19bc8799d0a5a22a0a6a "pdflatex"
-  "main.bbl" 1661085885 512 61b8edbafb0cff417a61773720bd5b7f "bibtex main"
-  "main.run.xml" 1661086040 2559 909c0cfb644a15a03fd756a5181d37b9 "pdflatex"
-  "main.tex" 1661086035 60335 1ebd5d838b7155a5f56f905029738be5 ""
+  "main.aux" 1661249360 11913 03f85ae9f777618e3cb3bdaf32019edd "pdflatex"
+  "main.bbl" 1661249356 512 61b8edbafb0cff417a61773720bd5b7f "bibtex main"
+  "main.run.xml" 1661249360 2559 909c0cfb644a15a03fd756a5181d37b9 "pdflatex"
+  "main.tex" 1661249350 61105 9e5111c57c7c210fa72be52158e017ad ""
   "structure.tex" 1488235760 6185 76f10d2a1f183006ff2411adcc83fbc3 ""
   (generated)
-  "main.log"
   "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.pdf"
-  "main.pdf"
   "main-blx.bib"
+  "main.aux"
+  "main.pdf"
+  "main.log"
   "/Users/mattiarosso/Desktop/LM-I anno-II semestre/ML_and_pattern_recognition/Project/MLPR-Project/Report/main.log"
   "main.run.xml"
-  "main.aux"
