@@ -111,6 +111,57 @@ class BinaryModelEvaluator:
         plt.show()
 
     @staticmethod
+    def plotDET(llrs, actual_labels):
+        FNR = []
+        FPR = []
+        llrs_sort = np.sort(llrs)
+        for i in llrs_sort:
+            predicted_labels = np.where(llrs > i + 0.000001, 1, 0)
+            conf_matrix = BinaryModelEvaluator.confusion_matrix(predicted_labels, actual_labels)
+            FNR.append(conf_matrix[0, 1] / (conf_matrix[0, 1] + conf_matrix[1, 1]))
+            FPR.append(conf_matrix[1, 0] / (conf_matrix[0, 0] + conf_matrix[1, 0]))
+        plt.plot(np.array(FPR), np.array(FNR))
+        plt.show()
+
+    @staticmethod
+    def plotROCs(plt=plt, model=None, preproc='raw', DT=None, LT=None, DE=None, LE=None):
+        PreProcesser = PreProcessing.DataPreProcesser()
+        ## -- Pre-processing -- ##
+        if preproc == 'gau':
+            # Gaussianize features of Dtrain
+            Dtrain_normalized = PreProcesser.gaussianized_features_training(DT)
+            # Gaussianize features of Dtest
+            Dtest_normalized = PreProcesser.gaussianized_features_evaluation(DE, DT)
+        elif preproc == 'znorm':
+            # Z-Normalize features of Dtrain
+            Dtrain_normalized = PreProcesser.znormalized_features_training(DT)
+            # Z-Normalize features of Dtest
+            Dtest_normalized = PreProcesser.znormalized_features_evaluation(DE, DT)
+        elif preproc == 'zg':
+            Dtrain_z = PreProcesser.znormalized_features_training(DT)
+            Dtrain_normalized = PreProcesser.gaussianized_features_training(Dtrain_z)
+            Dtest_z = PreProcesser.znormalized_features_evaluation(DE, DT)
+            Dtest_normalized = PreProcesser.gaussianized_features_evaluation(Dtest_z, Dtrain_normalized)
+        else:
+            Dtrain_normalized = DT
+            Dtest_normalized = DE
+
+        # --- Model training and prediction --- #
+        llrs = model.train(Dtrain_normalized, LT).predict(Dtest_normalized, labels=False)
+
+        # --- ROC curve -- #
+        TPR = []
+        FPR = []
+        llrs_sort = np.sort(llrs)
+        for i in llrs_sort:
+            predicted_labels = np.where(llrs > i + 0.000001, 1, 0)
+            conf_matrix = BinaryModelEvaluator.confusion_matrix(predicted_labels, LE)
+            TPR.append(conf_matrix[1, 1] / (conf_matrix[0, 1] + conf_matrix[1, 1]))
+            FPR.append(conf_matrix[1, 0] / (conf_matrix[0, 0] + conf_matrix[1, 0]))
+        plt.plot(np.array(FPR), np.array(TPR))
+
+
+    @staticmethod
     def plot_Bayes_error(ax=None, title=None, model=None, preproc='raw', dimred=None, DT=None, LT=None, calibrate_scores=False):
         effPriorLogOdds = np.linspace(-3, 3, 21)
         effPrior = 1 / (1 + np.exp(-effPriorLogOdds))

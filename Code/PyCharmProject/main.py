@@ -30,6 +30,7 @@ if __name__ == '__main__':
     PreProcesser.plot_features_hist(DT, LT, preproc='gau', title=False)
     """
 
+    """
     # Features analysis - correlation of non-preprocessed features
     PreProcesser = PreProcessing.DataPreProcesser()
     DTz = PreProcesser.znormalized_features_training(DT)
@@ -40,7 +41,7 @@ if __name__ == '__main__':
     # Features analyssis - correlation of gaussianized features
     #PreProcesser.heatmap(DTz, LT, plt, 'Features correlation (z-normalized features)')
     plt.show()
-
+    """
 
     """
     # PCA K-FOLD
@@ -244,3 +245,17 @@ if __name__ == '__main__':
 
     #ModelEvaluation.BinaryModelEvaluator().plot_histogramGMM(DT, LT)
     """
+
+    # ROC and DET curves
+    hparams = {'K': 0, 'eps': 0, 'gamma': 10 ** -3, 'C': 10 ** -1, 'c': 0, 'd': 1}
+    model_evaluator = ModelEvaluation.BinaryModelEvaluator()
+    fig = plt.figure()
+    model_evaluator.plotROCs(plt=plt, model=GauClf.TiedG(), preproc='znorm', DT=DT, LT=LT, DE=DE, LE=LE)
+    model_evaluator.plotROCs(plt=plt, model=LogRegClf.LinearLogisticRegression(lbd=10**-6), preproc='znorm', DT=DT, LT=LT, DE=DE, LE=LE)
+    model_evaluator.plotROCs(plt=plt, model=SVMClf.SVM(hparams={'K': 0, 'C': 1}), preproc='znorm', DT=DT, LT=LT, DE=DE, LE=LE)
+    model_evaluator.plotROCs(plt=plt, model=GMMClassifier.GMM(alpha=0.1, nComponents=8, psi=0.01, covType='Tied'), preproc='znorm', DT=DT, LT=LT, DE=DE,
+                             LE=LE)
+    fig.legend(['Tied Gaussian', 'Linear LR', 'Linear SVM', 'Tied GMM(9 components)'])
+    plt.ylabel('TPR')
+    plt.xlabel('FPR')
+    plt.show()
