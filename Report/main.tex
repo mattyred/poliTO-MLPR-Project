@@ -56,10 +56,10 @@
 
 \lettrineabstract{This project is inteded to show a binary classification 
 task on a datased made of 12 continuous observations coming from speking embeddings. 
-A speaker embedding represents a smal-dimensional, fixed size representation of an utterance.
+A speaker embedding represents a small-dimensional, fixed size representation of an utterance.
 Features can be seen as points in the m-dimensional embedding space (and the embeddings
 have already been computed). This is a task where classes are balanced both in training and
-evaluation set}
+evaluation set.}
 
 %----------------------------------------------------------------------------------------
 %	ARTICLE CONTENTS
@@ -75,8 +75,8 @@ The datasets provided are:
 						  2000 samples belonging to Female class (Label = 1).
 \end{itemize}
 We will use the Training Set to perform all the anaylsis and only
-once we will have selected the most propmising models we will train these using the 
-entire Training Set and final consideraions will be done considering how their 
+once we will have selected the most promising models we will train these using the 
+entire Training Set and final consideraions will be done considering their 
 behaviour on the Evaluation Set.
 \subsection{Features Statistics}
 All the features are contiguous and their main statistics can be
@@ -89,7 +89,7 @@ are going to transform each sample of our dataset as:
 \begin{center}
 	$z_{i,j} = \frac{x_{i,j} - \mu_{j}}{\sigma_{j}} \forall x_{i} \in D$
 \end{center}
-Where $z_{i,j}$ is the Z-normalized value correspongin to the feature $j$
+Where $z_{i,j}$ is the Z-normalized value corresponding to the feature $j$
 of sample $i$ while $\mu_{j}$ and $\sigma_{j}$ are, respectively,
 the mean and the variance computed over all the values for feature $j$.
 \comment{
@@ -253,7 +253,7 @@ the test samples over $w$ and assign the class label looking at the score obtain
 		\right.
 	\end{math}
 \end{center}
-It will be showed later the result of the classifier when it will be proved how this model
+It will be proved later how this model
 is related to the Tied Gaussian Generative Classifier model.
 \section{Classification models analysis}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1282,8 +1282,23 @@ other choices would have been better for this evaluation set).
 \end{table}
 The results obtained by training the models on the entire training set and by evaluating
 them on the entire evaluation set are coherent with the results previously
-obtained and with the observations made
-
+obtained and with the observations made.
+\begin{figure}[ht!]
+	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/roc.png}
+	\caption{ROC curves of selected models (on the right a zoomed version)}
+	\label{roc} 
+\end{figure}
+\section{Conclusions}
+We can conclude by saying that in general linear models had better performances
+on these data with respect to non-linear models. Due to the high level of correlation
+among features the PCA didn't help in achieving better results (despite  the fact thatwith PCA(m=11)
+we have obtained not a big performance degratation in most of the models) and Naive hypothesis didn't worked
+well in Gaussian models. We have been able to reach a $minDCF\approx0.03$ for
+the target application($\tilde{\pi}=0.5$) but also for the unbalanced applications
+we were able to achieve good results ($minDCF\approx0.1$ for $\tilde{\pi}=0.1$ and 
+$minDCF\approx0.1$ for $\tilde{\pi}=0.9$). The choices made on the training set
+via k-fold cross-validation proved to be coherent with the results obtained on
+the entire training set.
 %----------------------------------------------------------------------------------------
 %	BIBLIOGRAPHY
 %----------------------------------------------------------------------------------------
