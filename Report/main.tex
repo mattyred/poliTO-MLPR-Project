@@ -75,8 +75,8 @@ The datasets provided are:
 						  2000 samples belonging to Female class (Label = 1).
 \end{itemize}
 We will use the Training Set to perform all the anaylsis and only
-once we will have selected the most promising models we will train these using the 
-entire Training Set and final consideraions will be done considering their 
+once we will have selected the most promising models we will train these ones using the 
+entire Training Set and final considerations will be done considering their 
 behaviour on the Evaluation Set.
 \subsection{Features Statistics}
 All the features are contiguous and their main statistics can be
@@ -92,29 +92,7 @@ are going to transform each sample of our dataset as:
 Where $z_{i,j}$ is the Z-normalized value corresponding to the feature $j$
 of sample $i$ while $\mu_{j}$ and $\sigma_{j}$ are, respectively,
 the mean and the variance computed over all the values for feature $j$.
-\comment{
-\FloatBarrier
-	\begin{table}
-		\caption{Features Statistics}
-		\centering
-		\begin{tabular}{ |l|l|l|l|l| }
-			\hline
-			\multicolumn{5}{ |c| }{Statistics} \\
-			\hline
-			Feature & Min & Max & Mean & StdDev \\ \hline
-			\multirow{2}{*}{0}
-			 & 0 & 0 & 0 & 0 \\
-			 & 0 & 0 & 0 & 0  \\ \hline
-			\multirow{2}{*}{1}
-			 & 0 & 0 & 0 & 0  \\
-			 & 0 & 0 & 0 & 0  \\ \hline
-			\multirow{2}{*}{2}
-			& 0 & 0 & 0 & 0  \\
-			& 0 & 0 & 0 & 0  \\ \hline
-		\end{tabular}
-	\end{table}
-\FloatBarrier
-}
+
 \begin{figure}[ht!]
 	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/boxplot.png}
 	\caption{Raw features boxplots}
@@ -134,7 +112,7 @@ is done in order to understend whether a pre processing step like Gaussianizatio
 We can notice from figure \ref{hist_znorm} that almost all the features are already 
 well-distributed (w.r.t. the Gaussian distribution) except for features 3, 7, 9. 
 We can thus apply an additional pre-processing step in order to make all the features following a Gaussian distribution:
-this step is called Gaussianization.
+this step is called Gaussianization and it will be always applied after Z-Normalization preproccesing.
 
 \subsubsection{Gaussianization}
 Gaussianization is a pre-processing step that maps each fature to values whose empirical cumulative
@@ -184,7 +162,7 @@ we would probably loose important information coming from high-correlated featur
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Dimensionality reduction}
 Before proceeding with the classification task we will spend some words on the possible 
-dimensioanlity reduction rechniques that we have analyzed and could be applied: PCA and LDA.
+dimensioanlity reduction rechniques that we have analyzed and that could be applied: PCA and LDA.
 %%%%%%%%%%%%%%%%%%%%%%
 %%% PCA DISCUSSION %%%
 %%%%%%%%%%%%%%%%%%%%%%
@@ -214,7 +192,7 @@ that each eigenvalue corresponds to the variance along the corresponding axis an
 eigenvalues are the elements of the diagonal of the matrix $\Sigma$. We selecte $m$ as:
 \begin{center}
 	\begin{math}
-		\min_m\;s.t \frac{\sum_{i}^{m}\sigma_{i}}{\sum_{i}^{n}\sigma_{i}} \ge t,\;t \ge 95\%
+		\min_m\;s.t \frac{\sum_{i}^{m}\sigma_{i}}{\sum_{i}^{n}\sigma_{i}} \ge t
 	\end{math}
 \end{center}
 \begin{figure}[ht!]
@@ -240,7 +218,7 @@ between-class variability over the within-class variability ratio for the transf
 		\mathcal{L}(w) = \frac{s_{B}}{s_{W}} = \max_w \frac{w^TS_{B}w}{w^TS_{W}w}
 	\end{math}
 \end{center}
-It can be proved that optimal solution correspond to the eigenvector of $S_{W}^-1S_{B}$ 
+It can be proved that the optimal solution corresponds to the eigenvector of $S_{W}^-1S_{B}$ 
 corresponding to the largest eigenvalue. Once that we have estimated $w$ we can project
 the test samples over $w$ and assign the class label looking at the score obtained:\\
 \begin{center}
@@ -287,7 +265,7 @@ and for $minDCF$ computation we will look for the threshold:
 		t' = -log(\frac{\tilde{\pi}}{1-\tilde{\pi}})
 	\end{math}
 \end{center}
-that allows us to obtain the lowest possible $DCF$ (as if knew in advance this optimal value fot threshold).
+that allows us to obtain the lowest possible $DCF$ (as if we knew in advance this optimal value fot threshold).
 %%%%%%%%%%%%%%%%%%%%%%%
 %%% GAUSSIAN MODELS %%%
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -318,8 +296,8 @@ We can expand this expression by writing:
 While the training phase consists in estimating the model parameters of the Mutlivariate Gaussian
 distribution the scoring phase
 consists in computing the log-likelihood ratio (first term of the equation) for each sample. 
-It will be then compared with  a threshold specific for each application for computing 
-the $minDCF$. What differentiate the Gaussian models is the way how we estimate the
+It will be then compared with  a threshold specific for each application to compute
+the $minDCF$. What it differentiates the different Gaussian models is the way how we estimate the
 model parameters of the Gaussian distribution.
 
 \subsubsection{MVG Gaussian Classifier}
@@ -459,7 +437,7 @@ A graphical version of the table can be helpful in analyzing results:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Logistic Regression Classifier}
 Logistic Regression is a discriminative classification model. Starting from the results obtained
-from the Gaussian classifiers we consider the linear decision function obtained from the expression
+from the Tied Gaussian classifier we consider the linear decision function obtained from the expression
 of the posterior log-likelihood ratio:
 \begin{center}
 	\begin{math}
@@ -470,10 +448,10 @@ where $b$ takes into account all the prior information. Given $w$ and $b$ we can
 expression for the posterior class probability:
 \begin{center}
 	\begin{math}
-		P(c=h_1|x,w,b)=\frac{e^{(w^Tx + b)}}{1+e^{(w^Tx+b)}}=\sigma(w^Tx+b)
+		P(C=h_1|x,w,b)=\frac{e^{(w^Tx + b)}}{1+e^{(w^Tx+b)}}=\sigma(w^Tx+b)
 	\end{math}
 \end{center}
-where $\sigma(x)=\frac{1}{1+e^{-x}}$ is the sigmoid function. Decision rules will be hyperplanes
+where $\sigma(x)=\frac{1}{1+e^{-x}}$ is the sigmoid function. LR assumes that the decision rules will be hyperplanes
 orthogonal to $w$.
 \subsubsection{Linear Logistic Regression (LLR)}
 We are going to look for the minimizer of the function:
@@ -500,21 +478,21 @@ problem solvable in case of linearly separable classes).
 			\multirow{3}{*}{}
 			 LLR \scriptsize{($\lambda=10^{-3}$)}& \textcolor{blue}{0.170} & 0.059 & 0.155\\
 			 LLR \scriptsize{($\lambda=10^{-5}$)}& 0.132 & \textcolor{red}{0.047} & 0.127\\
-			 LLR \scriptsize{($\lambda=10^{-6}$)}& 0.132 & \textcolor{red}{0.047} & \textcolor{orange}{0.126}\\
+			 LLR \scriptsize{($\lambda=10^{-6}$)}& 0.132 & \textcolor{red}{0.047} & 0.126\\
 			\hline
 			\multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=11)}} \\
 			\hline
 			\multirow{3}{*}{}
 			 LLR \scriptsize{($\lambda=10^{-3}$)}& \textcolor{blue}{0.278} & 0.104 & 0.232\\
 			 LLR \scriptsize{($\lambda=10^{-5}$)}& 0.269 & \textcolor{red}{0.098} & 0.221\\
-			 LLR \scriptsize{($\lambda=10^{-6}$)}& \textcolor{orange}{0.268} & 0.098 & 0.222\\
+			 LLR \scriptsize{($\lambda=10^{-6}$)}& 0.268 & 0.098 & 0.222\\
 			 \hline
 			 \multicolumn{4}{ |c| }{\bf{Z-normalized features - PCA(m=10)}} \\
 			 \hline
 			 \multirow{3}{*}{}
 			  LLR \scriptsize{($\lambda=10^{-3}$)}& \textcolor{blue}{0.299} & \textcolor{red}{0.113} & 0.263\\
-			  LLR \scriptsize{($\lambda=10^{-5}$)}& \textcolor{orange}{0.297} & 0.114 & 0.263\\
-			  LLR \scriptsize{($\lambda=10^{-6}$)}& 0.297 & 0.114 & \textcolor{orange}{0.262}\\
+			  LLR \scriptsize{($\lambda=10^{-5}$)}& 0.297 & 0.114 & 0.263\\
+			  LLR \scriptsize{($\lambda=10^{-6}$)}& 0.297 & 0.114 & 0.262\\
 			 \hline
 		\end{tabular}
 	\end{table}
@@ -535,10 +513,8 @@ problem solvable in case of linearly separable classes).
 \begin{itemize}
 	\item The choice of $\lambda$ appear to be critical for all the applications, in particular for the 
 	unbalanced ones. By observing figure \ref{dcfLLR} it is clear that for values of $\lambda$ greater
-	than $10^{-3}$ the $minDCF$ rapidly increases for all the considered applications (WHY)
-	\item PCA with $m=10$ helps in obtaining better
-	results for the target application with $\lambda=10^{-3}$, however, better results are achieved for $\lambda=10^-5$
-	and without PCA
+	than $10^{-3}$ the $minDCF$ rapidly increases for all the considered applications.
+	\item PCA never helps in achieving better results.
 \end{itemize}
 \textit{Comparison}: the LLR model trained with $\lambda=10^{-6}$ and no-PCA achieves really similar results
 with the ones achieved by the Tied-Cov Gaussian model (Z-Norm, no PCA) for $\tilde{\pi}=0.5$ and $\tilde{\pi}=0.9$
@@ -558,7 +534,7 @@ obtained through the MVG Gaussian classifier we have:
 		log\;\frac{P(C=h_1|x)}{P(C=h_0|x)} = x^TAx + b^Tx + c = s(x, A, b, c)
 	\end{math}
 \end{center}
-This expression is quadratic in $x$ but linear in $A$ and $b$. 
+This expression is quadratic in $x$ but it's linear in $A$ and $b$. 
 We could rewrite it to obtain a decision function that is linear for the expanded features space
 but quadratic in the original features space. Features expansion is defined as:
 \begin{center}
@@ -635,16 +611,13 @@ We are now going to train the Linear Logistic Regression model using features ve
 \end{table}
 
 \begin{itemize}
-	\item By rapidly looking at the results obtianed we can say that quadratic version of the logistic regression
-	performs worse w.r.t the linear version (the one without features expansion)
+	\item By rapidly looking at the results obtained we can say that quadratic version of the logistic regression
+	performs worse w.r.t the linear version (the one without features expansion).
 	\item The choice of $\lambda$ is still critical and $\lambda <= 10^{-5}$ still remains the best choice
 	\item Regarding the target application
-	we are able to reach similar results comparing to the linear version while the unbalanced applications
-	are more penalized
-	\item When PCA is applied no effective improvements are obtained. However we can notice how the best
-	choice for $\lambda$ for unbalanced applications changes when PCA is applied (the best choice
-	for $\lambda$ is $10^{-3}$ for the $\tilde{\pi} = 0.9$ application and it happens both with
-	PCA(m=11) and PCA(m=10))
+	we are able to reach similar results comparing to the linear version of the LR while the unbalanced applications
+	are more penalized.
+	\item When PCA is applied no effective improvements are obtained.
 	
 \end{itemize}
 
@@ -944,7 +917,7 @@ linear model worked better.
 %%%%%%%%%%%%%%%%%%%%%% GMM	 CLASSIFIER %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{GMM Classifier}
-The last model we take into account is a generative model. 
+The last model we are going to take into account is a generative model. 
 The GMM problem is related to the estimation of a population distribution and can be 
 also applied to the classification task. We resort the class-posterior probability
 used for the Gaussian classifiers:
@@ -956,10 +929,10 @@ be one of the model paramers of the GMM:
 \begin{center}
 	$X \sim GMM(M,\mathcal{S},w) \Rightarrow f_X(x) = \sum_{g=1}^M w_g \cdot \mathcal{N}(x|\mu_g,\Sigma_g)$
 \end{center}
-so the GMM density is the sum of $M$ Gaussians and 
+so the GMM density is the sum of $M$ Gaussians where 
 $M=[\mu_1,...,\mu_M], \mathcal{S}=[\Sigma_1,...,\Sigma_M], w=[w_1,...,w_M]$ are the
 model parameters. Gaussian components can be seen as clusters the samples belog to (in
-a hard or a soft way) and the cluster label is a latent random variable. If we define
+a hard or in a soft way) and the cluster label is a latent random variable. If we define
 \begin{center}
 	$f_{X_i,G_i}(x_i,g)=w_g\mathcal{N}(x_i|\mu_g,\Sigma_g)$ and \\
 	$f_{X_i}(x_i) = \sum_{g=1}^M f_{X_i,G_i}(x_i,g)$
@@ -992,11 +965,11 @@ GMM with $G$ components. The starting point will be $(1, \mu, C)$ so we use the 
 mean and covariance matrix of the dataset. We can then build a 2-componenents model starting from
 a single one and from each of the new componenets we generate other new 2 componenets and so on and so forth.
 \\We are also going to introduce a Diagonal and Tied version of the GMM problem: the diagonal
-variant consists of a model where each component have a diagonal covariance matrix (this does
+variant consists of a model where each component has a diagonal covariance matrix (this does
 not correspond with the Naive Bayes assumption did for the Gaussian models). The Tied covariance
 model assumes that the covariance of a single GMM $\Sigma_{c,g} = \Sigma_c$ are the same but
 each GMM of each class has a difference covariance matrix $\Sigma_c$ (again, this is different
-from the Tied MVG model)
+from the Tied MVG model).
 
 We are now going to train a GMM
 over the samples of each class. Given the fact that almost all the features are already well
