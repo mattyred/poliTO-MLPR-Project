@@ -100,7 +100,7 @@ the mean and the variance computed over all the values for feature $j$.
 \end{figure}
 
 \subsection{Features distribution}
-By plotting one histogram for each feature, separated for classes male and female, it is possible to show
+By plotting one histogram for each feature, separately for classes male and female, it is possible to show
 if the samples (separately for each feature) follow a Gaussian distribution and how well. This
 is done in order to understend whether a pre processing step like Gaussianization can be useful or not for our training data.
 \begin{figure}[ht!]
@@ -162,7 +162,7 @@ we would probably loose important information coming from high-correlated featur
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Dimensionality reduction}
 Before proceeding with the classification task we will spend some words on the possible 
-dimensioanlity reduction rechniques that we have analyzed and that could be applied: PCA and LDA.
+dimensioanlity reduction techniques that we have analyzed and that could be applied: PCA and LDA.
 %%%%%%%%%%%%%%%%%%%%%%
 %%% PCA DISCUSSION %%%
 %%%%%%%%%%%%%%%%%%%%%%
@@ -171,7 +171,7 @@ As already anticipated, given the heatmap in figure \ref{heatmap} we can observe
 with reasonable values of $m$ can be applied. 
 PCA is a dimensionality reduction technique that, given a centered dataset $X = \{x_{1}, ..., x_{k}\}$, it aims to find the subspace of 
 $\mathbb{R}^{n}$ that allows to preserve most of the information (the directions with the
-highest variance).\\Starting from the sample covariance matrix
+highest variance).\\Starting from the empirical covariance matrix
 \begin{center}
 	\begin{math}
 		C = \frac{1}{K} \sum_{i}^{}(x_{i} - \bar{x})(x_{i}-\bar{x})^T
@@ -924,7 +924,7 @@ used for the Gaussian classifiers:
 \begin{center}
 	$f_X(x) = \sum_{c=1}^K f_{X|C}(x|c) \cdot P(C=c) = \sum_{c=1}^K \mathcal{N}(x|\mu_c,\Sigma_c) \cdot \pi_c$
 \end{center}
-more in general we can introduce a weight term instead if the prior probability that will
+More in general we can introduce a weight term instead of the prior probability that will
 be one of the model paramers of the GMM:
 \begin{center}
 	$X \sim GMM(M,\mathcal{S},w) \Rightarrow f_X(x) = \sum_{g=1}^M w_g \cdot \mathcal{N}(x|\mu_g,\Sigma_g)$
