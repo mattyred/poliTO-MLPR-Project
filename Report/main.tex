@@ -1084,6 +1084,9 @@ the best results among all the models evaluated up to now.\\
 \begin{itemize}
 	\item GMM Tied (8 componenets), Z-Normalization, no PCA
 \end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% SCORE CALIBRATION %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Score Calibration}
 \subsection{Calibration Analysis On Selected Models}
 We now select one candidate for each of the previous analyzed classification models (Gaussian, Logisti Regression,
@@ -1097,8 +1100,8 @@ SVM, GMM):
 % Bayes error plot
 % Comment on Bayes error plot
 \subsection{Calbrating Scores For Selected Models}
-We are going to transform the scores so that the theoretical threshold $t = -log\;\frac{\tilde{\pi}}{1-\tilde{\pi}}$
-provides close to optimal values over a wild range of effective priors $\tilde{\pi}$. What we want to find is a 
+We are going to transform the scores provided by each model so that the theoretical threshold $t = -log\;\frac{\tilde{\pi}}{1-\tilde{\pi}}$
+provides close to optimal values over a wide range of effective priors $\tilde{\pi}$. What we want to find is a 
 monotonic function $f$ that maps not-calibrated scores in calibrated scores.\\
 We assume that the function $f$ has the form:
 \begin{center}
@@ -1112,7 +1115,7 @@ and the class posterior probabilty for prior $\tilde{\pi}$ corresponds to:
 \begin{center}
 	$log\;\frac{P(C=\mathcal{H}_T|s)}{P(C=\mathcal{H}_F|s)} = \alpha s + \beta + log\;\frac{\tilde{\pi}}{1-\tilde{\pi}}$
 \end{center}
-By interpreting scores $s$ as samples of a dataset (each sample has 1 feature) we can employ a prior weighted
+By interpreting scores $s$ as samples of a dataset (where each sample has 1 feature) we can employ a prior weighted
 logistic regression model to learn the model parameters over our calibration set (the dataset composed of the
 scores for a certain model). If we let:
 \begin{center}
@@ -1120,7 +1123,7 @@ scores for a certain model). If we let:
 \end{center}
 we have exactly a Logistic Regression model where $\alpha$ and $\beta'$ are the model parameters we have to learn.
 We have still to specify a prior $\tilde{\pi}$ that will be the one of our target application even if we will notice
-that the improvements in term of calibration will also involve the unbalanced applications. To obtain calibrated
+that the improvements in terms of calibration will also involve the unbalanced applications. To obtain calibrated
 scores we will have to compute:
 \begin{center}
 	$f(s) = \alpha s + \beta = \alpha s + \beta' - log\;\frac{\tilde{\pi}}{1-\tilde{\pi}}$
@@ -1130,11 +1133,11 @@ scores we will have to compute:
 	\caption{Bayesian Error Plots for each of the selected models (without score calibration)}
 	\label{bayesianerrornotcalibrated} 
 \end{figure}
-Gaussian, Logistic Regression and GMM seem to be already well calibrated
-in particular for positive values of the prior log-odds. The Gaussian model
+The Tied Gaussian, Linear Logistic Regression and Tied GMM models seem to be already well calibrated
+in particular for positive values of the prior log-odds. The Tied Gaussian model
 could be slightly improved in terms of calibration for negative values
 of the prior log odds. The SVM instead is not well calibrated for almost every
-considered threshold.
+considered values of the prior log-odds.
 \begin{figure}[ht!]
 	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/bestmodels_c.png}
 	\caption{Bayesian Error Plots for each of the selected models (with score calibration)}
@@ -1167,8 +1170,8 @@ considered threshold.
 \end{table}
 \FloatBarrier
 We can easily notice that for models where scores where already well calibrated the score
-calibration doesn't provide better effective benefits (in some cases we also obtain
-slightyl worse results). For SVM model great benefits are obtained for the unbalanced
+calibration didn't provide effective benefits (in some cases we also obtained
+slightly worse results). For SVM model great benefits are obtained for the unbalanced
 applications.
 \section{Experimental Results}
 Now we are going to train all the previous models on the entire training set and the 
@@ -1255,16 +1258,17 @@ other choices would have been better for this evaluation set).
 \end{table}
 The results obtained by training the models on the entire training set and by evaluating
 them on the entire evaluation set are coherent with the results previously
-obtained and with the observations made.
+obtained and with the observations made. The ROC curve in figure \ref{roc} shows (and confirms) that the best performing model is the Tied GMM with 8 componenets. 
+The other three models also perform really well but slightly worse than this.
 \begin{figure}[ht!]
 	\includegraphics[width=\linewidth]{./Pictures/FeaturesAnalysis/roc.png}
 	\caption{ROC curves of selected models (on the right a zoomed version)}
 	\label{roc} 
 \end{figure}
 \section{Conclusions}
-We can conclude by saying that in general linear models had better performances
-on these data with respect to non-linear models. Due to the high level of correlation
-among features the PCA didn't help in achieving better results (despite  the fact thatwith PCA(m=11)
+We can conclude by saying that in general linear models have better performances
+on these data with respect to the non-linear ones. Due to the high level of correlation
+among features the PCA didn't help in achieving better results (despite  the fact that with PCA(m=11)
 we have obtained not a big performance degratation in most of the models) and Naive hypothesis didn't worked
 well in Gaussian models. We have been able to reach a $minDCF\approx0.03$ for
 the target application($\tilde{\pi}=0.5$) but also for the unbalanced applications
